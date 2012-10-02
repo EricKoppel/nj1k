@@ -1,0 +1,59 @@
+@(ascentForm: Form[AscentEntity], mountains: List[MountainEntity])
+
+@import helper._
+
+@main() {
+    
+    @helper.form(action = routes.AscentController.submit, 'enctype -> "multipart/form-data") {
+        
+        <fieldset>
+            <legend>Log New Ascent</legend>
+          
+            @if(ascentForm.hasGlobalErrors) {
+				@ascentForm.globalError.message
+            }
+            
+            @inputText(
+                ascentForm("ascent_date"),
+                '_label -> Messages("ascent.date"),
+                '_help -> Messages("help.ascent.date", play.api.Play.current.configuration.getString("date.format").get)
+            )
+            
+            @select(
+            	ascentForm("mountain"),
+            	mountains.map{
+            		m => m.id.toString() -> (m.name)
+            	},
+            	'_label -> Messages("ascent.summit")
+            )
+            
+            @select(
+            	ascentForm("successful"),
+            	options("true"->Messages("yes"), "false"->Messages("no")),
+            	'_label -> Messages("ascent.successful"),
+            	'_help -> Messages("help.ascent.success")
+            )
+            
+            @textarea(
+            	ascentForm("trip_report"),
+            	'_label -> Messages("ascent.report")
+            )
+            
+
+   			@inputFile(
+   				ascentForm("ascentDetails"), 
+   				'_label -> Messages("ascent.pics"),
+   				'class -> "multi"
+   			)
+
+            
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" class="btn primary" value="@Messages("button.submit.ascent")">
+            <a href="@routes.Application.index" class="btn">@Messages("cancel")</a>
+        </div>
+        
+    }
+    
+}

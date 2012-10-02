@@ -1,0 +1,36 @@
+@(signupForm: Form[UserEntity])
+
+@import helper._
+
+@main() {
+    
+    @helper.form(action = routes.SignInController.submit) {
+        
+        <fieldset>
+            <legend>Login</legend>
+          
+            @if(signupForm.hasGlobalErrors) {
+				@signupForm.globalError.message
+            }
+            
+            @inputText(
+                signupForm("email"), '_label -> Messages("email"),
+                '_help -> Messages("help.email")
+            )
+            
+            @inputPassword(
+                signupForm("password"), 
+                '_label -> Messages("password"),
+                '_help -> Messages("help.password")
+            )
+            
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" class="btn primary" value="@Messages("button.submit.login")">
+            <a href="@routes.Application.index" class="btn">@Messages("cancel")</a>
+        </div>
+        
+    }
+    
+}

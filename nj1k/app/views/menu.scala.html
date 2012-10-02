@@ -1,0 +1,25 @@
+@import org.apache.shiro.play.templates.html._
+@import org.apache.shiro.play.templates.SecurityUtil._
+
+    <ul>
+    	@requiresUser {
+    	<li>@Messages("welcome", subject.getPrincipal())</li>
+    	}
+    	<li><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
+    	@requiresRoles(Seq("admin") : _*) {
+    	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
+    	}
+    	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
+    	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
+    	@requiresGuest {
+    	<li><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
+    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
+    	}
+    	@requiresUser {
+    	<li><a href="@routes.AscentController.showForm()">@Messages("ascent.log")</a></li>
+    	<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
+    	}
+@*		<li><a href="@routes.Application.contact()">Contact</a></li>
+    	<li><a href="@routes.Application.about()">About Us</a></li>
+    	<li><a href="@routes.Application.links()">@Messages("menu.links")</a></li> *@
+    </ul>

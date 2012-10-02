@@ -1,0 +1,43 @@
+@(signupForm: Form[RegisteringUser])
+
+@import helper._
+
+@main() {
+    
+    @helper.form(action = routes.RegistrationController.submit) {
+        
+        <fieldset>
+            <legend>Registration</legend>
+            
+            @inputText(
+                signupForm("email"), 
+                '_label -> Messages("email"),
+                '_showConstraints -> false
+            )
+            @inputText(
+                signupForm("name"), 
+                '_label -> Messages("name"),
+                '_showConstraints -> false
+            )
+            @inputPassword(
+                signupForm("password"), 
+                '_label -> Messages("password"),
+                '_showConstraints -> false
+            )
+            
+            @inputPassword(
+                signupForm("confirmPassword"), 
+                '_label -> Messages("confirmpassword"),
+                '_showConstraints -> false
+            )
+            
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Sign Up">
+            <a href="@routes.Application.index" class="btn">Cancel</a>
+        </div>
+        
+    }
+    
+}
