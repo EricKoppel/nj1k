@@ -1,0 +1,60 @@
+title=NJ1K.org - A website dedicated to climbing New Jersey's thousand foot mountains
+mountain.elevation=Elevation
+mountain.decimal_degrees=Decimal degrees
+mountain.county=County
+mountain.ownership=Ownership
+mountain.owner=Owner
+mountain.trail_map=Trail map
+mountain.topo=Topo map
+mountain.nhn=Nearest higher neighbor
+mountain.others=Other Members Who Have Climbed {0}
+
+ascent.title=Ascent of {0} by {1} ({2} feet)
+ascent.trip_report=Trip report
+ascent.pictures=Pictures
+ascent.summit=Summit
+ascent.climber=Climber
+ascent.date=Ascent date
+ascent.successful=Successful
+ascent.log=Log ascent
+ascent.report=Trip report
+ascent.pics=Upload pictures
+ascent.edit=Modify ascent
+
+news.title=Headline
+news.entry=Story
+news.pics=Upload pictures
+
+radius.title=Mountains nearest to {0}
+
+true=Yes
+false=No
+
+menu.news=News
+menu.list=The List
+menu.members=Members
+menu.links=Links
+menu.login=Login
+menu.logout=Logout
+menu.register=Register
+menu.news.submit=Submit News
+
+validation.email.taken=This e-mail address is already registered
+validation.login.invalid=Invalid username or password
+validation.passwords.equal=Passwords must match
+
+email=E-mail address
+name=Name
+password=Password
+confirmpassword=Confirm password
+
+welcome=Welcome, {0}!
+
+help.ascent.date=Enter the ascent date ({0})
+help.ascent.success=Did you make it to the top?
+button.submit.ascent=Submit ascent
+button.submit.login=Login
+
+cancel=Cancel
+yes=Yes
+no=No

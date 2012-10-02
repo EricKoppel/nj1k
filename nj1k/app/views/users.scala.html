@@ -1,0 +1,31 @@
+@(users: List[UserEntity])
+
+@main() {
+
+	<script type="text/javascript">
+		$(document).ready(function() { 
+			$("#climbList").tablesorter( {sortList: [[0,0], [1,0], [2,0]]} ); 
+		}); 
+	</script>
+    
+    <table id="climbList" class="tablesorter">
+        <thead>
+        	<tr>
+	    		<th>Climber</th>
+	    		<th>Total climbs</th>
+	    		<th>Total unique ascents</th>
+	    		<th>Most recent climb</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        @for(user <- users) {
+        	<tr>
+	        	<td><a href="@routes.UsersController.showUser(user.id)">@user.name</a></td>
+	        	<td>@user.totalClimbs()</td>
+	        	<td>@user.distinctClimbs()</td>
+	        	<td>most recent</td>
+        	</tr>
+        }
+        </tbody>
+    </table>
+}

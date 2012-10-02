@@ -1,0 +1,98 @@
+@(mountain: MountainEntity, ascents: List[AscentEntity], nhn: MountainEntity)
+@import java.text.SimpleDateFormat
+@import views.RenderUtil
+
+@main() {
+    <script type="text/javascript" src="/routes.js"></script>
+    <script src="@routes.Assets.at("javascripts/models/Mountain.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/models/MountainDistanceModel.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/views/MountainDistanceView.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/views/MapView.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/collections/MountainDistanceModelCollection.js")" type="text/javascript"></script>
+	
+	<script type="text/javascript">
+		$(function() {
+			
+			var AppView = Backbone.View.extend({
+				el: 'div#radiusSearch',
+				mapView: null,
+			
+				initialize: function() {
+					this.mapView = new MapView({model: new Mountain({
+						id: @mountain.id,
+						name: '@mountain.name',
+						latitude: @mountain.latitude,
+						longitude: @mountain.longitude
+					})}),
+					this.distances = new MountainDistanceModelCollection();
+					this.distances.collectionId = @mountain.id;
+					this.distances.bind('add', this.addOne, this);
+					this.distances.fetch({add: true});
+				},
+				
+				addOne: function(m) {
+					var mountainDistanceView = new MountainDistanceView({model: m});
+					this.$el.append(mountainDistanceView.render().$el);
+					this.mapView.addPoint(m.get("m2"));
+				}
+			});
+			
+			var App = new AppView();
+		});
+	</script>
+
+	<h1>@mountain.name</h1>
+    
+    <div id="mountain_description">
+    	@RenderUtil.unescape(mountain.description)
+    </div>
+	
+	<div id="mountain_info" class="table">
+		<div class="tableRow">
+			<div class="tableCell">@Messages("mountain.elevation")</div>
+			<div class="tableCell">@mountain.elevation</div>
+		</div>
+		<div class="tableRow">
+			<div class="tableCell">@Messages("mountain.decimal_degrees")</div>
+			<div class="tableCell">@mountain.latitude, @mountain.longitude</div>
+		</div>
+		<div class="tableRow">
+			<div class="tableCell">@Messages("mountain.county")</div>
+			<div class="tableCell">@mountain.county</div>
+		</div>		
+		<div class="tableRow">		
+			<div class="tableCell">@Messages("mountain.ownership")</div>
+			<div class="tableCell">@mountain.ownership</div>
+		</div>
+		<div class="tableRow">	
+			<div class="tableCell">@Messages("mountain.owner")</div>
+			<div class="tableCell">@mountain.owner</div>
+		</div>
+		<div class="tableRow">	
+			<div class="tableCell">@Messages("mountain.topo")</div>
+			<div class="tableCell"><a href="http://mapper.acme.com/?t=T&z=15&ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></div>
+		</div>
+		<div class="tableRow">	
+			<div class="tableCell">@Messages("mountain.nhn")</div>
+			<div class="tableCell"><a href="@routes.MountainsController.showMountain(nhn.id)">@nhn.name</a></div>
+		</div>
+	</div>
+
+	<h2>@Messages("mountain.others", mountain.name)</h2>
+	<div class="table">
+	@for(a <- ascents) {
+		<div class="tableRow">
+			<div class="tableCell"><a href="@routes.AscentController.showTripReport(a.id)">@views.RenderUtil.formatAscentDate(a.ascent_date)</a></div>
+			<div class="tableCell"><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></div>
+		</div>
+	}
+	</div>
+	
+	<h2>@Messages("radius.title", mountain.name)</h2>
+	<div id="radiusSearch" class="table">
+		<div class="tableRow">
+		</div>
+	</div>
+	
+	<div id="map_canvas"></div>
+}

@@ -1,0 +1,47 @@
+@(newsForm: Form[NewsEntity])
+
+@import helper._
+
+@main() {
+    
+    @helper.form(action = routes.NewsController.submit, 'enctype -> "multipart/form-data") {
+        
+        <fieldset>
+            <legend>Submit News</legend>
+          
+            @if(newsForm.hasGlobalErrors) {
+				@newsForm.globalError.message
+            }
+            
+            @inputText(
+                newsForm("title"),
+                '_label -> Messages("news.title"),
+                '_showConstraints -> false
+            )
+
+            @textarea(
+            	newsForm("entry"),
+            	'_label -> Messages("news.entry"),
+            	'_showConstraints -> false
+            )
+            
+   			@inputFile(
+   				newsForm("pictures"), 
+   				'_label -> Messages("news.pics"),
+   				'class -> "multi"
+   			)
+            
+            @input(newsForm("id"), 
+            '_label -> null) { (id, name, value, args) =>
+    			<input type="hidden" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
+			} 
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" class="btn primary" value="@Messages("button.submit.news")">
+            <a href="@routes.Application.index" class="btn">@Messages("cancel")</a>
+        </div>
+        
+    }
+    
+}
