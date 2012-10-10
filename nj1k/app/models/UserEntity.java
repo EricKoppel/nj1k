@@ -19,7 +19,7 @@ public class UserEntity extends Model {
 	private static final long serialVersionUID = 1L;
 
 	public static Finder<Long, UserEntity> find = new Finder<Long, UserEntity>(Long.class, UserEntity.class);
-	
+			
 	@Id
 	public Long id;
 	@Column(unique=true)
@@ -66,12 +66,6 @@ public class UserEntity extends Model {
 	public int distinctClimbs() {
 		
 		return AscentEntity.distinctClimbs(this.id);
-	}
-	
-	public boolean isFinisher() {
-		int listSize = MountainEntity.listSize();
-		
-		return distinctClimbs() == listSize;
 	}
 
 	@Override

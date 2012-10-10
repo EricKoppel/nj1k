@@ -19,16 +19,7 @@ public class Application extends Controller {
 		return ok(views.html.index.render(NewsEntity.findAll(), AscentEntity.findRecent(10)));
 	}
 	
-	public static Result login() {
-		return ok();
-	}
-
 	public static Result javascriptRoutes() {
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.MountainsController.showDistances())).as("text/javascript");
-	}
-	
-	@RequiresAuthentication
-	public static Result secure() {
-		return ok();
 	}
 }

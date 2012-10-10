@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                           controllers.Application.index()
-GET		/secure						controllers.Application.secure()
 
 GET 	/login						controllers.SignInController.showForm()
 GET 	/logout						controllers.SignInController.logout()

@@ -9,6 +9,7 @@ import models.MountainEntity;
 import models.UserEntity;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.play.templates.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,11 @@ public class AscentController extends Controller {
 	}
 
 	public static Result editForm(Long id) {
-		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), sortedMountains));
+		if (SecurityUtil.subject().isPermitted("ascent:edit:" + id)) {
+			return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), sortedMountains));
+		}
+		
+		return unauthorized();
 	}
 	
 	@RequiresAuthentication

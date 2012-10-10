@@ -27,10 +27,7 @@ public class AscentEntity extends Model {
 
 	public static Finder<Long, AscentEntity> find = new Finder<Long, AscentEntity>(Long.class, AscentEntity.class);
 	
-	private static final String distinctQuery = "SELECT COUNT(DISTINCT(`mountain_id`)) AS ascents " +
-			"FROM ascent_entity a JOIN mountain_entity m ON a.mountain_id=m.id " +
-			"WHERE climber_id=? " +
-			"AND m.club_list=true";
+	private static final String distinctQuery = "SELECT COUNT(DISTINCT(`mountain_id`)) AS ascents FROM ascent_entity a WHERE climber_id=?";
 	
 	@Id
 	public Long id;
