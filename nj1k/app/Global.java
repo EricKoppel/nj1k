@@ -1,17 +1,13 @@
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
-import java.util.concurrent.Callable;
 
 import models.MountainEntity;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.config.Ini;
 import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.play.subject.PlaySubject;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.subject.support.SubjectThreadState;
+import org.apache.shiro.play.bind.ShiroBinderAction;
 import org.apache.shiro.util.Factory;
-import org.apache.shiro.util.ThreadState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +15,7 @@ import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
 import play.mvc.Action;
-import play.mvc.Http.Context;
 import play.mvc.Http.Request;
-import play.mvc.Http.Session;
-import play.mvc.Result;
 import utils.CustomDateConverter;
 import utils.CustomMountainConverter;
 
@@ -60,35 +53,7 @@ public class Global extends GlobalSettings {
 	@Override
 	public Action<?> onRequest(Request request, Method method) {
 
-		return new Action.Simple() {
-			@Override
-			public Result call(final Context context) {
-
-				final Session session = context.session();
-
-				
-				final Subject subject = new PlaySubject.Builder(session).buildPlaySubject();
-				final ThreadState threadState = new SubjectThreadState(subject);
-				
-				threadState.bind();
-				
-				return subject.execute(new Callable<Result>() {
-
-					@Override
-					public Result call() throws Exception {
-						try {
-							return delegate.call(context);
-						} 
-						catch (Throwable e) {
-							throw new Exception(e);
-						}
-						finally {
-							threadState.clear();
-						}
-					}
-				});
-			}
-		};
+		return new ShiroBinderAction();
 	}
 
 	private void registerMountainConverter(final Application app) {

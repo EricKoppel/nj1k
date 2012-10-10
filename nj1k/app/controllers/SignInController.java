@@ -7,7 +7,6 @@ import models.UserEntity;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
@@ -16,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
-import play.mvc.Http.Context;
-import play.mvc.Http.Session;
 import play.mvc.Result;
 
 public class SignInController extends Controller {
