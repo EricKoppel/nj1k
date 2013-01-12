@@ -10,8 +10,8 @@ lib
 .classpath
 **/.classpath
 
-.settings/
-**/.settings/
+*.settings
+**/.settings
 
 .target
 **/.target/
