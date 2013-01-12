@@ -1,4 +1,4 @@
-@(finishers: List[FinisherEntity], users: List[UserEntity])
+@(finishers: List[FinisherEntity], users: List[UserEntityAggregate])
 
 @import java.text.SimpleDateFormat
 
@@ -7,7 +7,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() { 
 			$("#climbList").tablesorter( {sortList: [[0,0]]} );
-			$("#finisherList").tablesorter( {sortList: [[3,0]]} ); 
+			$("#finisherList").tablesorter( {sortList: [[1,0]]} ); 
 		}); 
 	</script>
     
@@ -15,18 +15,16 @@
         <thead>
         	<tr>
 	    		<th>Climber</th>
-	    		<th>Total Climbs</th>
-	    		<th>Total Unique Ascents</th>
 	    		<th>Date of Finish</th>
+	    		<th>Finished On</th>
     		</tr>
     	</thead>
     	<tbody>
         @for(f <- finishers) {
         	<tr>
 	        	<td><a href="@routes.UsersController.showUser(f.user.id)">@f.user.name</a></td>
-	        	<td>@f.user.totalClimbs()</td>
-	        	<td>@f.user.distinctClimbs()</td>
-	        	<td>@{new SimpleDateFormat("MM/dd/yyyy").format(f.finish_date)}</td>
+	        	<td>@{new SimpleDateFormat("MM/dd/yyyy").format(f.final_ascent.ascent_date)}</td>
+	        	<td><a href="@routes.AscentController.showTripReport(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
         	</tr>
         }
         </tbody>
@@ -44,10 +42,10 @@
     	<tbody>
         @for(user <- users) {
         	<tr>
-	        	<td><a href="@routes.UsersController.showUser(user.id)">@user.name</a></td>
-	        	<td>@user.totalClimbs()</td>
-	        	<td>@user.distinctClimbs()</td>
-	        	<td>most recent</td>
+	        	<td><a href="@routes.UsersController.showUser(user.user.id)">@user.user.name</a></td>
+	        	<td>@user.total</td>
+	        	<td>@user.unique_successful</td>
+	        	<td><a href="@routes.AscentController.showTripReport(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
         	</tr>
         }
         </tbody>

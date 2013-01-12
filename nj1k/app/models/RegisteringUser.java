@@ -20,6 +20,8 @@ public class RegisteringUser {
 	
 	@Required
 	private String name;
+
+	private String salt;
 	
 	public String getEmail() {
 		return email;
@@ -54,12 +56,19 @@ public class RegisteringUser {
 	}
 
 	public String validate() {
-		System.out.println("passwords equal?!?");
 		return password.equals(confirmPassword) ? null : Messages.get("validation.passwords.equal");
 	}
 	
 	@Override
 	public String toString() {
 		return "RegisteringUser [email=" + email + ", name=" + name + "]";
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+	
+	public String getSalt() {
+		return this.salt;
 	}
 }

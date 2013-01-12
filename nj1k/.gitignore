@@ -5,3 +5,15 @@ target
 tmp
 .history
 dist
+lib
+
+.classpath
+**/.classpath
+
+.settings/
+**/.settings/
+
+.target
+**/.target/
+
+bin

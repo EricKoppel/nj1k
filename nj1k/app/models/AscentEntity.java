@@ -18,6 +18,9 @@ import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+import com.avaje.ebean.RawSql;
+import com.avaje.ebean.RawSqlBuilder;
 import com.avaje.ebean.SqlQuery;
 
 @Entity
@@ -27,7 +30,8 @@ public class AscentEntity extends Model {
 
 	public static Finder<Long, AscentEntity> find = new Finder<Long, AscentEntity>(Long.class, AscentEntity.class);
 	
-	private static final String distinctQuery = "SELECT COUNT(DISTINCT(`mountain_id`)) AS ascents FROM ascent_entity a WHERE climber_id=?";
+	private static String distinctQuery = "SELECT COUNT(DISTINCT(`mountain_id`)) AS ascents FROM ascent_entity a WHERE climber_id=?";
+	private static String mostRecent = "SELECT MAX(`ascent_date`) FROM ascent_entity WHERE climber_id=?";
 	
 	@Id
 	public Long id;
@@ -94,5 +98,14 @@ public class AscentEntity extends Model {
 	public String toString() {
 		return "AscentEntity [id=" + id + ", climber=" + climber
 				+ ", mountain=" + mountain + "]";
+	}
+
+	public static AscentEntity findMostRecent(Long userId) {
+		RawSql sql = RawSqlBuilder.parse(mostRecent).columnMapping("MAX(`ascent_date`)", "ascent_date").create();
+		Query<AscentEntity> q = Ebean.createQuery(AscentEntity.class);
+		q.setParameter(1, userId);
+		q.setRawSql(sql);
+
+		return q.findUnique();	
 	}
 }

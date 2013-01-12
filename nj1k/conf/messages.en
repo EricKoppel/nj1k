@@ -24,6 +24,7 @@ ascent.edit=Modify ascent
 news.title=Headline
 news.entry=Story
 news.pics=Upload pictures
+news.edit=Edit news
 
 radius.title=Mountains nearest to {0}
 
@@ -39,6 +40,7 @@ menu.logout=Logout
 menu.register=Register
 menu.news.submit=Submit News
 
+validation.email=This e-mail address is not registered
 validation.email.taken=This e-mail address is already registered
 validation.login.invalid=Invalid username or password
 validation.passwords.equal=Passwords must match
@@ -46,6 +48,8 @@ validation.passwords.equal=Passwords must match
 email=E-mail address
 name=Name
 password=Password
+password.reset=Reset password
+password.forgot=Forgot password?
 confirmpassword=Confirm password
 
 welcome=Welcome, {0}!
@@ -54,6 +58,8 @@ help.ascent.date=Enter the ascent date ({0})
 help.ascent.success=Did you make it to the top?
 button.submit.ascent=Submit ascent
 button.submit.login=Login
+
+mail.resetpassword = You or someone has requested a password reset for your account on NJ1K.org. If you did not make this request, ignore this mail. Otherwise, log in with this temporary password: {0}
 
 cancel=Cancel
 yes=Yes

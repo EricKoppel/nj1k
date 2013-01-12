@@ -95,6 +95,7 @@ create table user_entity (
   id                        bigint auto_increment not null,
   email                     varchar(255),
   password                  varchar(255),
+  salt                      varchar(255),
   name                      varchar(255),
   aboutme                   longtext,
   pic                       longblob,

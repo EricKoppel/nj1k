@@ -9,6 +9,7 @@ import models.MountainEntity;
 import models.UserEntity;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.play.bind.ShiroBinderAction;
 import org.apache.shiro.play.templates.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,11 @@ import org.slf4j.LoggerFactory;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.ImageUtil;
 import utils.MountainComparator;
 
+@With(ShiroBinderAction.class)
 public class AscentController extends Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);

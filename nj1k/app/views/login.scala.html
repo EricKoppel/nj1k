@@ -14,21 +14,19 @@
             }
             
             @inputText(
-                signupForm("email"), '_label -> Messages("email"),
-                '_help -> Messages("help.email")
+                signupForm("email"), '_label -> Messages("email"), '_showConstraints -> false
             )
             
             @inputPassword(
                 signupForm("password"), 
-                '_label -> Messages("password"),
-                '_help -> Messages("help.password")
+                '_label -> Messages("password")
             )
             
         </fieldset>
         
         <div class="actions">
             <input type="submit" class="btn primary" value="@Messages("button.submit.login")">
-            <a href="@routes.Application.index" class="btn">@Messages("cancel")</a>
+            <a href="@routes.UsersController.resetPasswordForm" class="btn">@Messages("password.forgot")</a>
         </div>
         
     }
