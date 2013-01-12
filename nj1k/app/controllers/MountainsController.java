@@ -1,11 +1,15 @@
 package controllers;
 
+import org.apache.shiro.play.bind.ShiroBinderAction;
+
 import models.AscentEntity;
 import models.MountainEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import flexjson.JSONSerializer;
 
+@With(ShiroBinderAction.class)
 public class MountainsController extends Controller {
 
 	public static Result list() {

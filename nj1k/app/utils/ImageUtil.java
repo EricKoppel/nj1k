@@ -10,6 +10,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import play.mvc.Http.MultipartFormData.FilePart;
+
+import com.google.common.net.MediaType;
 
 import javax.imageio.ImageIO;
 
@@ -17,10 +21,6 @@ import models.ImageEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import play.mvc.Http.MultipartFormData.FilePart;
-
-import com.google.common.net.MediaType;
 
 public class ImageUtil {
 
@@ -41,8 +41,9 @@ public class ImageUtil {
 				try {
 					ImageEntity entity = clazz.newInstance();
 					
-					entity.image = resizeImage(f);
-					logger.debug("Resized picture size: {}", entity.image.length);
+					ImageResizeTask task = new ImageResizeTask(f);
+					
+					entity.image = task.call();
 					
 					pictures.add(entity);
 				} catch (Exception e) {
@@ -96,5 +97,17 @@ public class ImageUtil {
 		ImageIO.write(resizedImage, fileType, outputStream);
 		
 		return outputStream.toByteArray();
+	}
+	
+	private static class ImageResizeTask implements Callable<byte[]> {
+
+		private FilePart filePart;
+		public ImageResizeTask(FilePart filePart) {
+			this.filePart = filePart;
+		}
+		@Override
+		public byte[] call() throws Exception {
+			return resizeImage(filePart);
+		}
 	}
 }

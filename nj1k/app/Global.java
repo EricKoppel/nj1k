@@ -50,11 +50,11 @@ public class Global extends GlobalSettings {
 		Formatters.register(Timestamp.class, new CustomDateConverter(app.configuration().getString("date.format")));
 	}
 
-	@Override
-	public Action<?> onRequest(Request request, Method method) {
-
-		return new ShiroBinderAction();
-	}
+//	@Override
+//	public Action<?> onRequest(Request request, Method method) {
+//
+//		return new ShiroBinderAction();
+//	}
 
 	private void registerMountainConverter(final Application app) {
 

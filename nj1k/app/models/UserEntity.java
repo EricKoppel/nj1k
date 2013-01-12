@@ -11,7 +11,10 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
+import validators.MemberEmail;
 
 @Entity
 public class UserEntity extends Model {
@@ -23,8 +26,14 @@ public class UserEntity extends Model {
 	@Id
 	public Long id;
 	@Column(unique=true)
+	
+	@Required
+	@Email
+	@MemberEmail
 	public String email;
 	public String password;
+	public String salt;
+	
 	public String name;
 	@ManyToMany
 	@JoinTable(name="users_roles",
@@ -58,19 +67,9 @@ public class UserEntity extends Model {
 	public static UserEntity findByEmail(String email) {
 		return find.where().eq("email", email).findUnique();
 	}
-	
-	public int totalClimbs() {
-		return ascents.size();
-	}
-	
-	public int distinctClimbs() {
-		
-		return AscentEntity.distinctClimbs(this.id);
-	}
 
 	@Override
 	public String toString() {
 		return name;
 	}
-	
 }

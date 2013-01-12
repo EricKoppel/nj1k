@@ -13,13 +13,22 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.codec.Base64;
+import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.util.SimpleByteSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import play.i18n.Messages;
 
 public class NJ1KAuthenticatingRealm extends AuthorizingRealm {
 
+	private static final Logger logger = LoggerFactory.getLogger(NJ1KAuthenticatingRealm.class);
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		
@@ -29,7 +38,7 @@ public class NJ1KAuthenticatingRealm extends AuthorizingRealm {
 				UserEntity user = getUser(usernamePasswordToken.getUsername());
 				
 				if (user != null) {
-					return new SimpleAuthenticationInfo(user.email, user.password, getName());
+					return getAuthenticationInfo(user);
 				}
 			}
 		}
@@ -55,6 +64,21 @@ public class NJ1KAuthenticatingRealm extends AuthorizingRealm {
 		}
 		
 		return roles;
+	}
+	
+	private SimpleAuthenticationInfo getAuthenticationInfo(UserEntity user) {
+		if (user.salt == null) {
+			logger.trace("Authenticating user with old hashing scheme");
+			return new SimpleAuthenticationInfo(user.email, user.password, getName());
+		} 
+		else {
+			logger.trace("Authenticating user with new hashing scheme");
+
+			SimpleHash decodedHash = Sha256Hash.fromBase64String(user.password);
+			ByteSource salt = new SimpleByteSource(Base64.decode(user.salt));
+			
+			return new SimpleAuthenticationInfo(user.email, decodedHash, salt, getName());
+		}
 	}
 	
 	@Override

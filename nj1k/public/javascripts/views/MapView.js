@@ -51,7 +51,10 @@ var MapView = Backbone.View.extend({
 		var marker = new GMarker(point, {title: mountain.get("name")});
 
 		GEvent.addListener(marker, 'click', function() {
-			marker.openInfoWindowTabsHtml(mountain.get("name"));
+			var link = document.createElement("a");
+			$(link).attr("href", mountain.get("id"));
+			$(link).text(mountain.get("name"));
+			marker.openInfoWindow(link);
 		});
 		
 		this.map.addOverlay(marker);
