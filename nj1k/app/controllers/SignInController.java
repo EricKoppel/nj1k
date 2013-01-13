@@ -26,6 +26,8 @@ import security.shiro.authentication.NJ1KCredentialsMatcher;
 import security.shiro.realm.NJ1KAuthenticatingRealm;
 import utils.PasswordUtil;
 import be.objectify.deadbolt.core.models.Subject;
+import be.objectify.deadbolt.java.actions.SubjectNotPresent;
+import be.objectify.deadbolt.java.actions.SubjectPresent;
 import be.objectify.deadbolt.java.utils.PluginUtils;
 
 public class SignInController extends Controller {
@@ -33,35 +35,45 @@ public class SignInController extends Controller {
 	private static final Logger logger = LoggerFactory.getLogger(SignInController.class);
 	final static Form<UserEntity> signInForm = form(UserEntity.class);
 	
+	@SubjectNotPresent
     public static Result showForm() {
         return ok(views.html.login.render(signInForm));
     }
     
+	@SubjectPresent
     public static Result logout() {
     	
     	ctx().session().remove(NJ1KDeadboltHandler.USER_ID_KEY);
     	return redirect(routes.Application.index());
     }
     
+	@SubjectNotPresent
 	public static Result submit() throws NoSuchAlgorithmException, CharacterCodingException {
 		Form<UserEntity> filledForm = signInForm.bindFromRequest();
 
-		String email = filledForm.get().email;
-		String password = filledForm.get().password;
-
-		try {
-			login(email, password.toCharArray());
-			upgradePassword(PluginUtils.getDeadboltHandler().getSubject(Controller.ctx()), password);
-			logger.debug("User fully authenticated. Redirecting ..................................................");
+		if (!filledForm.hasErrors()) {
+			String email = filledForm.get().email;
+			String password = filledForm.get().password;
+	
+			try {
+				login(email, password.toCharArray());
+				upgradePassword(PluginUtils.getDeadboltHandler().getSubject(Controller.ctx()), password);
+				logger.debug("User fully authenticated. Redirecting ..................................................");
+			}
+			catch(AuthenticationException e) {
+				filledForm.reject(Messages.get("validation.login.invalid"));
+				return badRequest(views.html.login.render(filledForm));
+			} catch (Exception e) {
+				logger.error("Deadbolt exception", e);
+			}
+			
+			return redirect(routes.Application.index());
 		}
-		catch(AuthenticationException e) {
-			filledForm.reject(Messages.get("validation.login.invalid"));
+		else {
+			logger.debug("Signin form contained errors: {}", filledForm.errors().toString());
+			
 			return badRequest(views.html.login.render(filledForm));
-		} catch (Exception e) {
-			logger.error("Deadbolt exception", e);
 		}
-		
-		return redirect(routes.Application.index());
 
 	}
 	

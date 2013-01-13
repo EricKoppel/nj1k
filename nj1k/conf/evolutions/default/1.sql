@@ -1,6 +1,3 @@
-# --- Created by Ebean DDL
-# To stop Ebean DDL generation, remove this comment and start using Evolutions
-
 # --- !Ups
 
 create table ascent_detail_entity (
@@ -8,6 +5,7 @@ create table ascent_detail_entity (
   image                     longblob,
   caption                   longtext,
   ascent_id                 bigint,
+  thumbnail                 longblob,
   constraint pk_ascent_detail_entity primary key (id))
 ;
 

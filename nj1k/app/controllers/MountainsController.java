@@ -4,7 +4,6 @@ import models.AscentEntity;
 import models.MountainEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
 import flexjson.JSONSerializer;
 
 public class MountainsController extends Controller {
