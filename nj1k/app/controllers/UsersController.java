@@ -1,17 +1,21 @@
 package controllers;
 
+import static play.data.Form.form;
 import models.AscentEntity;
 import models.FinisherEntity;
 import models.UserEntity;
 import models.UserEntityAggregate;
+
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
+
 import play.Play;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
 import utils.PasswordUtil;
-import static play.data.Form.form;
+
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
@@ -33,40 +37,38 @@ public class UsersController extends Controller {
 	
 	public static Result resetPassword() {
 		
-//		Form<UserEntity> resetForm = userForm.bindFromRequest();
-//		
-//		if (!resetForm.hasErrors()) {
-//			
-//			UserEntity user = UserEntity.findByEmail(resetForm.get().email);
-//			
-//			resetPassword(user);
-//			
-//			return ok(views.html.login.render(resetForm));
-//		}
-//		
-//		return badRequest(views.html.resetpassword.render(resetForm));
+		Form<UserEntity> resetForm = userForm.bindFromRequest();
 		
-		return TODO;
+		if (!resetForm.hasErrors()) {
+			
+			UserEntity user = UserEntity.findByEmail(resetForm.get().email);
+			
+			resetPassword(user);
+			
+			return ok(views.html.login.render(resetForm));
+		}
+		
+		return badRequest(views.html.resetpassword.render(resetForm));
 	}
 
-//	private static void resetPassword(UserEntity user) {
-//		
-//		String newPassword = String.valueOf(PasswordUtil.generateRandomPassword());
-//		ByteSource salt = PasswordUtil.generateSalt();
-//		SimpleHash hashedPassword = PasswordUtil.generateHash(newPassword, salt);
-//		
-//		user.password = hashedPassword.toBase64();
-//		user.salt = salt.toBase64();
-//		user.update();
-//		
-//		sendResetPassword(user.email, newPassword);
-//	}
-//
-//	private static void sendResetPassword(String email, String password) {
-//		MailerAPI mailer = Play.application().plugin(MailerPlugin.class).email();
-//		
-//		mailer.addFrom("abc@cfg.com");
-//		mailer.addRecipient(email);
-//		mailer.send(Messages.get("mail.resetpassword", password));
-//	}
+	private static void resetPassword(UserEntity user) {
+		
+		String newPassword = String.valueOf(PasswordUtil.generateRandomPassword());
+		ByteSource salt = PasswordUtil.generateSalt();
+		SimpleHash hashedPassword = PasswordUtil.generateHash(newPassword, salt);
+		
+		user.password = hashedPassword.toBase64();
+		user.salt = salt.toBase64();
+		user.update();
+		
+		sendResetPassword(user.email, newPassword);
+	}
+
+	private static void sendResetPassword(String email, String password) {
+		MailerAPI mailer = Play.application().plugin(MailerPlugin.class).email();
+		
+		mailer.addFrom("abc@cfg.com");
+		mailer.addRecipient(email);
+		mailer.send(Messages.get("mail.resetpassword", password));
+	}
 }

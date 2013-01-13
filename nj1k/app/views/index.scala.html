@@ -2,22 +2,52 @@
 @import java.text.SimpleDateFormat
 
 @main() {
-	<div class="table">
-	@for(n <- news) {
-		<div class="tableRow">
-			<div class="tableCell">@{new SimpleDateFormat("MM/dd/yyyy").format(n.news_date)}</div>
-			<div class="tableCell"><a href="@routes.NewsController.showNews(n.id)">@n.title</a></div>
-		</div>
-	}
-	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() { 
+			$("#newsList").tablesorter( {sortList: [[0,1]]} );
+		}); 
+	</script>
 	
-	<div class="table">
-	@for(a <- recentAscents) {
-		<div class="tableRow">
-			<div class="tableCell"><a href="@routes.AscentController.showTripReport(a.id)">@{new SimpleDateFormat("MM/dd/yyyy").format(a.ascent_date)}</a></div>
-			<div class="tableCell"><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></div>
-			<div class="tableCell"><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></div>
+	<div class=row-fluid>
+		<div class="span6">@Messages("welcometext")</div>
+		<div class="span6">
+			<table id="newsList" class="table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>@Messages("news.date")</th>
+						<th>@Messages("news.title")</th>
+					</tr>
+				</thead>
+				<tbody>
+				@for(n <- news) {
+					<tr>
+						<td>@{new SimpleDateFormat("MM/dd/yyyy").format(n.news_date)}</td>
+						<td><a href="@routes.NewsController.showNews(n.id)">@n.title</a></td>
+					</tr>
+				}
+				</tbody>
+			</table>
 		</div>
-	}
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>@Messages("ascent.date")</th>
+					<th>@Messages("ascent.climber")</th>
+					<th>@Messages("ascent.mountain")</th>
+				</tr>
+			</thead>
+			@for(a <- recentAscents) {
+				<tr>
+					<td><a href="@routes.AscentController.showTripReport(a.id)">@{new SimpleDateFormat("MM/dd/yyyy").format(a.ascent_date)}</a></td>
+					<td><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></td>
+					<td><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></td>
+				</tr>
+			}
+			</table>
+		</div>
 	</div>
 }

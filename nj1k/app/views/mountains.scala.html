@@ -6,30 +6,35 @@
 			$("#mountainList").tablesorter( {sortList: [[0,0], [1,0], [2,0]]} ); 
 		}); 
 	</script>
-    <table id="mountainList">
-    	<thead>
-    		<tr>
-	    		<th>Name</th>
-	    		<th>Elevation</th>
-	    		<th>County</th>
-	    		<th>Latitude</th>
-	    		<th>Longitude</th>
-	    		<th>Topo Map</th>
-	    	</tr>
-    	</thead>
-        <tbody>
-        @for(mountain <- mountains) {
-            <tr>
-            	<td><a href="@routes.MountainsController.showMountain(mountain.id)">@mountain.name</a></td>
-               	<td>@mountain.elevation</td>
-               	<td>@mountain.county</td>
-               	<td>@mountain.latitude</td>
-               	<td>@mountain.longitude</td>
-               	<td class="tableCell"><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
-            </tr>
-        }
-        </tbody>
-    </table>
+	
+	<div class="row-fluid">
+		<div class="span12">
+		    <table id="mountainList" class="table table-striped">
+		    	<thead>
+		    		<tr>
+			    		<th>Name</th>
+			    		<th>Elevation</th>
+			    		<th>County</th>
+			    		<th>Latitude</th>
+			    		<th>Longitude</th>
+			    		<th>Topo Map</th>
+			    	</tr>
+		    	</thead>
+		        <tbody>
+		        @for(mountain <- mountains) {
+		            <tr>
+		            	<td><a href="@routes.MountainsController.showMountain(mountain.id)">@mountain.name</a></td>
+		               	<td>@mountain.elevation</td>
+		               	<td>@mountain.county</td>
+		               	<td>@mountain.latitude</td>
+		               	<td>@mountain.longitude</td>
+		               	<td class="tableCell"><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+		            </tr>
+		        }
+		        </tbody>
+		    </table>
+		</div>
+    </div>
 }
 
 

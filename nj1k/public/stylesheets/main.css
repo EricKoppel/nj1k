@@ -1,4 +1,3 @@
-.table, .tableRow, .tableCell, .tableCell {border:solid thin red}
 .table {display:table}
 .tableRow, .tableHeader {display:table-row}
 .tableHeader { font-weight:bold}

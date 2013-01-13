@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -13,6 +14,9 @@ public class AscentDetailEntity extends ImageEntity {
 	
 	@ManyToOne
 	public AscentEntity ascent;
+	
+	@Lob
+	public byte[] thumbnail;
 	
 	public static AscentDetailEntity find(Long id) {
 		return find.select("*").where().eq("id", id).findUnique();

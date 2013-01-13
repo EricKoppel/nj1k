@@ -13,11 +13,12 @@
 
 	<logger name="play" level="INFO" />
 	<logger name="application" level="INFO" />
+	<logger name="validators" level="DEBUG" />
 	<logger name="org.apache.shiro" level="TRACE" />
 	<logger name="security" level="TRACE" />
+	
 	<root level="ERROR">
 		<appender-ref ref="STDOUT" />
 	</root>
-
 
 </configuration>

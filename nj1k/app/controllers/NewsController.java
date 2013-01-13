@@ -1,5 +1,7 @@
 package controllers;
 
+import static play.data.Form.form;
+
 import java.util.List;
 
 import models.NewsEntity;
@@ -9,8 +11,9 @@ import models.RoleEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.objectify.deadbolt.java.actions.Restrict;
+
 import play.data.Form;
-import static play.data.Form.form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.ImageUtil;
@@ -24,14 +27,17 @@ public class NewsController extends Controller {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
 	
+	@Restrict(RoleEntity.ADMIN)
 	public static Result showForm() {
 		return ok(views.html.createnews.render(newsForm));
 	}
 	
+	@Restrict(RoleEntity.ADMIN)
 	public static Result editForm(Long id) {
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
 	
+	@Restrict(RoleEntity.ADMIN)
 	public static Result submit() {
 		
 		Form<NewsEntity> filledForm = newsForm.bindFromRequest();

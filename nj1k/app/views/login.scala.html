@@ -1,5 +1,6 @@
 @(signupForm: Form[UserEntity])
 
+@import helper.twitterBootstrap._
 @import helper._
 
 @main() {
@@ -10,7 +11,8 @@
             <legend>Login</legend>
           
             @if(signupForm.hasGlobalErrors) {
-				@signupForm.globalError.message
+            	<div class="alert alert-error">@signupForm.globalError.message</div>
+				
             }
             
             @inputText(

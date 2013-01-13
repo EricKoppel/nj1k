@@ -1,5 +1,7 @@
 package controllers;
 
+import static play.data.Form.form;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -11,11 +13,12 @@ import models.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.objectify.deadbolt.java.actions.SubjectPresent;
+import be.objectify.deadbolt.java.utils.PluginUtils;
+
 import play.data.Form;
-import static play.data.Form.form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
 import utils.ImageUtil;
 import utils.MountainComparator;
 
@@ -33,22 +36,25 @@ public class AscentController extends Controller {
 		return ok(views.html.ascent.render(AscentEntity.findTripReport(id)));
 	}
 
+	@SubjectPresent
 	public static Result showForm() {
 		return ok(views.html.logascent.render(ascentForm, sortedMountains));
 	}
 
+	@SubjectPresent
 	public static Result editForm(Long id) {
 		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), sortedMountains));
 
 	}
 
-	public static Result submit() {
+	@SubjectPresent
+	public static Result submit() throws Exception {
 
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
 
 		if (!filledForm.hasErrors()) {
 			AscentEntity ascent = filledForm.get();
-			ascent.climber = UserEntity.find(Long.parseLong(Application.session().get("userId")));
+			ascent.climber = (UserEntity) PluginUtils.getDeadboltHandler().getSubject(Controller.ctx());
 			ascent.ascentDetails = (List<AscentDetailEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class);
 			ascent.save();
 
