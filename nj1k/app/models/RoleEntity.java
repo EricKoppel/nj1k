@@ -11,9 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.db.ebean.Model;
+import be.objectify.deadbolt.core.models.Role;
 
 @Entity
-public class RoleEntity extends Model {
+public class RoleEntity extends Model implements Role {
 
 	public static final String USER = "user";
 	public static final String ADMIN = "admin";
@@ -73,5 +74,10 @@ public class RoleEntity extends Model {
 		} else if (!roleName.equals(other.roleName))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String getName() {
+		return roleName;
 	}
 }

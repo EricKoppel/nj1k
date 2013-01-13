@@ -1,4 +1,4 @@
-package security.realm;
+package security.shiro.realm;
 
 import java.util.HashSet;
 import java.util.Set;

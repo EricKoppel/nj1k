@@ -1,21 +1,22 @@
-@import org.apache.shiro.play.templates.html._
-@import org.apache.shiro.play.templates.SecurityUtil._
-
+@import be.objectify.deadbolt.java.utils.PluginUtils
+@import be.objectify.deadbolt.java.utils.RequestUtils
+@import be.objectify.deadbolt.java.views.html._
+@import be.objectify.deadbolt.core.utils.TemplateUtils._
     <ul>
-    	@requiresUser {
-    	<li>@Messages("welcome", subject.getPrincipal())</li>
+    	@subjectPresent() {
+    	<li>@Messages("welcome", RequestUtils.getSubject(PluginUtils.getDeadboltHandler(), Http.Context.current()))</li>
     	}
     	<li><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
-    	@requiresRoles(Seq("admin") : _*) {
+    	@restrict(la(as("foo"))) {
     	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
     	}
     	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
     	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
-    	@requiresGuest {
+    	@subjectNotPresent() {
     	<li><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
-    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
     	}
-    	@requiresUser {
+    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
+    	@subjectPresent() {
     	<li><a href="@routes.AscentController.showForm()">@Messages("ascent.log")</a></li>
     	<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
     	}

@@ -1,4 +1,4 @@
-package security.authentication;
+package security.shiro.authentication;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class NJ1KCredentialsMatcher extends HashedCredentialsMatcher {
 
 	private static final Logger logger = LoggerFactory.getLogger(NJ1KCredentialsMatcher.class);
+	public static final int SHA_ITERATIONS = 1024;
 	
 	private HashedCredentialsMatcher getCredentialsMatcher(AuthenticationInfo info) {
 		
@@ -21,8 +22,8 @@ public class NJ1KCredentialsMatcher extends HashedCredentialsMatcher {
 			SaltedAuthenticationInfo saltedInfo = (SaltedAuthenticationInfo) info;
 			
 			if (saltedInfo.getCredentialsSalt() != null) {
-				matcher.setHashIterations(this.getHashIterations());
 				matcher.setHashAlgorithmName(Sha256Hash.ALGORITHM_NAME);
+				matcher.setHashIterations(SHA_ITERATIONS);
 			}
 			else {
 				matcher.setHashAlgorithmName(Md5Hash.ALGORITHM_NAME);

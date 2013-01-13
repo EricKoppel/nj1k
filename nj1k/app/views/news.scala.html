@@ -1,16 +1,12 @@
 @(news: NewsEntity)
 
 @import views.RenderUtil
-@import org.apache.shiro.play.templates.html._
-@import org.apache.shiro.play.templates.SecurityUtil._
 
 @main() {
     
 	<h1>@news.title</h1>
    
-   @requiresRoles(Seq("admin") : _*) {
 	<h2><a href=@routes.NewsController.editForm(news.id)>@Messages("news.edit")</a></h2>
-   }
 	<div>
    	@RenderUtil.unescape(news.entry)
 	</div>

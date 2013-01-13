@@ -3,11 +3,6 @@ import java.sql.Timestamp;
 
 import models.MountainEntity;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.config.Ini;
-import org.apache.shiro.config.IniSecurityManagerFactory;
-import org.apache.shiro.play.bind.ShiroBinderAction;
-import org.apache.shiro.util.Factory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,21 +22,10 @@ public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		super.onStart(app);
 
-		registerShiroIni(app);
 		registerDateConverter(app);
 		registerMountainConverter(app);
 	}
 
-	private void registerShiroIni(Application app) {
-
-		Ini ini = new Ini();
-		ini.loadFromPath("conf/shiro.ini");
-
-		Factory<org.apache.shiro.mgt.SecurityManager> factory = new IniSecurityManagerFactory(ini);
-		org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
-		
-		SecurityUtils.setSecurityManager(securityManager);
-	}
 
 	private void registerDateConverter(final Application app) {
 

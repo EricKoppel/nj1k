@@ -1,19 +1,18 @@
 package controllers;
 
+import static play.data.Form.form;
+
 import java.nio.charset.CharacterCodingException;
 import java.security.NoSuchAlgorithmException;
 
 import models.UserEntity;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.play.bind.ShiroBinderAction;
-import org.apache.shiro.subject.Subject;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +21,13 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
+import security.deadbolt.NJ1KDeadboltHandler;
+import security.shiro.authentication.NJ1KCredentialsMatcher;
+import security.shiro.realm.NJ1KAuthenticatingRealm;
 import utils.PasswordUtil;
+import be.objectify.deadbolt.core.models.Subject;
+import be.objectify.deadbolt.java.utils.PluginUtils;
 
-@With(ShiroBinderAction.class)
 public class SignInController extends Controller {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SignInController.class);
@@ -36,8 +38,8 @@ public class SignInController extends Controller {
     }
     
     public static Result logout() {
-    	SecurityUtils.getSubject().logout();
     	
+    	ctx().session().remove(NJ1KDeadboltHandler.USER_ID_KEY);
     	return redirect(routes.Application.index());
     }
     
@@ -46,27 +48,37 @@ public class SignInController extends Controller {
 
 		String email = filledForm.get().email;
 		String password = filledForm.get().password;
-		Subject currentUser = SecurityUtils.getSubject();
-		
-		UsernamePasswordToken token = new UsernamePasswordToken(email, password);
-		
+
 		try {
-			currentUser.login(token);
-			upgradePassword(currentUser, password);
+			login(email, password.toCharArray());
+			upgradePassword(PluginUtils.getDeadboltHandler().getSubject(Controller.ctx()), password);
 			logger.debug("User fully authenticated. Redirecting ..................................................");
 		}
 		catch(AuthenticationException e) {
 			filledForm.reject(Messages.get("validation.login.invalid"));
 			return badRequest(views.html.login.render(filledForm));
+		} catch (Exception e) {
+			logger.error("Deadbolt exception", e);
 		}
-
 		
 		return redirect(routes.Application.index());
+
+	}
+	
+	private static void login(String username, char[] password) throws AuthenticationException {
+		
+		AuthorizingRealm realm = new NJ1KAuthenticatingRealm();
+		realm.setCredentialsMatcher(new NJ1KCredentialsMatcher());
+		
+		AuthenticationToken token = new UsernamePasswordToken(username, password);
+		AuthenticationInfo authenticationInfo = realm.getAuthenticationInfo(token);
+		
+		session().put(NJ1KDeadboltHandler.USER_ID_KEY, authenticationInfo.getPrincipals().getPrimaryPrincipal().toString());
 	}
 	
 	private static void upgradePassword(Subject subject, String password) {
-		if (subject.isAuthenticated()) {
-			String email = subject.getPrincipals().getPrimaryPrincipal().toString();
+		if (subject != null) {
+			String email = subject.getIdentifier();
 			
 			UserEntity user = UserEntity.findByEmail(email);
 			
