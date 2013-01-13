@@ -15,9 +15,12 @@ import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 import validators.MemberEmail;
+import be.objectify.deadbolt.core.models.Permission;
+import be.objectify.deadbolt.core.models.Role;
+import be.objectify.deadbolt.core.models.Subject;
 
 @Entity
-public class UserEntity extends Model {
+public class UserEntity extends Model implements Subject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,5 +74,20 @@ public class UserEntity extends Model {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return email;
+	}
+
+	@Override
+	public List<? extends Permission> getPermissions() {
+		return permissions;
+	}
+
+	@Override
+	public List<? extends Role> getRoles() {
+		return roles;
 	}
 }

@@ -8,11 +8,12 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
+import security.shiro.authentication.NJ1KCredentialsMatcher;
+
 public class PasswordUtil {
 
 	private static final String VOCABULARY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	private static final int PASSWORD_LEN = 12;
-	private static final int ITERATIONS = 1024;
 	
 	public static char[] generateRandomPassword() {
 		
@@ -31,6 +32,6 @@ public class PasswordUtil {
 	}
 	
 	public static SimpleHash generateHash(String password, ByteSource salt) {
-		return new Sha256Hash(password, salt, ITERATIONS);
+		return new Sha256Hash(password, salt, NJ1KCredentialsMatcher.SHA_ITERATIONS);
 	}
 }

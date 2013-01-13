@@ -6,18 +6,15 @@ import models.NewsEntity;
 import models.NewsImageEntity;
 import models.RoleEntity;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.play.bind.ShiroBinderAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.data.Form;
+import static play.data.Form.form;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
 import utils.ImageUtil;
 
-@With(ShiroBinderAction.class)
 public class NewsController extends Controller {
 	
 	private final static Form<NewsEntity> newsForm = form(NewsEntity.class);
@@ -27,17 +24,14 @@ public class NewsController extends Controller {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
 	
-	@RequiresRoles(value = { RoleEntity.ADMIN })
 	public static Result showForm() {
 		return ok(views.html.createnews.render(newsForm));
 	}
 	
-	@RequiresRoles(value = { RoleEntity.ADMIN })
 	public static Result editForm(Long id) {
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
 	
-	@RequiresRoles(value = { RoleEntity.ADMIN })
 	public static Result submit() {
 		
 		Form<NewsEntity> filledForm = newsForm.bindFromRequest();

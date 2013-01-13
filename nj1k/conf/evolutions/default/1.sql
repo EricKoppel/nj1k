@@ -133,28 +133,28 @@ alter table ascent_entity add constraint fk_ascent_entity_climber_2 foreign key 
 create index ix_ascent_entity_climber_2 on ascent_entity (climber_id);
 alter table ascent_entity add constraint fk_ascent_entity_mountain_3 foreign key (mountain_id) references mountain_entity (id) on delete restrict on update restrict;
 create index ix_ascent_entity_mountain_3 on ascent_entity (mountain_id);
-alter table mountain_view_entity add constraint fk_mountain_view_entity_mounta_4 foreign key (mountain_id) references mountain_entity (id) on delete restrict on update restrict;
-create index ix_mountain_view_entity_mounta_4 on mountain_view_entity (mountain_id);
+alter table mountain_view_entity add constraint fk_mountain_view_entity_mountain_4 foreign key (mountain_id) references mountain_entity (id) on delete restrict on update restrict;
+create index ix_mountain_view_entity_mountain_4 on mountain_view_entity (mountain_id);
 alter table news_image_entity add constraint fk_news_image_entity_news_5 foreign key (news_id) references news_entity (id) on delete restrict on update restrict;
 create index ix_news_image_entity_news_5 on news_image_entity (news_id);
 
 
 
-alter table maps_entity_mountain_entity add constraint fk_maps_entity_mountain_entit_01 foreign key (maps_entity_id) references maps_entity (id) on delete restrict on update restrict;
+alter table maps_entity_mountain_entity add constraint fk_maps_entity_mountain_entity_maps_entity_01 foreign key (maps_entity_id) references maps_entity (id) on delete restrict on update restrict;
 
-alter table maps_entity_mountain_entity add constraint fk_maps_entity_mountain_entit_02 foreign key (mountain_entity_id) references mountain_entity (id) on delete restrict on update restrict;
+alter table maps_entity_mountain_entity add constraint fk_maps_entity_mountain_entity_mountain_entity_02 foreign key (mountain_entity_id) references mountain_entity (id) on delete restrict on update restrict;
 
-alter table mountain_entity_maps_entity add constraint fk_mountain_entity_maps_entit_01 foreign key (mountain_entity_id) references mountain_entity (id) on delete restrict on update restrict;
+alter table mountain_entity_maps_entity add constraint fk_mountain_entity_maps_entity_mountain_entity_01 foreign key (mountain_entity_id) references mountain_entity (id) on delete restrict on update restrict;
 
-alter table mountain_entity_maps_entity add constraint fk_mountain_entity_maps_entit_02 foreign key (maps_entity_id) references maps_entity (id) on delete restrict on update restrict;
+alter table mountain_entity_maps_entity add constraint fk_mountain_entity_maps_entity_maps_entity_02 foreign key (maps_entity_id) references maps_entity (id) on delete restrict on update restrict;
 
 alter table users_roles add constraint fk_users_roles_user_entity_01 foreign key (user_id) references user_entity (id) on delete restrict on update restrict;
 
 alter table users_roles add constraint fk_users_roles_role_entity_02 foreign key (role_id) references role_entity (id) on delete restrict on update restrict;
 
-alter table user_entity_permission_entity add constraint fk_user_entity_permission_ent_01 foreign key (user_entity_id) references user_entity (id) on delete restrict on update restrict;
+alter table user_entity_permission_entity add constraint fk_user_entity_permission_entity_user_entity_01 foreign key (user_entity_id) references user_entity (id) on delete restrict on update restrict;
 
-alter table user_entity_permission_entity add constraint fk_user_entity_permission_ent_02 foreign key (permission_entity_id) references permission_entity (id) on delete restrict on update restrict;
+alter table user_entity_permission_entity add constraint fk_user_entity_permission_entity_permission_entity_02 foreign key (permission_entity_id) references permission_entity (id) on delete restrict on update restrict;
 
 # --- !Downs
 

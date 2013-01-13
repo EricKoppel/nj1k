@@ -6,15 +6,11 @@ import java.security.NoSuchAlgorithmException;
 import models.RegisteringUser;
 import models.UserEntity;
 
-import org.apache.shiro.crypto.RandomNumberGenerator;
-import org.apache.shiro.crypto.SecureRandomNumberGenerator;
-import org.apache.shiro.crypto.hash.Sha256Hash;
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.data.Form;
+import static play.data.Form.form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.PasswordUtil;
@@ -29,31 +25,33 @@ public class RegistrationController extends Controller {
     }
     
 	public static Result submit() throws NoSuchAlgorithmException, CharacterCodingException {
-		Form<RegisteringUser> filledForm = registrationForm.bindFromRequest();
-
-		if (!filledForm.hasErrors()) {
-			RegisteringUser userToRegister = filledForm.get();
-			
-			UserEntity userToSave = new UserEntity();
-			ByteSource salt = PasswordUtil.generateSalt();
-			SimpleHash hashedPassword = PasswordUtil.generateHash(userToRegister.getPassword(), salt);
-			
-			userToRegister.setPassword(hashedPassword.toBase64());
-			userToRegister.setSalt(salt.toBase64());
-			
-			logger.debug("Registering user {}", userToRegister);
-			
-			doMapping(userToSave, userToRegister);
-			
-			userToSave.save();
-			
-			return redirect(routes.SignInController.showForm());
-		}
-		else {
-			logger.debug("Registration form contained errors: {}", filledForm.errors().toString());
-			
-			return badRequest(views.html.register.render(filledForm));
-		}
+//		Form<RegisteringUser> filledForm = registrationForm.bindFromRequest();
+//
+//		if (!filledForm.hasErrors()) {
+//			RegisteringUser userToRegister = filledForm.get();
+//			
+//			UserEntity userToSave = new UserEntity();
+//			ByteSource salt = PasswordUtil.generateSalt();
+//			SimpleHash hashedPassword = PasswordUtil.generateHash(userToRegister.getPassword(), salt);
+//			
+//			userToRegister.setPassword(hashedPassword.toBase64());
+//			userToRegister.setSalt(salt.toBase64());
+//			
+//			logger.debug("Registering user {}", userToRegister);
+//			
+//			doMapping(userToSave, userToRegister);
+//			
+//			userToSave.save();
+//			
+//			return redirect(routes.SignInController.showForm());
+//		}
+//		else {
+//			logger.debug("Registration form contained errors: {}", filledForm.errors().toString());
+//			
+//			return badRequest(views.html.register.render(filledForm));
+//		}
+		
+		return TODO;
 	}
 	
 	private static void doMapping(UserEntity u, RegisteringUser r) {
