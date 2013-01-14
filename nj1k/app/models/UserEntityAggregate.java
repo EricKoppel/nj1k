@@ -20,6 +20,7 @@ public class UserEntityAggregate {
 	public UserEntity user;
 	public Integer total;
 	public Integer unique_successful;
+
 	@OneToOne
 	public AscentEntity most_recent;
 	
@@ -34,6 +35,19 @@ public class UserEntityAggregate {
 			"JOIN ascent_entity q ON l.ascent_id=q.id " +
 			"JOIN user_entity u ON u.id=a.climber_id";
 
+	public static UserEntityAggregate find(Long id) {
+		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a.climber_id", "user.id").columnMapping("total", "total").
+				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create();
+		
+		Query<UserEntityAggregate> users = Ebean.find(UserEntityAggregate.class).setRawSql(sql);
+		users.fetch("most_recent", "*", new FetchConfig().query());
+		users.fetch("most_recent.mountain", "*");
+		users.fetch("most_recent.climber", "*");
+		users.where().eq("u.id", id);
+		
+		return users.findUnique();
+	}
+	
 	public static List<UserEntityAggregate> findAll() {
 		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a.climber_id", "user.id").columnMapping("total", "total").
 				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create();
@@ -44,5 +58,9 @@ public class UserEntityAggregate {
 		users.fetch("most_recent.climber", "*");
 		
 		return users.findList();
+	}
+	
+	public Float percentComplete() {
+		return (float) unique_successful / MountainEntity.listSize();
 	}
 }

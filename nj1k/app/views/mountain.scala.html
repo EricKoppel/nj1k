@@ -14,7 +14,7 @@
 		$(function() {
 			
 			var AppView = Backbone.View.extend({
-				el: 'div#radiusSearch',
+				el: '#radiusSearch',
 				mapView: null,
 			
 				initialize: function() {
@@ -41,58 +41,69 @@
 		});
 	</script>
 
-	<h1>@mountain.name</h1>
-    
-    <div id="mountain_description">
-    	@RenderUtil.unescape(mountain.description)
+	<div class="page-header">
+		<h3>@mountain.name</h3>
     </div>
+    <div class="row-fluid">
+    
+    	<div class="span4">
+			<table id="mountain_info" class="table">
+				<tr>
+					<td>@Messages("mountain.elevation")</td>
+					<td>@mountain.elevation</td>
+				</tr>
+				<tr>
+					<td>@Messages("mountain.decimal_degrees")</td>
+					<td>@mountain.latitude, @mountain.longitude</td>
+				</tr>
+				<tr>
+					<td>@Messages("mountain.county")</td>
+					<td>@mountain.county</td>
+				</tr>		
+				<tr>	
+					<td>@Messages("mountain.ownership")</td>
+					<td>@mountain.ownership</td>
+				</tr>
+				<tr>	
+					<td>@Messages("mountain.owner")</td>
+					<td>@mountain.owner</td>
+				</tr>
+				<tr>
+					<td>@Messages("mountain.topo")</td>
+					<td><a href="http://mapper.acme.com/?t=T&z=15&ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+				</tr>
+				<tr>
+					<td>@Messages("mountain.nhn")</td>
+					<td><a href="@routes.MountainsController.showMountain(nhn.id)">@nhn.name</a></td>
+				</tr>
+			</table>
+		</div>
 	
-	<div id="mountain_info" class="table">
-		<div class="tableRow">
-			<div class="tableCell">@Messages("mountain.elevation")</div>
-			<div class="tableCell">@mountain.elevation</div>
-		</div>
-		<div class="tableRow">
-			<div class="tableCell">@Messages("mountain.decimal_degrees")</div>
-			<div class="tableCell">@mountain.latitude, @mountain.longitude</div>
-		</div>
-		<div class="tableRow">
-			<div class="tableCell">@Messages("mountain.county")</div>
-			<div class="tableCell">@mountain.county</div>
-		</div>		
-		<div class="tableRow">		
-			<div class="tableCell">@Messages("mountain.ownership")</div>
-			<div class="tableCell">@mountain.ownership</div>
-		</div>
-		<div class="tableRow">	
-			<div class="tableCell">@Messages("mountain.owner")</div>
-			<div class="tableCell">@mountain.owner</div>
-		</div>
-		<div class="tableRow">	
-			<div class="tableCell">@Messages("mountain.topo")</div>
-			<div class="tableCell"><a href="http://mapper.acme.com/?t=T&z=15&ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></div>
-		</div>
-		<div class="tableRow">	
-			<div class="tableCell">@Messages("mountain.nhn")</div>
-			<div class="tableCell"><a href="@routes.MountainsController.showMountain(nhn.id)">@nhn.name</a></div>
-		</div>
-	</div>
+	    <div id="mountain_description" class="span8">
+	    	@RenderUtil.unescape(mountain.description)
+	    </div>
 
-	<h2>@Messages("mountain.others", mountain.name)</h2>
-	<div class="table">
-	@for(a <- ascents) {
-		<div class="tableRow">
-			<div class="tableCell"><a href="@routes.AscentController.showTripReport(a.id)">@views.RenderUtil.formatAscentDate(a.ascent_date)</a></div>
-			<div class="tableCell"><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></div>
-		</div>
-	}
 	</div>
 	
-	<h2>@Messages("radius.title", mountain.name)</h2>
-	<div id="radiusSearch" class="table">
-		<div class="tableRow">
+	<h4>@Messages("mountain.others", mountain.name)</h4>
+	
+	<div class="row-fluid">
+		<div class="span4">
+			<table class="table table-striped">
+			@for(a <- ascents) {
+				<tr>
+					<td><a href="@routes.AscentController.showTripReport(a.id)">@views.RenderUtil.formatAscentDate(a.ascent_date)</a></td>
+					<td><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></td>
+				</tr>
+			}
+			</table>
 		</div>
 	</div>
+	<h2>@Messages("radius.title", mountain.name)</h2>
+	<table id="radiusSearch" class="table">
+		<tr>
+		</tr>
+	</table>
 	
 	<div id="map_canvas"></div>
 }

@@ -37,6 +37,13 @@ public class NewsEntity extends Model {
 		return find.all();
 	}
 	
+	public static Integer findNumberOfPages(Integer pageSize) {
+		return find.findPagingList(pageSize).getTotalPageCount();
+	}
+	public static List<NewsEntity> findByPage(Integer page, Integer pageSize) {
+		return find.select("id,news_date,title").orderBy().desc("news_date").findPagingList(pageSize).getPage(page).getList();
+	}
+	
 	public static NewsEntity find(Long id) {
 		return find.byId(id);
 	}

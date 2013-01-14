@@ -1,8 +1,13 @@
 var MountainDistanceView = Backbone.View.extend({
-	el: '<div class="tableRow"></div>',
+	el: '<tr></tr>',
 	render: function() {
-		this.$el.append('<div class="tableCell">' + this.model.get("m2").get("name") + '</div>');
-		this.$el.append('<div class="tableCell">' + this.model.get("distanceAsMiles") + '</div>');
+		
+		var href = this.model.get("m2").get("id");
+		var name = this.model.get("m2").get("name");
+		var distance = this.model.get("distanceAsMiles");
+		
+		this.$el.append('<td><a href="' + href + '">' + name + '</a></td>');
+		this.$el.append('<td>' + distance + '</td>');
 		return this;
 	}
 });
