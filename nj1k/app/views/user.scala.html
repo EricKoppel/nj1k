@@ -1,16 +1,35 @@
-@(user: UserEntity, ascents: List[AscentEntity])
+@(user: UserEntityAggregate, ascents: List[AscentEntity])
 @import java.text.SimpleDateFormat
-@import views.RenderUtil
+@import views.RenderUtil._
 
 @main() {
-    <h1>@user.name</h1>
-    <div>@RenderUtil.unescape(user.aboutme)</div>
-    <div class="table">
-    @for(a <- ascents) {
-		<div class="tableRow">
-			<div class="tableCell">@{new SimpleDateFormat("MM/dd/yyyy").format(a.ascent_date)}</div>
-			<div class="tableCell"><a href="@routes.AscentController.showTripReport(a.id)">@a.mountain.name</a></div>
-		</div>
-    }
+    <div class="page-header">
+    	<h3>@user.user.name</h3>
     </div>
+    
+    <div class="row-fluid">
+	    <div class="span4">
+	    	<table class="table">
+	    		<tr><td>@Messages("user.totalclimbs")</td><td>@user.total</td></tr>
+	    		<tr><td>@Messages("user.uniquesuccess")</td><td>@user.unique_successful</td></tr>
+	    		<tr><td>@Messages("user.percentcomplete")</td><td>@formatPercent(user.percentComplete)</td></tr>
+	    	</table>
+	    </div>
+    
+	    <div class="span8">@unescape(user.user.aboutme)</div>
+	</div>
+	<div class="row-fluid">
+	
+		<div class="span4">
+			<h4>@Messages("ascent.climb.list", user.user.name)</h4>
+		    <table class="table table-striped">
+		    @for(a <- ascents) {
+				<tr>
+					<td><a href="@routes.AscentController.showTripReport(a.id)">@{new SimpleDateFormat("MM/dd/yyyy").format(a.ascent_date)}</a></td>
+					<td><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></td>
+				</tr>
+		    }
+		    </table>
+		</div>
+	</div>
 }

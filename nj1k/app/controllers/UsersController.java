@@ -28,7 +28,7 @@ public class UsersController extends Controller {
 	}
 	
 	public static Result showUser(Long id) {
-		return ok(views.html.user.render(UserEntity.findCompleteUser(id), AscentEntity.findByUserId(id)));
+		return ok(views.html.user.render(UserEntityAggregate.find(id), AscentEntity.findByUserId(id)));
 	}
 	
 	public static Result resetPasswordForm() {

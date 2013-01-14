@@ -9,33 +9,36 @@
 		    Galleria.run('#galleria');
 		})
 	</script>
+	<div class="page-header">
+		<h3>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h3>
+	</div>
+	<h6><a href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></h6>
 	
-	<h1>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h1>
-	<h2><a href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></h2>
-	
-	<div class="table">
-		<div class="tableRow">
-			<div class="tableCell">@Messages("ascent.summit")</div>
-			<div class="tableCell"><a href="@routes.MountainsController.showMountain(ascent.mountain.id)">@ascent.mountain.name</a></div>
+	<div class="row-fluid">
+		<div class="span4">
+			<table class="table">
+				<tr>
+					<td>@Messages("ascent.summit")</td>
+					<td><a href="@routes.MountainsController.showMountain(ascent.mountain.id)">@ascent.mountain.name</a></td>
+				</tr>
+				<tr>
+					<td>@Messages("ascent.climber")</td>
+					<td><a href="@routes.UsersController.showUser(ascent.climber.id)">@ascent.climber.name</a></td>
+				</tr>
+				<tr>
+					<td>@Messages("ascent.date")</td>
+					<td>@views.RenderUtil.formatAscentDate(ascent.ascent_date)</td>
+				</tr>
+				<tr>
+					<td>@Messages("ascent.successful")</td>
+					<td>@views.RenderUtil.renderBoolean(ascent.successful)</td>
+				</tr>
+			</table>
 		</div>
-		<div class="tableRow">
-			<div class="tableCell">@Messages("ascent.climber")</div>
-			<div class="tableCell"><a href="@routes.UsersController.showUser(ascent.climber.id)">@ascent.climber.name</a></div>
-		</div>
-		<div class="tableRow">
-			<div class="tableCell">@Messages("ascent.date")</div>
-			<div class="tableCell">@views.RenderUtil.formatAscentDate(ascent.ascent_date)</div>
-		</div>
-		<div class="tableRow">
-			<div class="tableCell">@Messages("ascent.successful")</div>
-			<div class="tableCell">@views.RenderUtil.renderBoolean(ascent.successful)</div>
+		<div class="span8">
+			@RenderUtil.unescape(ascent.trip_report)
 		</div>
 	</div>
-
-	<div>
-		@RenderUtil.unescape(ascent.trip_report)
-	</div>
-	
 	@if(!ascent.ascentDetails.isEmpty()) {
 		<div id="galleria">
 			@for(detail <- ascent.ascentDetails) {
