@@ -1,13 +1,18 @@
 @(news: NewsEntity)
 
-@import views.RenderUtil
-
 @main() {
-    
-	<h1>@news.title</h1>
-   
-	<h2><a href=@routes.NewsController.editForm(news.id)>@Messages("news.edit")</a></h2>
-	<div>
-   	@RenderUtil.unescape(news.entry)
+    <div class="page-header">
+		<h3>@news.title</h3>
+	</div>
+
+	<div class=row-fluid>
+		<div class="span8">
+			<a href=@routes.NewsController.editForm(news.id)><small>@Messages("news.edit")</small></a>
+		</div>
+	</div>
+	<div class=row-fluid>
+   		<div class="span12">
+   			<p>@Html(news.entry)</p>
+   		</div>
 	</div>
 }

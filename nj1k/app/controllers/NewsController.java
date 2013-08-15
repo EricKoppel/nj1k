@@ -6,16 +6,10 @@ import java.util.List;
 
 import models.NewsEntity;
 import models.NewsImageEntity;
-import models.RoleEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import flexjson.JSONSerializer;
-
-import be.objectify.deadbolt.java.actions.Restrict;
-
-import play.Configuration;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -30,25 +24,14 @@ public class NewsController extends Controller {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
 	
-	public static Result showNewsByPage(Integer page) {
-		
-		JSONSerializer serializer = new JSONSerializer();
-		serializer.include("id","news_date","title");
-		serializer.exclude("*");
-		return ok(serializer.serialize(NewsEntity.findByPage(page, Configuration.root().getInt("news.pagesize"))));
-	}
-	
-	@Restrict(RoleEntity.ADMIN)
 	public static Result showForm() {
 		return ok(views.html.createnews.render(newsForm));
 	}
 	
-	@Restrict(RoleEntity.ADMIN)
 	public static Result editForm(Long id) {
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
 	
-	@Restrict(RoleEntity.ADMIN)
 	public static Result submit() {
 		
 		Form<NewsEntity> filledForm = newsForm.bindFromRequest();

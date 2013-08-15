@@ -13,14 +13,11 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import be.objectify.deadbolt.java.actions.SubjectNotPresent;
-
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.PasswordUtil;
 
-@SubjectNotPresent
 public class RegistrationController extends Controller {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);

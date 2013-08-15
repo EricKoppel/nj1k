@@ -16,13 +16,10 @@ object ApplicationBuild extends Build {
       "commons-codec" % "commons-codec" % "1.4",
       "org.reflections" % "reflections" % "0.9.8",
       "com.typesafe" %% "play-plugins-mailer" % "2.1-RC2",
-      "be.objectify" %% "deadbolt-java" % "2.0-SNAPSHOT",
       "org.apache.shiro" % "shiro-core" % "1.2.1" withSources() withJavadoc()
     )
         
     val main = play.Project(appName, appVersion, appDependencies).settings(
-    		resolvers += "Slf4j Repository" at "http://repo2.maven.org/maven2/org/slf4j/",
-    		resolvers += Resolver.url("Objectify Play Repository", url("http://schaloner.github.com/releases/"))(Resolver.ivyStylePatterns),
-    		resolvers += Resolver.url("Objectify Play Snapshot Repository", url("http://schaloner.github.com/snapshots/"))(Resolver.ivyStylePatterns)
+    		resolvers += "Slf4j Repository" at "http://repo2.maven.org/maven2/org/slf4j/"
     )
 }

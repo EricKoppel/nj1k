@@ -27,7 +27,7 @@ ascent.log=Log ascent
 ascent.report=Trip report
 ascent.pics=Upload pictures
 ascent.edit=Modify ascent
-ascent.climb.list={0}'s climb list
+ascent.climb.list=Climb list
 
 user.totalclimbs=Total climbs
 user.uniquesuccess=Distinct summits attained
@@ -35,7 +35,7 @@ user.percentcomplete=Percent complete
 news.title=Headline
 news.entry=Story
 news.pics=Upload pictures
-news.edit=Edit news
+news.edit=Edit article
 news.date=Date
 
 radius.title=Mountains nearest to {0}

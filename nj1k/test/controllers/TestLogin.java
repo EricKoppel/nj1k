@@ -55,7 +55,6 @@ public class TestLogin {
 				Assert.assertEquals(Status.OK, Helpers.status(result));
 				break;
 			}
-			result = result.getWrappedResult();
 		}
 		Assert.assertEquals(Status.OK, Helpers.status(result));
 
