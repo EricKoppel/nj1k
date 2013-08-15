@@ -10,10 +10,11 @@ dd.error {color: red}
 }
 
 body {
-	background: #A9C2D5;
-	background: -webkit-gradient(linear, left top, left bottom, from(#A9C2D5), to(#DCDEE0));
-	background: -moz-linear-gradient(top,  #A9C2D5,  #DCDEE0);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A9C2D5', endColorstr='#DCDEE0');
+	/*	background: #A9C2D5;
+		background: -webkit-gradient(linear, left top, left bottom, from(#A9C2D5), to(#DCDEE0));
+		background: -moz-linear-gradient(top,  #A9C2D5,  #DCDEE0);
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A9C2D5', endColorstr='#DCDEE0');
+	*/
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }

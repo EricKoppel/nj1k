@@ -34,14 +34,11 @@ public class NewsEntity extends Model {
 	public List<NewsImageEntity> pictures;
 	
 	public static List<NewsEntity> findAll() {
-		return find.all();
+		return find.orderBy().desc("news_date").findList();
 	}
 	
 	public static Integer findNumberOfPages(Integer pageSize) {
 		return find.findPagingList(pageSize).getTotalPageCount();
-	}
-	public static List<NewsEntity> findByPage(Integer page, Integer pageSize) {
-		return find.select("id,news_date,title").orderBy().desc("news_date").findPagingList(pageSize).getPage(page).getList();
 	}
 	
 	public static NewsEntity find(Long id) {

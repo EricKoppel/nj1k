@@ -1,6 +1,7 @@
 @(ascent: AscentEntity)
 
 @import views.RenderUtil
+@import utils.SecurityUtil._
 
 @main() {
 	<script type="text/javascript">
@@ -12,7 +13,10 @@
 	<div class="page-header">
 		<h3>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h3>
 	</div>
-	<h6><a href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></h6>
+	
+	@if(ownsAscent(ascent.id)) {
+		<h6><a href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></h6>
+	}
 	
 	<div class="row-fluid">
 		<div class="span4">
@@ -36,7 +40,7 @@
 			</table>
 		</div>
 		<div class="span8">
-			@RenderUtil.unescape(ascent.trip_report)
+			@Html(ascent.trip_report)
 		</div>
 	</div>
 	@if(!ascent.ascentDetails.isEmpty()) {

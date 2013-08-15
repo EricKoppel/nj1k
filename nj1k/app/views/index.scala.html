@@ -1,68 +1,18 @@
-@(pages: Int, recentAscents: List[AscentEntity])
+@(news: List[NewsEntity], recentAscents: List[AscentEntity])
 @import java.text.SimpleDateFormat
 
 @main() {
     <script type="text/javascript" src="/routes.js"></script>
-    <script src="@routes.Assets.at("javascripts/models/NewsHeadline.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.at("javascripts/views/NewsHeadlineView.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.at("javascripts/collections/NewsHeadlineModelCollection.js")" type="text/javascript"></script>
-	
-	<script type="text/javascript">
-	
-		$(document).ready(function() {
-			var pager = $("#pager ul");
-			
-			if (@pages > 0) {
-				$(pager).append('<li><a href="#">Prev</a></li>')
-			    
-				for (var i = 0; i < @pages; i++) {
-					$(pager).append('<li><a href="#">' + (i + 1) + '</a></li>');
-				}
-				
-				$(pager).append('<li><a href="#">Next</a></li>')
-			}
-		});
-		$(function() {
-			
-			var AppView = Backbone.View.extend({
-				el: '#newsList',
-				newsView: null,
-			
-				initialize: function() {
-					this.newsView = new NewsHeadlineView({model: new NewsHeadline()}),
-					this.headlines = new NewsHeadlineModelCollection();
-					this.headlines.collectionId = 0;
-					this.headlines.bind('add', this.addOne, this);
-					this.headlines.fetch({add: true});
-					this.render = _.wrap(this.render, function(render) { 
-					      _this.beforeRender(); 
-					      render(); 
-					      _this.afterRender(); 
-					      return _this; 
-					}); 
-				}, 
-					  
-				beforeRender: function() { 
-				    console.log('beforeRender'); 
-				}, 
-				  
-				render: function() {
-				    return this; 
-				}, 
-				  
-				afterRender: function() {
-					$("#newsList").tablesorter( {sortList: [[0,1]]} );
-				},
-				
-				addOne: function(m) {
-					var newsHeadlineView = new NewsHeadlineView({model: m});
-					this.$el.append(newsHeadlineView.render().$el);
-				}
-			});
-			
-			var App = new AppView();
-		});
-	</script>
+
+    
+    <script type="text/javascript">
+    	$(document).ready(function() {
+    	  $('#newsList').tableNav({
+    		    itemsPerPage: 10
+    	  });
+    	});
+    </script>
+    
 	<div class="page-header">
 		<h3>@Messages("welcome.header")</h3>
 	</div>
@@ -77,10 +27,14 @@
 						<th>@Messages("news.title")</th>
 					</tr>
 				</thead>
-				<tbody>
-				</tbody>
+				@for(n <- news) {
+					<tr>
+						<td>@{new SimpleDateFormat("MM/dd/yyyy").format(n.news_date)}</td>
+						<td><a href="@routes.NewsController.showNews(n.id)">@n.title</a></td>
+					</tr>
+				}
 			</table>
-		    <div id="pager" class="pagination pagination-centered">
+		    <div class="pagination pagination-centered">
 			    <ul>
 			    </ul>
 			</div>
@@ -89,7 +43,7 @@
 	<div class="row-fluid">
 		<div class="span6">
 			<h4>@Messages("most.recent.climbs")</h4>
-			<table class="table table-striped">
+			<table class="table table-striped table-condensed">
 			<thead>
 				<tr>
 					<th>@Messages("ascent.date")</th>

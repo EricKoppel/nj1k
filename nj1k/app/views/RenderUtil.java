@@ -33,14 +33,14 @@ public class RenderUtil {
 		return b ? Messages.get("true"): Messages.get("false");
 	}
 	
-	public static Html unescape(String html) {
-		
-		logger.trace("After: \n{}", html);
-
-		html = Jsoup.clean(html, Whitelist.basic());
-		
-		logger.trace("After: \n{}", html);
-		
-		return new Html(html);
-	}
+//	public static Html unescape(String html) {
+//		
+//		logger.trace("After: \n{}", html);
+//
+//		html = Jsoup.clean(html, Whitelist.basic());
+//		
+//		logger.trace("After: \n{}", html);
+//		
+//		return new Html(html);
+//	}
 }

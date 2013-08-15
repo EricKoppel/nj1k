@@ -1,27 +1,23 @@
-@import be.objectify.deadbolt.java.utils.PluginUtils
-@import be.objectify.deadbolt.java.utils.RequestUtils
-@import be.objectify.deadbolt.java.views.html._
-@import be.objectify.deadbolt.core.utils.TemplateUtils._
-
-			    <ul class="nav">
-			    	@subjectPresent() {
-			    	<li><a class="brand" href="#">@Messages("welcome", RequestUtils.getSubject(PluginUtils.getDeadboltHandler(), Http.Context.current()))</a></li>
-			    	}
-			    	<li><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
-			    	@restrict(la(as("admin"))) {
-			    	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
-			    	}
-			    	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
-			    	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
-			    	@subjectNotPresent() {
-			    	<li><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
-			    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
-			    	}
-			    	@subjectPresent() {
-			    	<li><a href="@routes.AscentController.showForm()">@Messages("ascent.log")</a></li>
-			    	<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
-			    	}
-			@*		<li><a href="@routes.Application.contact()">Contact</a></li>
-			    	<li><a href="@routes.Application.about()">About Us</a></li>
-			    	<li><a href="@routes.Application.links()">@Messages("menu.links")</a></li> *@
-			    </ul>
+@import utils.SecurityUtil._
+    <ul class="nav">
+    	@if(isLoggedIn()) {
+    	<li><a class="brand" href="#">@Messages("welcome", getCurrentUser().name)</a></li>
+    	}
+    	<li><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
+    	@if(hasRole("admin")) {
+    	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
+    	}
+    	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
+    	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
+    	@if(!isLoggedIn()) {
+    	<li><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
+    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
+    	}
+    	@if(isLoggedIn()) {
+    	<li><a href="@routes.AscentController.showForm()">@Messages("ascent.log")</a></li>
+    	<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
+    	}
+		<li><a href="@routes.Application.contact()">Contact</a></li>
+    	<li><a href="@routes.Application.about()">About Us</a></li>
+    	<li><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
+    </ul>

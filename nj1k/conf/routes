@@ -4,6 +4,9 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /contact                    controllers.Application.contact()
+GET     /about                      controllers.Application.about()
+GET     /links                      controllers.Application.links()
 
 GET 	/login						controllers.SignInController.showForm()
 GET 	/logout						controllers.SignInController.logout()
@@ -22,7 +25,6 @@ GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
 
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
-GET		/news/page/:id				controllers.NewsController.showNewsByPage(id: Integer)
 GET		/news						controllers.NewsController.showForm()
 GET		/news/:id/edit				controllers.NewsController.editForm(id: Long)
 POST	/news						controllers.NewsController.submit()
@@ -31,6 +33,7 @@ GET		/ascent						controllers.AscentController.showForm()
 POST	/ascent						controllers.AscentController.submit()
 GET		/ascent/:id					controllers.AscentController.showTripReport(id: Long)
 GET		/ascent/:id/edit			controllers.AscentController.editForm(id: Long)
+PUT		/ascent/:id					controllers.AscentController.updateTripReport(id: Long)
 
 GET		/ascentDetail/:id/image		controllers.AscentDetailController.showImage(id: Long)
 GET		/ascentDetail/:id/caption	controllers.AscentDetailController.showCaption(id: Long)

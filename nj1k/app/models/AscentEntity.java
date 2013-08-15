@@ -65,25 +65,22 @@ public class AscentEntity extends Model {
 		return find.byId(id);
 	}
 	
+	public static AscentEntity findAscentByUserId(Long ascentId, Long userId) {
+		return find.fetch("climber").where().eq("climber_id", userId).eq("id", ascentId).findUnique();
+	}
+	
 	public static List<AscentEntity> findByUserId(Long userId) {
-		List<AscentEntity> ascents = find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).findList();
-		
-		return ascents;
+		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).findList();
 	}
 
 	public static int distinctClimbs(Long userId) {
-		
 		SqlQuery q = Ebean.createSqlQuery(distinctQuery);
-		
 		q.setParameter(1, userId);
-		
 		return q.findUnique().getInteger("ascents");
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id) {
-		List<AscentEntity> ascents = find.fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).findList();
-		
-		return ascents;
+		return find.fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).findList();
 	}
 	
 	public static AscentEntity findTripReport(Long id) {
