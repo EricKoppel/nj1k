@@ -24,6 +24,10 @@ public class MountainsController extends Controller {
 		return ok(serializer.serialize(MountainEntity.findNearestNeighbors(id, howMany)));
 	}
 	
+	public static Result showRadius(Long id) {
+		return ok(views.html.radius.render(MountainEntity.find(id)));
+	}
+	
 	public static Result showDistance(Long id1, Long id2) {
 		JSONSerializer serializer = new JSONSerializer();
 		

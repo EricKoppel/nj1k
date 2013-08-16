@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.cache.Cached;
 import play.db.ebean.Model;
 import utils.FixedSizeTreeSet;
 import utils.MountainDistanceBeanComparator;
@@ -63,6 +64,7 @@ public class MountainEntity extends Model {
 	
 	public static Finder<Long, MountainEntity> find = new Finder<Long, MountainEntity>(Long.class, MountainEntity.class);
 	
+	@Cached(key = "mountains")
 	public static List<MountainEntity> findAll() {
 		return find.where().eq("club_list", true).findList();
 	}

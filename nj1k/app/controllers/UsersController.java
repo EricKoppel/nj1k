@@ -9,15 +9,12 @@ import models.UserEntityAggregate;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
-import play.Play;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.MailUtil;
 import utils.PasswordUtil;
-
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
 
 public class UsersController extends Controller {
 	
@@ -65,10 +62,6 @@ public class UsersController extends Controller {
 	}
 
 	private static void sendResetPassword(String email, String password) {
-		MailerAPI mailer = Play.application().plugin(MailerPlugin.class).email();
-		
-		mailer.addFrom("abc@cfg.com");
-		mailer.addRecipient(email);
-		mailer.send(Messages.get("mail.resetpassword", password));
+		MailUtil.sendMail(email, Messages.get("mail.resetpassword.subject"), Messages.get("mail.resetpassword", password));
 	}
 }
