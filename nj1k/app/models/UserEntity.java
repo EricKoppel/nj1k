@@ -42,6 +42,7 @@ public class UserEntity extends Model {
         inverseJoinColumns=
             @JoinColumn(name="role_id", referencedColumnName="id")
         )
+	
 	public List<RoleEntity> roles;
 	
 	@Lob 

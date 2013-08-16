@@ -4,22 +4,14 @@
 @import utils.SecurityUtil._
 
 @main() {
-	<script type="text/javascript">
-		$(document).ready(function() {
-			Galleria.loadTheme('@routes.Assets.at("javascripts/galleria/themes/classic/galleria.classic.min.js")');
-		    Galleria.run('#galleria');
-		})
-	</script>
+	
 	<div class="page-header">
 		<h3>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h3>
 	</div>
 	
-	@if(ownsAscent(ascent.id)) {
-		<h6><a href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></h6>
-	}
-	
 	<div class="row-fluid">
 		<div class="span4">
+			<h4>@Messages("mountain.stats")</h4>
 			<table class="table">
 				<tr>
 					<td>@Messages("ascent.summit")</td>
@@ -38,16 +30,22 @@
 					<td>@views.RenderUtil.renderBoolean(ascent.successful)</td>
 				</tr>
 			</table>
+			
+			@if(ownsAscent(ascent.id)) {
+				<p><strong><a class="btn btn-small" href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></strong></p>
+			}
 		</div>
 		<div class="span8">
 			@Html(ascent.trip_report)
 		</div>
 	</div>
 	@if(!ascent.ascentDetails.isEmpty()) {
-		<div id="galleria">
+	<div class="row-fluid">
+		<div id="span12">
 			@for(detail <- ascent.ascentDetails) {
-				<img src="@routes.AscentDetailController.showImage(detail.id)">
+				<a href="@routes.AscentDetailController.showImage(detail.id)" target="_blank"><img class="img-rounded" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
 			}
 		</div>
+	</div>
 	}
 }

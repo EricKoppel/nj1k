@@ -52,7 +52,7 @@ var MapView = Backbone.View.extend({
 
 		GEvent.addListener(marker, 'click', function() {
 			var link = document.createElement("a");
-			$(link).attr("href", mountain.get("id"));
+			$(link).attr("href", "../" + mountain.get("id"));
 			$(link).text(mountain.get("name"));
 			marker.openInfoWindow(link);
 		});

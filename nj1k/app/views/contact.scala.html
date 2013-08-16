@@ -1,0 +1,36 @@
+@(contactForm: Form[Contact])
+
+@import helper._
+
+@main() {
+	<fieldset>
+    	<legend>@Messages("contact")</legend>
+	@helper.form(action = routes.Application.submitContact) {
+		@inputText(
+           contactForm("email"),
+           '_label -> Messages("email.address"),
+           '_showConstraints -> false,
+           'class -> "story_title"
+        )
+		@inputText(
+           contactForm("subject"),
+           '_label -> Messages("email.subject"),
+           '_showConstraints -> false,
+           'class -> "story_title"
+        )
+
+        @textarea(
+        	contactForm("message"),
+        	'_label -> Messages("email.message"),
+        	'_showConstraints -> false,
+        	'class -> "story"
+        )
+        
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" class="btn primary" value="@Messages("email.send")">
+            <a href="@routes.Application.submitContact" class="btn">@Messages("cancel")</a>
+        </div>
+	}
+}

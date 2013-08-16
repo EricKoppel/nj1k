@@ -16,13 +16,15 @@
             @inputText(
                 newsForm("title"),
                 '_label -> Messages("news.title"),
-                '_showConstraints -> false
+                '_showConstraints -> false,
+                'class -> "story_title"
             )
 
             @textarea(
             	newsForm("entry"),
             	'_label -> Messages("news.entry"),
-            	'_showConstraints -> false
+            	'_showConstraints -> false,
+            	'class -> "story"
             )
             
    			@inputFile(

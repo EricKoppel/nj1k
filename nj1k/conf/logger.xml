@@ -16,6 +16,7 @@
 	<logger name="validators" level="DEBUG" />
 	<logger name="org.apache.shiro" level="TRACE" />
 	<logger name="security" level="TRACE" />
+	<logger name="utils" level="TRACE" />
 	
 	<root level="ERROR">
 		<appender-ref ref="STDOUT" />

@@ -5,6 +5,7 @@
 # Home page
 GET     /                           controllers.Application.index()
 GET     /contact                    controllers.Application.contact()
+POST    /contact                    controllers.Application.submitContact()
 GET     /about                      controllers.Application.about()
 GET     /links                      controllers.Application.links()
 
@@ -20,6 +21,7 @@ POST	/register					controllers.RegistrationController.submit()
 
 GET		/mountains					controllers.MountainsController.list()
 GET		/mountains/:id				controllers.MountainsController.showMountain(id: Long)
+GET		/mountains/:id/radius		controllers.MountainsController.showRadius(id: Long)
 
 GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
@@ -35,7 +37,8 @@ GET		/ascent/:id					controllers.AscentController.showTripReport(id: Long)
 GET		/ascent/:id/edit			controllers.AscentController.editForm(id: Long)
 PUT		/ascent/:id					controllers.AscentController.updateTripReport(id: Long)
 
-GET		/ascentDetail/:id/image		controllers.AscentDetailController.showImage(id: Long)
+GET		/ascentDetail/:id/image		controllers.AscentDetailController.getImage(id: Long)
+GET		/ascentDetail/:id/show		controllers.AscentDetailController.showImage(id: Long)
 GET		/ascentDetail/:id/caption	controllers.AscentDetailController.showCaption(id: Long)
 
 GET		/radius/:id1/:id2			controllers.MountainsController.showDistance(id1: Long, id2: Long)

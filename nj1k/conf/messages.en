@@ -14,6 +14,7 @@ mountain.trail_map=Trail map
 mountain.topo=Topo map
 mountain.nhn=Nearest higher neighbor
 mountain.others=Other Members Who Have Climbed {0}
+mountain.stats=Statistics
 
 ascent.title=Ascent of {0} ({2} feet) by {1}
 ascent.trip_report=Trip report
@@ -39,7 +40,7 @@ news.edit=Edit article
 news.date=Date
 
 radius.title=Mountains nearest to {0}
-
+radius.search=Radius search
 true=Yes
 false=No
 
@@ -58,6 +59,11 @@ validation.login.invalid=Invalid username or password
 validation.passwords.equal=Passwords must match
 
 email=E-mail address
+email.address=Your e-mail address
+email.subject=Subject
+email.message=Message
+email.send=Send
+
 name=Name
 password=Password
 password.reset=Reset password
@@ -70,9 +76,13 @@ help.ascent.date=Enter the ascent date ({0})
 help.ascent.success=Did you make it to the top?
 button.submit.ascent=Submit ascent
 button.submit.login=Login
+button.submit.news=Submit news
 
-mail.resetpassword = You or someone has requested a password reset for your account on NJ1K.org. If you did not make this request, ignore this mail. Otherwise, log in with this temporary password: {0}
-
+mail.resetpassword.subject=Password reset
+mail.resetpassword=You or someone has requested a password reset for your account on NJ1K.org. If you did not make this request, ignore this mail. Otherwise, log in with this temporary password: {0}
+mail.message=You have received a message from {0}:\n\n{1}
 cancel=Cancel
+contact=Contact the NJ1K Club
 yes=Yes
 no=No
+about=About

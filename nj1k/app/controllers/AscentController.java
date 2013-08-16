@@ -50,6 +50,7 @@ public class AscentController extends Controller {
 		return TODO;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static Result submit() throws Exception {
 
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();

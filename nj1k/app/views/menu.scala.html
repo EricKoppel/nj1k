@@ -10,14 +10,20 @@
     	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
     	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
     	@if(!isLoggedIn()) {
-    	<li><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
     	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
     	}
     	@if(isLoggedIn()) {
     	<li><a href="@routes.AscentController.showForm()">@Messages("ascent.log")</a></li>
-    	<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
     	}
 		<li><a href="@routes.Application.contact()">Contact</a></li>
     	<li><a href="@routes.Application.about()">About Us</a></li>
     	<li><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
     </ul>
+   	<div class="pull-right">
+    	@if(isLoggedIn()) {
+    		<a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a>
+    	} else {
+    		<a class="btn" href="@routes.SignInController.showForm()">@Messages("menu.login")</a>
+    	}
+    </div>
+    
