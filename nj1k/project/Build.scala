@@ -14,6 +14,7 @@ object ApplicationBuild extends Build {
       "org.jsoup" % "jsoup" % "1.6.3" withSources() withJavadoc(),
       "com.google.guava" % "guava" % "12.0.1" withSources() withJavadoc(),
       "commons-codec" % "commons-codec" % "1.4",
+      "commons-io" % "commons-io" % "2.4",
       "org.reflections" % "reflections" % "0.9.8",
       "com.typesafe" %% "play-plugins-mailer" % "2.1-RC2",
       "org.apache.shiro" % "shiro-core" % "1.2.1" withSources() withJavadoc()

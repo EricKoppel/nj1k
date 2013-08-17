@@ -18,7 +18,7 @@
 	<logger name="security" level="TRACE" />
 	<logger name="utils" level="TRACE" />
 	
-	<root level="ERROR">
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
 

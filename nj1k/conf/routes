@@ -25,6 +25,7 @@ GET		/mountains/:id/radius		controllers.MountainsController.showRadius(id: Long)
 
 GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
+GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
 
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
 GET		/news						controllers.NewsController.showForm()
