@@ -32,6 +32,10 @@ public class UsersController extends Controller {
 		return ok(views.html.resetpassword.render(userForm));
 	}
 	
+	public static Result getProfileImage(Long id) {
+		return ok(UserEntity.find(id).pic);
+	}
+	
 	public static Result resetPassword() {
 		
 		Form<UserEntity> resetForm = userForm.bindFromRequest();

@@ -15,6 +15,8 @@ public class AscentDetailEntity extends ImageEntity {
 	@ManyToOne
 	public AscentEntity ascent;
 	
+	public String descriptor;
+	
 	@Lob
 	public byte[] thumbnail;
 	
