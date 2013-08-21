@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Past;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
@@ -24,7 +23,7 @@ import com.avaje.ebean.RawSqlBuilder;
 import com.avaje.ebean.SqlQuery;
 
 @Entity
-public class AscentEntity extends Model {
+public class AscentEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
 

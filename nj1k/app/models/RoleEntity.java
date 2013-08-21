@@ -10,10 +10,8 @@ import javax.persistence.ManyToMany;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.db.ebean.Model;
-
 @Entity
-public class RoleEntity extends Model {
+public class RoleEntity extends BaseEntity {
 
 	public static final String USER = "user";
 	public static final String ADMIN = "admin";

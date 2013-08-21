@@ -1,15 +1,19 @@
 @(news: NewsEntity)
 
+@import utils.SecurityUtil._
+
 @main() {
     <div class="page-header">
 		<h3>@news.title</h3>
 	</div>
 
+	@if(hasRole("admin")) {
 	<div class=row-fluid>
 		<div class="span8">
 			<p><strong><a class="btn btn-small" href=@routes.NewsController.editForm(news.id)>@Messages("news.edit")</a></strong></p>
 		</div>
 	</div>
+	}
 	<div class=row-fluid>
    		<div class="span12">
    			<p>@Html(news.entry)</p>

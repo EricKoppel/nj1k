@@ -1,6 +1,9 @@
 package controllers;
 
 import static play.data.Form.form;
+
+import java.util.List;
+
 import models.AscentEntity;
 import models.FinisherEntity;
 import models.UserEntity;
@@ -21,7 +24,11 @@ public class UsersController extends Controller {
 	final static Form<UserEntity> userForm = form(UserEntity.class);
 	
 	public static Result list() {
-		return ok(views.html.users.render(FinisherEntity.findFinishers(), UserEntityAggregate.findAll()));
+		List<FinisherEntity> finishers = FinisherEntity.findFinishers();
+		List<UserEntityAggregate> aspirants = UserEntityAggregate.findAll();
+		aspirants.removeAll(finishers);
+		
+		return ok(views.html.users.render(finishers, aspirants));
 	}
 	
 	public static Result showUser(Long id) {
@@ -33,6 +40,11 @@ public class UsersController extends Controller {
 	}
 	
 	public static Result getProfileImage(Long id) {
+		byte[] pic = UserEntity.find(id).pic;
+		
+		if (pic == null) {
+			return notFound();
+		}
 		return ok(UserEntity.find(id).pic);
 	}
 	

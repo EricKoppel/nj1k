@@ -6,10 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import play.db.ebean.Model;
-
 @Entity
-public class MapsEntity extends Model {
+public class MapsEntity extends BaseEntity {
 
 	/**
 	 * 

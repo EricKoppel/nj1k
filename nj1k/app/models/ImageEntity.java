@@ -2,15 +2,13 @@ package models;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
 
-import play.db.ebean.Model;
-
-@Entity
+@MappedSuperclass
 @DiscriminatorColumn(name="image_type", discriminatorType=DiscriminatorType.STRING)
-public abstract class ImageEntity extends Model {
+public abstract class ImageEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -5895581088150071181L;
 	
