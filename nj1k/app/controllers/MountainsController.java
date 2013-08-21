@@ -16,6 +16,11 @@ public class MountainsController extends Controller {
 		return ok(views.html.mountain.render(MountainEntity.findWithDetails(id), AscentEntity.findByMountainId(id), MountainEntity.findNearestHigherNeighbor(id)));
 	}
 	
+	public static Result getImage(Long id) {
+		MountainEntity ascentDetail = MountainEntity.find(id);
+		return ok(ascentDetail.picture);
+	}
+	
 	public static Result showDistances(Long id, Long howMany) {
 		JSONSerializer serializer = new JSONSerializer();
 		

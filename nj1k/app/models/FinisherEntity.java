@@ -14,7 +14,7 @@ import com.avaje.ebean.annotation.Sql;
 
 @Entity
 @Sql
-public class FinisherEntity {
+public class FinisherEntity extends UserAggregate {
 
 	private static String finishers = "SELECT MAX(a.id) AS final_ascent_id,u.id,u.name FROM user_entity u JOIN " +
 	"(SELECT a.climber_id,COUNT(DISTINCT(`mountain_id`)) AS ascents " +
@@ -27,9 +27,6 @@ public class FinisherEntity {
 	"GROUP BY u.id";
 	
 	@OneToOne
-	public UserEntity user;
-	
-	@OneToOne
 	public AscentEntity final_ascent;
 	
 	public static List<FinisherEntity> findFinishers() {
@@ -39,5 +36,10 @@ public class FinisherEntity {
 		finishers.fetch("final_ascent.mountain", "name");
 		
 		return finishers.findList();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
 	}
 }

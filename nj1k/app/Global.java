@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.AscentDetailEntity;
 import models.MountainEntity;
+import models.NewsImageEntity;
 import models.UserEntity;
 
 import org.apache.commons.io.FileUtils;
@@ -27,15 +28,60 @@ public class Global extends GlobalSettings {
 
 		registerDateConverter(app);
 		registerMountainConverter(app);
-		
-//		loadProfileImages(app);
-//		loadTripReportImages(app);
+
+//		 loadProfileImages(app);
+//		 loadTripReportImages(app);
+//		 loadMountainPics(app);
+//		loadNewsImages(app);
 	}
 
+	private void loadNewsImages(Application app) {
+		List<NewsImageEntity> details = NewsImageEntity.find.all();
+
+		for (NewsImageEntity e : details) {
+			if (e.image == null) {
+				String filename = "/public/images/news_images/" + e.caption;
+
+				try {
+					File f = app.getFile(filename);
+					if (f.exists()) {
+						logger.info("Filename: {}", f);
+						e.image = FileUtils.readFileToByteArray(app.getFile(filename));
+						e.save();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private void loadMountainPics(Application app) {
+		List<MountainEntity> details = MountainEntity.find.all();
+
+		for (MountainEntity e : details) {
+			if (e.picture == null) {
+				String filename = "/public/images/mountains/" + e.id + ".jpg";
+
+				try {
+					File f = app.getFile(filename);
+					if (f.exists()) {
+						logger.info("Filename: {}", f);
+						e.picture = FileUtils.readFileToByteArray(app.getFile(filename));
+						e.save();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
 
 	private void loadTripReportImages(Application app) {
 		List<AscentDetailEntity> details = AscentDetailEntity.find.all();
-		
+
 		for (AscentDetailEntity e : details) {
 			if (e.descriptor != null) {
 				String filename = "/public/images/tr_images/" + e.descriptor;
@@ -51,26 +97,26 @@ public class Global extends GlobalSettings {
 		}
 	}
 
-
 	private void loadProfileImages(Application app) {
-		File folder = app.getFile("/public/images/profile_images");
-		logger.info("loading images");
-		for (File p : folder.listFiles()) {
-			String id = p.getName().split("\\.")[0];
-			logger.info("id = {}", id);
-			UserEntity u = UserEntity.find(Long.parseLong(id));
+		List<UserEntity> details = UserEntity.find.all();
 
-			if (u.pic != null) {
+		for (UserEntity e : details) {
+			if (e.id != null) {
+				String filename = "/public/images/profile_images/" + e.id + ".jpg";
+				logger.info("Filename: {}", filename);
 				try {
-					u.pic = FileUtils.readFileToByteArray(p);
-				} catch (IOException e) {
-					logger.error("Exception", e);
+					File f = app.getFile(filename);
+					if (f.exists()) {
+						e.pic = FileUtils.readFileToByteArray(f);
+						e.save();
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				u.save();
 			}
 		}
 	}
-
 
 	private void registerDateConverter(final Application app) {
 

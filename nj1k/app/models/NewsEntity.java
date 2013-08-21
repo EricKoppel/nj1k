@@ -10,10 +10,9 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Required;
-import play.db.ebean.Model;
 
 @Entity
-public class NewsEntity extends Model {
+public class NewsEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -3217670302314792192L;
 	public static Finder<Long, NewsEntity> find = new Finder<Long, NewsEntity>(Long.class, NewsEntity.class);

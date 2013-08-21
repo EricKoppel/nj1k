@@ -14,6 +14,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.ImageUtil;
+import utils.SecurityUtil;
 
 public class NewsController extends Controller {
 
@@ -25,15 +26,25 @@ public class NewsController extends Controller {
 	}
 	
 	public static Result showForm() {
+		if (!SecurityUtil.hasRole("admin")) {
+			return forbidden();
+		}
 		return ok(views.html.createnews.render(newsForm));
 	}
 	
 	public static Result editForm(Long id) {
+		if (!SecurityUtil.hasRole("admin")) {
+			return forbidden();
+		}
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static Result submit() {
+		
+		if (!SecurityUtil.hasRole("admin")) {
+			return forbidden();
+		}
 		
 		Form<NewsEntity> filledForm = newsForm.bindFromRequest();
 		

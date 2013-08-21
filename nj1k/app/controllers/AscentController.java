@@ -53,6 +53,10 @@ public class AscentController extends Controller {
 	@SuppressWarnings("unchecked")
 	public static Result submit() throws Exception {
 
+		if (!SecurityUtil.isLoggedIn()) {
+			return forbidden();
+		}
+		
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
 
 		if (!filledForm.hasErrors()) {

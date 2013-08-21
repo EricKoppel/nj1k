@@ -14,10 +14,8 @@ import com.avaje.ebean.annotation.Sql;
 
 @Entity
 @Sql
-public class UserEntityAggregate {
+public class UserEntityAggregate extends UserAggregate {
 
-	@OneToOne
-	public UserEntity user;
 	public Integer total;
 	public Integer unique_successful;
 
@@ -62,5 +60,10 @@ public class UserEntityAggregate {
 	
 	public Float percentComplete() {
 		return (float) unique_successful / MountainEntity.listSize();
+	}	
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
 	}
 }
