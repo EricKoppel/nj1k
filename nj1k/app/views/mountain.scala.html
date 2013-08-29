@@ -53,7 +53,9 @@
 	
 	    <div id="mountain_description" class="span8">
 	    	<h4>@Messages("about")</h4>
-	    	<img class="pull-left img-rounded" height="200" width="200" style="margin: 0 10px 10px 0;" src="@routes.MountainsController.getImage(mountain.id)">
+	    	@if(mountain.picture != null) {
+	    		<img class="pull-left img-rounded" height="200" width="200" style="margin: 0 10px 10px 0;" src="@routes.MountainsController.getImage(mountain.id)">
+	    	}
 	    	@Html(mountain.description)
 	    </div>
 
