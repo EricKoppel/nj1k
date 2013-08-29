@@ -9,7 +9,8 @@
 			$(document).ready(function() {
 				Galleria.loadTheme('@routes.Assets.at("javascripts/galleria/themes/classic/galleria.classic.min.js")');
 				Galleria.run('#galleria', {
-					show: @start
+					show: @start,
+					_toggleInfo: true
 				});
 			})
 		</script>
@@ -18,7 +19,7 @@
 	<body>
 		<div id="galleria" style="height: 768px">
 		@for(detail <- ascentDetails) {
-			<img class="img-rounded" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)">
+			<img class="img-rounded" height="200" alt="@detail.caption" width="200" src="@routes.AscentDetailController.getImage(detail.id)">
 		}
 		</div>
 	</body>

@@ -29,6 +29,8 @@ ascent.report=Trip report
 ascent.pics=Upload pictures
 ascent.edit=Modify ascent
 ascent.climb.list=Climb list
+ascent.delete=Delete ascent
+ascent.delete.prompt=Are you sure you want to delete this ascent?
 
 user.totalclimbs=Total climbs
 user.uniquesuccess=Distinct summits attained
@@ -52,6 +54,7 @@ menu.login=Login
 menu.logout=Logout
 menu.register=Register
 menu.news.submit=Submit News
+menu.edit.account=Account
 
 validation.email=This e-mail address is not registered
 validation.email.taken=This e-mail address is already registered
@@ -69,6 +72,8 @@ password=Password
 password.reset=Reset password
 password.forgot=Forgot password?
 confirmpassword=Confirm password
+aboutme=About me
+profile.pic=Profile picture
 
 welcome=Welcome, {0}!
 

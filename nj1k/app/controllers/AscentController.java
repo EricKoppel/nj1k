@@ -13,6 +13,7 @@ import models.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.cache.Cache;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -23,52 +24,70 @@ import utils.SecurityUtil;
 public class AscentController extends Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);
-	final static Form<AscentEntity> ascentForm = form(AscentEntity.class);
-	final static List<MountainEntity> sortedMountains = MountainEntity.findAll();
-
-	static {
-		Collections.sort(sortedMountains, new MountainComparator());
-	}
+	private static final Form<AscentEntity> ascentForm = form(AscentEntity.class);
 
 	public static Result showTripReport(Long id) {
-		return ok(views.html.ascent.render(AscentEntity.findTripReport(id)));
+		AscentEntity e = AscentEntity.findTripReport(id);
+
+		if (e != null) {
+			return ok(views.html.ascent.render(e));
+		} else {
+			return notFound();
+		}
 	}
 
 	public static Result showForm() {
-		return ok(views.html.logascent.render(ascentForm, sortedMountains));
+		if (!SecurityUtil.isLoggedIn()) {
+			return forbidden();
+		}
+		
+		return ok(views.html.logascent.render(ascentForm, MountainEntity.findAll()));
 	}
 
 	public static Result editForm(Long id) throws Exception {
 		if (!SecurityUtil.ownsAscent(id)) {
 			return forbidden();
 		}
-		
-		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), sortedMountains));
+
+		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), MountainEntity.findAll()));
 	}
 
 	public static Result updateTripReport(Long id) {
+		if (!SecurityUtil.ownsAscent(id)) {
+			return forbidden();
+		}
+		
 		return TODO;
 	}
-	
+
+	public static Result remove(Long id) {
+		if (!SecurityUtil.ownsAscent(id)) {
+			return forbidden();
+		}
+
+		AscentEntity.find(id).delete();
+		return ok();
+	}
+
 	@SuppressWarnings("unchecked")
 	public static Result submit() throws Exception {
 
 		if (!SecurityUtil.isLoggedIn()) {
 			return forbidden();
 		}
-		
+
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
 
 		if (!filledForm.hasErrors()) {
 			AscentEntity ascent = filledForm.get();
-			ascent.climber = UserEntity.findByEmail(Controller.session().get("USER_ID_KEY"));
+			ascent.climber = UserEntity.findByEmail((String) Cache.get(Controller.session().get("UUID")));
 			ascent.ascentDetails = (List<AscentDetailEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class);
 			ascent.save();
 
 			return redirect(routes.AscentController.showTripReport(ascent.id));
 		} else {
 			logger.debug("Ascent form contained errors: {}", filledForm.errors().toString());
-			return badRequest(views.html.logascent.render(filledForm, sortedMountains));
+			return badRequest(views.html.logascent.render(filledForm, MountainEntity.findAll()));
 		}
 	}
 }

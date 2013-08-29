@@ -34,4 +34,9 @@ public class AscentDetailController extends Controller {
 		
 		return TODO;
 	}
+	
+	public static Result remove(Long id) {
+		AscentDetailEntity.find(id).delete();
+		return ok();
+	}
 }

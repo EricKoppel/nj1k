@@ -69,7 +69,7 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findByUserId(Long userId) {
-		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).findList();
+		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
 	}
 
 	public static int distinctClimbs(Long userId) {
@@ -79,7 +79,7 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id) {
-		return find.fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).findList();
+		return find.fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
 	}
 	
 	public static AscentEntity findTripReport(Long id) {

@@ -61,7 +61,7 @@ public class MountainEntity extends BaseEntity {
 
 	@Cached(key = "mountains")
 	public static List<MountainEntity> findAll() {
-		return find.where().eq("club_list", true).findList();
+		return find.where().eq("club_list", true).orderBy().desc("name").findList();
 	}
 
 	public static MountainEntity find(Long id) {

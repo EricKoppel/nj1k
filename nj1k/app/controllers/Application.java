@@ -47,7 +47,10 @@ public class Application extends Controller {
 	}
 
 	public static Result javascriptRoutes() {
-		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.MountainsController.showDistances(), controllers.routes.javascript.MountainsController.showMountain())).as(
-				"text/javascript");
+		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(), 
+				controllers.routes.javascript.AscentDetailController.remove(),
+				controllers.routes.javascript.UsersController.showUser(),
+				controllers.routes.javascript.MountainsController.showDistances(), 
+				controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");
 	}
 }

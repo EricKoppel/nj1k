@@ -24,6 +24,7 @@ import play.mvc.Result;
 import security.shiro.authentication.NJ1KCredentialsMatcher;
 import security.shiro.realm.NJ1KAuthenticatingRealm;
 import utils.PasswordUtil;
+import utils.SecurityUtil;
 
 public class SignInController extends Controller {
 
@@ -36,7 +37,7 @@ public class SignInController extends Controller {
 
 	public static Result logout() {
 
-		ctx().session().remove("USER_ID_KEY");
+		ctx().session().remove(SecurityUtil.USER_ID_KEY);
 		return redirect(routes.Application.index());
 	}
 
@@ -75,7 +76,7 @@ public class SignInController extends Controller {
 		AuthenticationToken token = new UsernamePasswordToken(username, password);
 		AuthenticationInfo authenticationInfo = realm.getAuthenticationInfo(token);
 
-		session().put("USER_ID_KEY", authenticationInfo.getPrincipals().getPrimaryPrincipal().toString());
+		session().put(SecurityUtil.USER_ID_KEY, authenticationInfo.getPrincipals().getPrimaryPrincipal().toString());
 	}
 
 	private static void upgradePassword(String email, String password) {
