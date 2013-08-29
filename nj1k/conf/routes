@@ -24,6 +24,10 @@ GET		/mountains/:id				controllers.MountainsController.showMountain(id: Long)
 GET		/mountains/:id/radius		controllers.MountainsController.showRadius(id: Long)
 GET		/mountains/:id/pic			controllers.MountainsController.getImage(id: Long)
 
+GET		/account					controllers.AccountController.editAccount()
+POST	/account					controllers.AccountController.submitEdit()
+DELETE	/account/pic				controllers.AccountController.deleteProfilePic()
+
 GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
 GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
@@ -38,8 +42,10 @@ POST	/ascent						controllers.AscentController.submit()
 GET		/ascent/:id					controllers.AscentController.showTripReport(id: Long)
 GET		/ascent/:id/edit			controllers.AscentController.editForm(id: Long)
 PUT		/ascent/:id					controllers.AscentController.updateTripReport(id: Long)
+DELETE	/ascent/:id					controllers.AscentController.remove(id: Long)
 
 GET		/ascentDetail/:id/image		controllers.AscentDetailController.getImage(id: Long)
+DELETE	/ascentDetail/:id			controllers.AscentDetailController.remove(id: Long)
 GET		/ascentDetail/:id/show		controllers.AscentDetailController.showImage(id: Long)
 GET		/ascentDetail/:id/caption	controllers.AscentDetailController.showCaption(id: Long)
 

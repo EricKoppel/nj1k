@@ -23,14 +23,14 @@ public class ImageUtil {
 
 	public static List<? extends ImageEntity> extractPictures(List<FilePart> files, Class<? extends ImageEntity> clazz) {
 		List<ImageEntity> pictures = new ArrayList<ImageEntity>();
-		CompletionService<ImageEntity> taskCompletionService = new ExecutorCompletionService<ImageEntity>(Executors.newCachedThreadPool());
+		CompletionService<byte[]> taskCompletionService = new ExecutorCompletionService<byte[]>(Executors.newCachedThreadPool());
 		int submittedTasks = 0;
 		
 		for (FilePart f : files) {
 			MediaType mediaType = MediaType.parse(f.getContentType());
 			if (mediaType.is(MediaType.ANY_IMAGE_TYPE)) {
 				try {
-					taskCompletionService.submit(new ImageResizeTask(f, clazz));
+					taskCompletionService.submit(new ImageResizeTask(f));
 					submittedTasks++;
 				} catch (Exception e) {
 					logger.error("Exception occurred while saving picture", e);
@@ -40,12 +40,18 @@ public class ImageUtil {
 		
 		for (int i = 0; i < submittedTasks; i++) {
 			try {
-				Future<ImageEntity> future = taskCompletionService.take();
-				pictures.add(future.get());
+				Future<byte[]> future = taskCompletionService.take();
+				ImageEntity entity = clazz.newInstance();
+				entity.image = future.get();
+				pictures.add(entity);
 				logger.debug("Processed image");
 			} catch (InterruptedException e) {
 				logger.warn("Caught exception while processing image", e);
 			} catch (ExecutionException e) {
+				logger.warn("Caught exception while processing image", e);
+			} catch (InstantiationException e) {
+				logger.warn("Caught exception while processing image", e);
+			} catch (IllegalAccessException e) {
 				logger.warn("Caught exception while processing image", e);
 			}
 		}

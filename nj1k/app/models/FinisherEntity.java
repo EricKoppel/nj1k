@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import play.cache.Cached;
+
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.Query;
@@ -29,6 +31,7 @@ public class FinisherEntity extends UserAggregate {
 	@OneToOne
 	public AscentEntity final_ascent;
 	
+	@Cached(key = "finishers")
 	public static List<FinisherEntity> findFinishers() {
 		RawSql sql = RawSqlBuilder.parse(finishers).columnMapping("u.id", "user.id").columnMapping("u.name", "user.name").columnMapping("MAX(a.id)", "final_ascent.id").create();
 		Query<FinisherEntity> finishers = Ebean.find(FinisherEntity.class).setRawSql(sql);

@@ -40,11 +40,30 @@ footer {
 	height: 256px;
 }
 
-.navbar-inner {
-    background-color: #1B1B1B;
-    background-image: linear-gradient(to bottom, #222222, #111111);
+.footer, .navbar-inverse .navbar-inner {
+    background-color: #00ADFF;
+    background-image: linear-gradient(to bottom, #00ADFF, #0082BF);
+    background-image: -moz-linear-gradient(top, #00ADFF, #0082BF);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#00ADFF), to(#0082BF));
+	background-image: -webkit-linear-gradient(top, #00ADFF, #0082BF);
+	background-image: -o-linear-gradient(top, #00ADFF, #0082BF);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ADFF', endColorstr='#0082BF', GradientType=0);
     background-repeat: repeat-x;
-    border-color: #252525;
+}
+.navbar-inverse .navbar-inner {
+	height: 60px;
+}
+
+.navbar-inverse .navbar-inner .container {
+	padding-top: 10px;
+}
+
+footer, .navbar-inverse .nav > li > a {
+	color: #fff;
+}
+
+.btn {
+	border: 1px solid #002B40;
 }
 
 img {

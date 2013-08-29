@@ -4,12 +4,9 @@ import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.api.templates.Html;
 import play.i18n.Messages;
 
 public class RenderUtil {
@@ -31,6 +28,10 @@ public class RenderUtil {
 	
 	public static String renderBoolean(boolean b) {
 		return b ? Messages.get("true"): Messages.get("false");
+	}
+	
+	public static String formatText(String text) {
+		return text.replaceAll("\\n", "<br/>");
 	}
 	
 //	public static Html unescape(String html) {

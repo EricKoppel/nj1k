@@ -1,6 +1,7 @@
 @()(content: Html)
 
 @import controllers.routes.javascript._
+@import play.api.Play
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,7 @@
         <script src="@routes.Assets.at("javascripts/libs/jquery.tablesorter.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/jquery.MultiFile.pack.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/bootstrap-table-nav.js")" type="text/javascript"></script>
-        <script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAvCi6shG2jkDx_jHtR-Tz8hQPDLDeuddiwLEwJG-CKonPcqXT4hQYZsDAag0hptf0_ybhQd3DOAxvOQ"></script>
+        <script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=@Play.current.configuration.getString("googlemaps.api.key")"></script>
     </head>
     <body>
     	<div class="wrapper">

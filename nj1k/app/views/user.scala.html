@@ -41,8 +41,8 @@
 		    </div>
 		    <h4>About</h4>
 		   	<p>
-		   		<img class="pull-left img-rounded" style="margin: 0 10px 10px 0;" src="@routes.UsersController.getProfileImage(user.user.id)">
-		   		@Html(user.user.aboutme)
+		   		<img class="pull-left img-rounded" width="200" height="200" style="margin: 0 10px 10px 0;" src="@routes.UsersController.getProfileImage(user.user.id)">
+		   		@Html(formatText(user.user.aboutme))
 		   	</p>
 		</div>
 	</div>

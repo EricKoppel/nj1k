@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import play.cache.Cached;
+
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.Query;
@@ -46,6 +48,7 @@ public class UserEntityAggregate extends UserAggregate {
 		return users.findUnique();
 	}
 	
+	@Cached(key = "aspirants", duration = 3600)
 	public static List<UserEntityAggregate> findAll() {
 		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a.climber_id", "user.id").columnMapping("total", "total").
 				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create();

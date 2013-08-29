@@ -4,7 +4,35 @@
 @import utils.SecurityUtil._
 
 @main() {
-	
+
+	<script type="text/javascript">
+
+    $(document).ready(function() {
+    	
+    	$('#delete_ascent').click(function() {
+    		if (confirm('@Messages("ascent.delete.prompt")')) {
+	    		jsRoutes.controllers.AscentController.remove(@ascent.id).ajax({
+	    			success: function(result) {
+	    				window.location.href = "/users/" + @ascent.climber.id;
+	    		    }
+	    		});
+    		}
+    		return false;
+    	});
+    	
+    	$('.delete_button').click(function() {
+    		jsRoutes.controllers.AscentDetailController.remove(this.id).ajax({
+    			success: function(result) {
+    		    	$('.img_container').fadeOut();
+    		    }
+    		});
+    		
+    		return false;
+    	});
+    });
+    
+	</script>
+	  
 	<div class="page-header">
 		<h3>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h3>
 	</div>
@@ -33,6 +61,7 @@
 			
 			@if(ownsAscent(ascent.id)) {
 				<p><strong><a class="btn btn-small" href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></strong></p>
+				<p><strong><a id="delete_ascent" class="btn btn-small" href="#">@Messages("ascent.delete")</a></strong></p>
 			}
 		</div>
 		<div class="span8">
@@ -43,7 +72,13 @@
 	<div class="row-fluid">
 		<div id="span12">
 			@for(detail <- ascent.ascentDetails) {
-				<a href="@routes.AscentDetailController.showImage(detail.id)" target="_blank"><img class="img-rounded" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
+	        	<div class="img_container" style="position: relative; display: inline-block; height: 200px;">
+					<a href="@routes.AscentDetailController.showImage(detail.id)" target="_blank"><img class="img-rounded" alt="@detail.caption" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
+					<p>@detail.caption</p>
+					<div style="position: absolute; left: 205px; top: -8px;">
+			   			<a id="@detail.id" class="icon-remove delete_button" href="#"></a>
+			   		</div>
+				</div>
 			}
 		</div>
 	</div>

@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
-import validators.MemberEmail;
 
 @Entity
 public class UserEntity extends BaseEntity {
@@ -28,7 +27,6 @@ public class UserEntity extends BaseEntity {
 	
 	@Required
 	@Email
-	@MemberEmail
 	public String email;
 	public String password;
 	public String salt;
