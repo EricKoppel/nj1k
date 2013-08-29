@@ -1,6 +1,7 @@
 @(news: NewsEntity)
 
 @import utils.SecurityUtil._
+@import views.RenderUtil._
 
 @main() {
     <div class="page-header">
@@ -16,7 +17,7 @@
 	}
 	<div class=row-fluid>
    		<div class="span12">
-   			<p>@Html(news.entry)</p>
+   			<p>@Html(formatText(news.entry))</p>
    		</div>
 	</div>
 }
