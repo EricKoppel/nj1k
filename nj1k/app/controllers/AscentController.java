@@ -2,7 +2,6 @@ package controllers;
 
 import static play.data.Form.form;
 
-import java.util.Collections;
 import java.util.List;
 
 import models.AscentDetailEntity;
@@ -18,7 +17,6 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.ImageUtil;
-import utils.MountainComparator;
 import utils.SecurityUtil;
 
 public class AscentController extends Controller {

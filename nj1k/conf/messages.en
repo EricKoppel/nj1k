@@ -41,6 +41,7 @@ news.entry=Story
 news.pics=Upload pictures
 news.edit=Edit article
 news.date=Date
+news.nynjtc=News from the NYNJTC
 
 radius.title=Mountains nearest to {0}
 radius.search=Radius search

@@ -11,6 +11,18 @@
     	  $('#newsList').tableNav({
     		    itemsPerPage: 10
     	  });
+    	  
+    	  jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
+    		  success: function(data) {
+    			  $.each($.parseJSON(data), function(i, item) {
+    				  $('#externalNews').append('<tr><td>' + item.date + '</td><td><a target="_blank" href="' + item.link + '">' + item.title + '</a></td></tr>');
+    			  });
+    			  
+    			  $('#externalNews').tableNav({
+    	    		    itemsPerPage: 10
+    	    	  });
+    		  }
+    	  })
     	});
     </script>
     
@@ -44,11 +56,7 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-		
+
 		<div class="span6">
 			<h4>@Messages("headlines")</h4>
 			<table id="newsList" class="table-condensed table-striped">
@@ -64,6 +72,22 @@
 						<td><a href="@routes.NewsController.showNews(n.id)">@n.title</a></td>
 					</tr>
 				}
+			</table>
+		    <div class="pagination pagination-centered">
+			    <ul>
+			    </ul>
+			</div>
+		</div>
+		
+		<div class="span6">
+			<h4>@Messages("news.nynjtc")</h4>
+			<table id="externalNews" class="table-condensed table-striped">
+				<thead>
+					<tr>
+						<th>@Messages("news.date")</th>
+						<th>@Messages("news.title")</th>
+					</tr>
+				</thead>
 			</table>
 		    <div class="pagination pagination-centered">
 			    <ul>

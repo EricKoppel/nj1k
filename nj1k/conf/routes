@@ -33,6 +33,8 @@ GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
 GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
 
+GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()
+
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
 GET		/news						controllers.NewsController.showForm()
 GET		/news/:id/edit				controllers.NewsController.editForm(id: Long)
