@@ -26,7 +26,7 @@ public class CustomDateConverter extends Formatters.SimpleFormatter<Timestamp>{
 		
 		Timestamp ts = null;
 		
-		logger.debug("Parsing date " + dateStr);
+		logger.debug("Parsing date {}", dateStr);
 		
 		try {
 			

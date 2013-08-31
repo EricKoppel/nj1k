@@ -21,6 +21,14 @@ object ApplicationBuild extends Build {
     )
         
     val main = play.Project(appName, appVersion, appDependencies).settings(
-    		resolvers += "Slf4j Repository" at "http://repo2.maven.org/maven2/org/slf4j/"
+    		resolvers += "Slf4j Repository" at "http://repo2.maven.org/maven2/org/slf4j/",
+    		
+    		testOptions in Test ~= { args =>
+	    		for {
+	      			arg <- args
+	      			val ta: Tests.Argument = arg.asInstanceOf[Tests.Argument]
+	      			val newArg = if(ta.framework == Some(TestFrameworks.JUnit)) ta.copy(args = List.empty[String]) else ta
+	    		} yield newArg
+  			}
     )
 }

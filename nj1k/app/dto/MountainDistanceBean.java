@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 
 import models.MountainEntity;
-
 import flexjson.JSON;
 
 public class MountainDistanceBean {
