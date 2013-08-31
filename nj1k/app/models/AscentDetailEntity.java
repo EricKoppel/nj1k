@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
@@ -22,5 +24,9 @@ public class AscentDetailEntity extends ImageEntity {
 	
 	public static AscentDetailEntity find(Long id) {
 		return find.select("*").where().eq("id", id).findUnique();
+	}
+	
+	public static List<AscentDetailEntity> findAscentDetailsByMountain(Long mountainId) {
+		return find.select("*").fetch("ascent").fetch("ascent.mountain").where().eq("ascent.mountain.id", mountainId).findList();
 	}
 }
