@@ -1,5 +1,6 @@
 package controllers;
 
+import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
 import play.mvc.Controller;
@@ -13,12 +14,20 @@ public class MountainsController extends Controller {
 	}
 	
 	public static Result showMountain(Long id) {
-		return ok(views.html.mountain.render(MountainEntity.findWithDetails(id), AscentEntity.findByMountainId(id), MountainEntity.findNearestHigherNeighbor(id)));
+		return ok(views.html.mountain.render(MountainEntity.findWithDetails(id), AscentEntity.findByMountainId(id), MountainEntity.findNearestHigherNeighbor(id), AscentDetailEntity.findAscentDetailsByMountain(id)));
 	}
 	
 	public static Result getImage(Long id) {
 		MountainEntity ascentDetail = MountainEntity.find(id);
 		return ok(ascentDetail.picture);
+	}
+	
+	public static Result getAscentImages(Long id) {
+		return ok(views.html.mountain_ascent_image.render(MountainEntity.find(id)));
+	}
+	
+	public static Result getImagePopup(Long id) {
+		return ok(views.html.mountain_image.render(MountainEntity.find(id)));
 	}
 	
 	public static Result showDistances(Long id, Long howMany) {
