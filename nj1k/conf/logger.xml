@@ -15,7 +15,7 @@
 	<logger name="application" level="DEBUG" />
 	<logger name="controllers" level="DEBUG" />
 	<logger name="validators" level="DEBUG" />
-	<logger name="org.apache.shiro" level="DEBUG" />
+	<logger name="org.apache.shiro" level="INFO" />
 	<logger name="security" level="TRACE" />
 	<logger name="utils" level="TRACE" />
 	

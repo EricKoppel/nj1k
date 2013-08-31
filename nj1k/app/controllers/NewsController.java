@@ -25,6 +25,10 @@ public class NewsController extends Controller {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
 	
+	public static Result showNewsImage(Long imgId) {
+		return ok(views.html.news_image.render(NewsImageEntity.find.byId(imgId)));
+	}
+	
 	public static Result showForm() {
 		if (!SecurityUtil.hasRole("admin")) {
 			return forbidden();

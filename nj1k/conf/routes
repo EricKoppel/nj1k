@@ -38,6 +38,9 @@ GET		/news						controllers.NewsController.showForm()
 GET		/news/:id/edit				controllers.NewsController.editForm(id: Long)
 POST	/news						controllers.NewsController.submit()
 
+GET		/news/images/:id			controllers.NewsImageController.getImage(id: Long)
+GET		/news/images/:id/show		controllers.NewsImageController.showNewsImage(id: Long)		
+
 GET		/ascent						controllers.AscentController.showForm()
 POST	/ascent						controllers.AscentController.submit()
 GET		/ascent/:id					controllers.AscentController.showTripReport(id: Long)
