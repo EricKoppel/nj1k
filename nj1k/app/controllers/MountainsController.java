@@ -22,10 +22,6 @@ public class MountainsController extends Controller {
 		return ok(ascentDetail.picture);
 	}
 	
-	public static Result getAscentImages(Long id) {
-		return ok(views.html.mountain_ascent_image.render(MountainEntity.find(id)));
-	}
-	
 	public static Result getImagePopup(Long id) {
 		return ok(views.html.mountain_image.render(MountainEntity.find(id)));
 	}

@@ -1,4 +1,4 @@
-@(mountain: MountainEntity)
+@(image: NewsImageEntity)
 <html>
 	<head>
 		<script src="@routes.Assets.at("javascripts/libs/jquery-1.7.1.min.js")" type="text/javascript"></script>
@@ -17,11 +17,7 @@
 	
 	<body>
 		<div id="galleria" style="height: 768px">
-		@for(a <- mountain.ascents) {
-			@for(detail <- a.ascentDetails) {
-				<img class="img-rounded" height="200" alt="@detail.caption" width="200" src="@routes.AscentDetailController.getImage(detail.id)">
-			}
-		}
+			<img class="img-rounded" height="200" alt="@image.caption" width="200" src="@routes.NewsImageController.getImage(image.id)">
 		</div>
 	</body>
 </html>

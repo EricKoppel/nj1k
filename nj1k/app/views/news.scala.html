@@ -4,6 +4,15 @@
 @import views.RenderUtil._
 
 @main() {
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.news_img').click(function(e) {
+				window.open("/news/images/" + this.id + "/show", '@news.title', 'width=1024, height=800px');
+				return false;
+			});
+		});
+	</script>
+	
     <div class="page-header">
 		<h3>@news.title</h3>
 	</div>
@@ -17,7 +26,11 @@
 	}
 	<div class=row-fluid>
    		<div class="span12">
-   			<p>@Html(formatText(news.entry))</p>
+   			<p>
+   			@for(img<- news.pictures) {
+   				<a class="news_img" id="@img.id" href="#"><img class="pull-right img-thumbnail" width="200" height="200" style="margin: 10px 0px 10px 0;" src="@routes.NewsImageController.getImage(img.id)"></a>
+   			}
+   			@Html(formatText(news.entry))</p>
    		</div>
 	</div>
 }
