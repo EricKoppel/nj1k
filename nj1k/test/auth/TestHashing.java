@@ -32,7 +32,7 @@ public class TestHashing {
 	@Test
 	public void testHash() {
 		
-		String password = String.valueOf(PasswordUtil.generateRandomPassword());
+		char[] password = PasswordUtil.generateRandomPassword();
 		ByteSource salt = PasswordUtil.generateSalt();
 		SimpleHash hash = PasswordUtil.generateHash(password, salt);
 		
