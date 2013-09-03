@@ -19,7 +19,11 @@ public class MountainsController extends Controller {
 	
 	public static Result getImage(Long id) {
 		MountainEntity ascentDetail = MountainEntity.find(id);
-		return ok(ascentDetail.picture);
+		if (ascentDetail.picture != null) {
+			return ok(ascentDetail.picture);
+		} else {
+			return notFound();
+		}
 	}
 	
 	public static Result getImagePopup(Long id) {

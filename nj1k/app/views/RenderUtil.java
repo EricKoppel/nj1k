@@ -15,7 +15,7 @@ public class RenderUtil {
 	
 	public static String formatAscentDate(Timestamp t) {
 		if (t == null) {
-			return "unknown";
+			return Messages.get("unknown");
 		}
 		else {
 			return new SimpleDateFormat("MM/dd/yyyy").format(t);

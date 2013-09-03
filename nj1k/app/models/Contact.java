@@ -1,10 +1,11 @@
 package models;
 
 import play.data.validation.Constraints.Email;
+import play.data.validation.Constraints.Pattern;
 import play.data.validation.Constraints.Required;
 
 public class Contact {
-
+	
 	@Email
 	@Required
 	private String email;
@@ -14,6 +15,10 @@ public class Contact {
 	
 	@Required
 	private String message;
+	
+	@Required
+	@Pattern(value = "(?i)\\s*high\\s*point\\s*", message="validation.antispam")
+	private String answer;
 
 	public String getEmail() {
 		return email;
@@ -37,5 +42,13 @@ public class Contact {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 }
