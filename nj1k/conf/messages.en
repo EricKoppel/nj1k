@@ -82,7 +82,7 @@ profile.pic=Profile picture
 
 welcome=Welcome, {0}!
 
-help.ascent.date=Enter the ascent date ({0})
+help.ascent.date=Enter the ascent date ({0}). Leave blank if date unknown.
 help.ascent.success=Did you make it to the top?
 button.submit.ascent=Submit ascent
 button.submit.login=Login
