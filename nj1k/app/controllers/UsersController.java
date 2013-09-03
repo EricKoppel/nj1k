@@ -14,6 +14,8 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.net.MediaType;
+
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -49,7 +51,7 @@ public class UsersController extends Controller {
 		if (pic == null) {
 			return notFound();
 		}
-		return ok(UserEntity.find(id).pic);
+		return ok(UserEntity.find(id).pic).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 
 	public static Result resetPassword() {

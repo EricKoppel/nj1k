@@ -3,6 +3,8 @@ package controllers;
 
 import java.util.List;
 
+import com.google.common.net.MediaType;
+
 import models.AscentDetailEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -12,7 +14,7 @@ public class AscentDetailController extends Controller {
 
 	public static Result getImage(Long id) {
 		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
-		return ok(ascentDetail.image);
+		return ok(ascentDetail.image).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 	
 	public static Result showImage(Long id) {
