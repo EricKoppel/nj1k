@@ -4,6 +4,7 @@ welcometext=The New Jersey 1K Club is a fledgling organization that seeks to bri
 copyright=Copyright © 2008-2013 Eric Koppel
 most.recent.climbs=Most recent climbs
 headlines=Headlines
+unknown=unknown
 
 mountain.elevation=Elevation
 mountain.decimal_degrees=Decimal degrees
@@ -62,11 +63,13 @@ validation.email=This e-mail address is not registered
 validation.email.taken=This e-mail address is already registered
 validation.login.invalid=Invalid username or password
 validation.passwords.equal=Passwords must match
+validation.antispam=Not the highest point in New Jersey!
 
 email=E-mail address
 email.address=Your e-mail address
 email.subject=Subject
 email.message=Message
+email.antispam=Anti-SPAM question. What is the highest point in New Jersey?
 email.send=Send
 
 name=Name
