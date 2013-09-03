@@ -13,15 +13,13 @@ public class RegisteringUser {
 	private String email;
 	
 	@Required
-	private String password;
+	private char[] password;
 	
 	@Required
 	private String confirmPassword;
 	
 	@Required
 	private String name;
-
-	private String salt;
 	
 	public String getEmail() {
 		return email;
@@ -31,11 +29,11 @@ public class RegisteringUser {
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public char[] getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 
@@ -62,13 +60,5 @@ public class RegisteringUser {
 	@Override
 	public String toString() {
 		return "RegisteringUser [email=" + email + ", name=" + name + "]";
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
-	
-	public String getSalt() {
-		return this.salt;
 	}
 }

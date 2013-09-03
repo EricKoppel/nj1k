@@ -10,6 +10,10 @@
         <fieldset>
             <legend>Login</legend>
           
+            @if(flash.get("success") != null) {
+            	<div class="alert alert-info">@flash.get("success")</div>
+            }
+            
             @if(signupForm.hasGlobalErrors) {
             	<div class="alert alert-error">@signupForm.globalError.message</div>
 				

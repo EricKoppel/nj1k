@@ -26,6 +26,9 @@
         	<fieldset>
 		    	<legend>Edit Account</legend>
 		    	
+		    	@if(flash.get("success") != null) {
+		    		<div class="alert alert-info">@flash.get("success")</div>
+		    	}
 		    	@if(editForm.hasGlobalErrors) {
             		<div class="alert alert-error">@editForm.globalError.message</div>
             	}

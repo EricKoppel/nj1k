@@ -48,7 +48,7 @@ public class AccountController extends Controller {
 		
 		if (!account.password.isEmpty()) {
 			if (account.password.equals(accountForm.data().get("confirmPassword"))) {
-				setNewPassword(user, account.password);
+				setNewPassword(user, account.password.toCharArray());
 			} else {
 				accountForm.reject(Messages.get("validation.passwords.equal"));
 				return badRequest(views.html.editaccount.render(accountForm.fill(account)));
@@ -74,6 +74,7 @@ public class AccountController extends Controller {
 		user.aboutme = account.aboutme;
 		user.update();
 		
+		flash("success", Messages.get("account.updated"));
 		return ok(views.html.editaccount.render(userForm.fill(account)));
 	}
 
@@ -88,7 +89,7 @@ public class AccountController extends Controller {
 		return forbidden();
 	}
 	
-	private static void setNewPassword(UserEntity user, String password) {
+	private static void setNewPassword(UserEntity user, char[] password) {
 		ByteSource salt = PasswordUtil.generateSalt();
 		SimpleHash hashedPassword = PasswordUtil.generateHash(password, salt);
 		user.password = hashedPassword.toBase64();

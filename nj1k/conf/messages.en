@@ -79,6 +79,7 @@ password.forgot=Forgot password?
 confirmpassword=Confirm password
 aboutme=About me
 profile.pic=Profile picture
+account.updated=Your account has been updated
 
 welcome=Welcome, {0}!
 
@@ -88,6 +89,7 @@ button.submit.ascent=Submit ascent
 button.submit.login=Login
 button.submit.news=Submit news
 
+password.sent=Your new password has been sent to your e-mail address
 mail.resetpassword.subject=Password reset
 mail.resetpassword=You or someone has requested a password reset for your account on NJ1K.org. If you did not make this request, ignore this mail. Otherwise, log in with this temporary password: {0}
 mail.message=You have received a message from {0}:\n\n{1}
