@@ -31,7 +31,7 @@ public class PasswordUtil {
 		return new SecureRandomNumberGenerator().nextBytes();
 	}
 	
-	public static SimpleHash generateHash(String password, ByteSource salt) {
+	public static SimpleHash generateHash(char[] password, ByteSource salt) {
 		return new Sha256Hash(password, salt, NJ1KCredentialsMatcher.SHA_ITERATIONS);
 	}
 }

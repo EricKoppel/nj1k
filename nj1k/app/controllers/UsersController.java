@@ -61,6 +61,7 @@ public class UsersController extends Controller {
 			if (user != null) {
 				resetPassword(user);
 			}
+			flash("success", Messages.get("password.sent"));
 			return ok(views.html.login.render(resetForm));
 		}
 
@@ -68,8 +69,7 @@ public class UsersController extends Controller {
 	}
 
 	private static void resetPassword(UserEntity user) {
-
-		String newPassword = String.valueOf(PasswordUtil.generateRandomPassword());
+		char[] newPassword = PasswordUtil.generateRandomPassword();
 		ByteSource salt = PasswordUtil.generateSalt();
 		SimpleHash hashedPassword = PasswordUtil.generateHash(newPassword, salt);
 
@@ -80,7 +80,7 @@ public class UsersController extends Controller {
 		sendResetPassword(user.email, newPassword);
 	}
 
-	private static void sendResetPassword(String email, String password) {
-		MailUtil.sendMail(email, Messages.get("mail.resetpassword.subject"), Messages.get("mail.resetpassword", password));
+	private static void sendResetPassword(String email, char[] password) {
+		MailUtil.sendMail(email, Messages.get("mail.resetpassword.subject"), Messages.get("mail.resetpassword", String.valueOf(password)));
 	}
 }

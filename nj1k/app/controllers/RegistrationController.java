@@ -36,14 +36,11 @@ public class RegistrationController extends Controller {
 			UserEntity userToSave = new UserEntity();
 			ByteSource salt = PasswordUtil.generateSalt();
 			SimpleHash hashedPassword = PasswordUtil.generateHash(userToRegister.getPassword(), salt);
-			
-			userToRegister.setPassword(hashedPassword.toBase64());
-			userToRegister.setSalt(salt.toBase64());
-			
+	
 			logger.debug("Registering user {}", userToRegister);
-			
 			doMapping(userToSave, userToRegister);
-			
+			userToSave.password = hashedPassword.toBase64();
+			userToSave.salt = salt.toBase64();
 			userToSave.save();
 			
 			return redirect(routes.SignInController.showForm());
@@ -57,9 +54,7 @@ public class RegistrationController extends Controller {
 	
 	private static void doMapping(UserEntity u, RegisteringUser r) {
 		u.name = r.getName();
-		u.password = r.getPassword();
 		u.email = r.getEmail();
-		u.salt = r.getSalt();
 	}
 }
 

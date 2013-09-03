@@ -46,10 +46,10 @@ public class SignInController extends Controller {
 
 		if (!filledForm.hasErrors()) {
 			String email = filledForm.get().email;
-			String password = filledForm.get().password;
+			char[] password = filledForm.get().password.toCharArray();
 
 			try {
-				login(email, password.toCharArray());
+				login(email, password);
 				upgradePassword(email, password);
 				logger.debug("User fully authenticated. Redirecting ..................................................");
 			} catch (AuthenticationException e) {
@@ -79,7 +79,7 @@ public class SignInController extends Controller {
 		session().put(SecurityUtil.USER_ID_KEY, authenticationInfo.getPrincipals().getPrimaryPrincipal().toString());
 	}
 
-	private static void upgradePassword(String email, String password) {
+	private static void upgradePassword(String email, char[] password) {
 
 		UserEntity user = UserEntity.findByEmail(email);
 
