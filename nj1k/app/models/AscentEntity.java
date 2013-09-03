@@ -35,7 +35,6 @@ public class AscentEntity extends BaseEntity {
 	@Id
 	public Long id;
 	
-	@Required
 	@Past
 	@Temporal(TemporalType.DATE)
 	public Timestamp ascent_date;
