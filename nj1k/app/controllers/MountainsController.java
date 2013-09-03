@@ -1,5 +1,7 @@
 package controllers;
 
+import com.google.common.net.MediaType;
+
 import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
@@ -20,7 +22,7 @@ public class MountainsController extends Controller {
 	public static Result getImage(Long id) {
 		MountainEntity ascentDetail = MountainEntity.find(id);
 		if (ascentDetail.picture != null) {
-			return ok(ascentDetail.picture);
+			return ok(ascentDetail.picture).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else {
 			return notFound();
 		}
