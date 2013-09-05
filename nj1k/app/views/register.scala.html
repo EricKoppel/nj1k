@@ -9,6 +9,10 @@
         <fieldset>
             <legend>Registration</legend>
             
+            @if(signupForm.hasGlobalErrors) {
+            	<div class="alert alert-error">@signupForm.globalError.message</div>
+            }
+            
             @inputText(
                 signupForm("email"), 
                 '_label -> Messages("email"),

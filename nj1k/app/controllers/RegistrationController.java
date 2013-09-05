@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.PasswordUtil;
@@ -43,6 +44,7 @@ public class RegistrationController extends Controller {
 			userToSave.salt = salt.toBase64();
 			userToSave.save();
 			
+			flash("success", Messages.get("registration.success", userToSave.name));
 			return redirect(routes.SignInController.showForm());
 		}
 		else {

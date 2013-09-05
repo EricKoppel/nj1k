@@ -81,6 +81,8 @@ aboutme=About me
 profile.pic=Profile picture
 account.updated=Your account has been updated
 
+registration.success=Welcome to the NJ1K Club, {0}! You may now sign in.
+
 welcome=Welcome, {0}!
 
 help.ascent.date=Enter the ascent date ({0}). Leave blank if date unknown.
