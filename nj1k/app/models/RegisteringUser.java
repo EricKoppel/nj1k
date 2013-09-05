@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Arrays;
+
 import play.data.validation.Constraints.Email;
 import play.data.validation.Constraints.Required;
 import play.i18n.Messages;
@@ -16,7 +18,7 @@ public class RegisteringUser {
 	private char[] password;
 	
 	@Required
-	private String confirmPassword;
+	private char[] confirmPassword;
 	
 	@Required
 	private String name;
@@ -37,11 +39,11 @@ public class RegisteringUser {
 		this.password = password;
 	}
 
-	public String getConfirmPassword() {
+	public char[] getConfirmPassword() {
 		return confirmPassword;
 	}
 
-	public void setConfirmPassword(String confirmPassword) {
+	public void setConfirmPassword(char[] confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
 
@@ -54,7 +56,7 @@ public class RegisteringUser {
 	}
 
 	public String validate() {
-		return password.equals(confirmPassword) ? null : Messages.get("validation.passwords.equal");
+		return Arrays.equals(password, confirmPassword) ? null : Messages.get("validation.passwords.equal");
 	}
 	
 	@Override
