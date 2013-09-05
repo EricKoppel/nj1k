@@ -46,7 +46,7 @@ public class CustomDateConverter extends Formatters.SimpleFormatter<Timestamp>{
 
 	@Override
 	public String print(Timestamp timestamp, Locale locale) {
-		DateFormat d = DateFormat.getDateInstance();
-		return d.format(timestamp);
+		DateFormat df = new SimpleDateFormat(dateFormat);
+		return df.format(timestamp);
 	}
 }

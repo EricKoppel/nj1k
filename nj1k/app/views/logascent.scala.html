@@ -1,6 +1,7 @@
 @(ascentForm: Form[AscentEntity], mountains: List[MountainEntity])
 
 @import helper._
+@import views.RenderUtil._
 
 @main() {
     
@@ -16,6 +17,7 @@
             @inputText(
                 ascentForm("ascent_date"),
                 '_label -> Messages("ascent.date"),
+                'type -> "datetime-local",
                 '_help -> Messages("help.ascent.date", play.api.Play.current.configuration.getString("date.format").get)
             )
             
@@ -47,7 +49,10 @@
    				'class -> "multi"
    			)
 
-            
+            @input(ascentForm("id"), 
+            	'_label -> null) { (id, name, value, args) =>
+    			<input type="hidden" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
+			} 
         </fieldset>
         
         <div class="actions">

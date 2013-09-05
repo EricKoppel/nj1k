@@ -2,11 +2,9 @@ package models;
 
 import java.util.Arrays;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import play.data.validation.Constraints.Email;
-import play.data.validation.Constraints.Max;
 import play.data.validation.Constraints.Pattern;
 import play.data.validation.Constraints.Required;
 import play.i18n.Messages;

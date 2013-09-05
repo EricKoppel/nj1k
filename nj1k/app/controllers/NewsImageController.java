@@ -1,10 +1,10 @@
 package controllers;
 
-import com.google.common.net.MediaType;
-
 import models.NewsImageEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.google.common.net.MediaType;
 
 public class NewsImageController extends Controller {
 

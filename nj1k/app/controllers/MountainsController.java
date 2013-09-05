@@ -1,12 +1,13 @@
 package controllers;
 
-import com.google.common.net.MediaType;
-
 import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.google.common.net.MediaType;
+
 import flexjson.JSONSerializer;
 
 public class MountainsController extends Controller {
