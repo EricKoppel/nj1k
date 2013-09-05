@@ -20,54 +20,59 @@ public class NewsController extends Controller {
 
 	private final static Form<NewsEntity> newsForm = form(NewsEntity.class);
 	private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
-	
+
 	public static Result showNews(Long id) {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
-	
+
 	public static Result showNewsImage(Long imgId) {
 		return ok(views.html.news_image.render(NewsImageEntity.find.byId(imgId)));
 	}
-	
+
+	public static Result delete(Long id) {
+		if (!SecurityUtil.hasRole("admin")) {
+			forbidden();
+		}
+
+		NewsEntity.find(id).delete();
+		return redirect(routes.Application.index());
+	}
+
 	public static Result showForm() {
 		if (!SecurityUtil.hasRole("admin")) {
 			return forbidden();
 		}
 		return ok(views.html.createnews.render(newsForm));
 	}
-	
+
 	public static Result editForm(Long id) {
 		if (!SecurityUtil.hasRole("admin")) {
 			return forbidden();
 		}
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static Result submit() {
-		
+		Form<NewsEntity> filledForm = newsForm.bindFromRequest();
+
 		if (!SecurityUtil.hasRole("admin")) {
 			return forbidden();
 		}
-		
-		Form<NewsEntity> filledForm = newsForm.bindFromRequest();
-		
-		if (!filledForm.hasErrors()) {
-			NewsEntity news = filledForm.get();
-			news.pictures = (List<NewsImageEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), NewsImageEntity.class);
-			
-			if (news.id == null) {
-				news.save();
-			}
-			else {
-				news.update();
-			}
-			
-			return redirect(routes.NewsController.showNews(news.id));
-		}
-		else {
-			logger.debug("News form contained errors: {}", filledForm.errors().toString());
+
+		if (filledForm.hasErrors()) {
 			return badRequest(views.html.createnews.render(filledForm));
 		}
+
+		NewsEntity news = filledForm.get();
+		news.pictures = (List<NewsImageEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), NewsImageEntity.class);
+
+		if (news.id == null) {
+			news.save();
+		} else {
+			news.update();
+		}
+
+		return redirect(routes.NewsController.showNews(news.id));
 	}
 }

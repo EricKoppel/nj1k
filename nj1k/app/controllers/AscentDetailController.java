@@ -3,12 +3,12 @@ package controllers;
 
 import java.util.List;
 
-import com.google.common.net.MediaType;
-
 import models.AscentDetailEntity;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.SecurityUtil;
+
+import com.google.common.net.MediaType;
 
 public class AscentDetailController extends Controller {
 
@@ -57,7 +57,6 @@ public class AscentDetailController extends Controller {
 		
 		if (!SecurityUtil.ownsAscent(detail.ascent.id)) {
 			return forbidden();
-			
 		}
 		
 		detail.delete();

@@ -12,7 +12,6 @@ import models.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.cache.Cache;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -38,7 +37,7 @@ public class AscentController extends Controller {
 		if (!SecurityUtil.isLoggedIn()) {
 			return forbidden();
 		}
-		
+
 		return ok(views.html.logascent.render(ascentForm, MountainEntity.findAll()));
 	}
 
@@ -54,7 +53,7 @@ public class AscentController extends Controller {
 		if (!SecurityUtil.ownsAscent(id)) {
 			return forbidden();
 		}
-		
+
 		return TODO;
 	}
 
@@ -69,23 +68,26 @@ public class AscentController extends Controller {
 
 	@SuppressWarnings("unchecked")
 	public static Result submit() throws Exception {
-
 		if (!SecurityUtil.isLoggedIn()) {
 			return forbidden();
 		}
 
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
 
-		if (!filledForm.hasErrors()) {
-			AscentEntity ascent = filledForm.get();
-			ascent.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
-			ascent.ascentDetails = (List<AscentDetailEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class);
-			ascent.save();
-
-			return redirect(routes.AscentController.showTripReport(ascent.id));
-		} else {
-			logger.debug("Ascent form contained errors: {}", filledForm.errors().toString());
+		if (filledForm.hasErrors()) {
 			return badRequest(views.html.logascent.render(filledForm, MountainEntity.findAll()));
 		}
+
+		AscentEntity ascent = filledForm.get();
+		ascent.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
+		ascent.ascentDetails.addAll((List<AscentDetailEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class));
+
+		if (ascent.id == null) {
+			ascent.save();
+		} else {
+			ascent.update();
+		}
+
+		return redirect(routes.AscentController.showTripReport(ascent.id));
 	}
 }

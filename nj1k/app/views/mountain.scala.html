@@ -50,7 +50,7 @@
 				</tr>
 				<tr>
 					<td>@Messages("mountain.topo")</td>
-					<td><a href="http://mapper.acme.com/?t=T&z=15&ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+					<td><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
 				</tr>
 				<tr>
 					<td>@Messages("mountain.nhn")</td>
@@ -64,7 +64,7 @@
 	    <div id="mountain_description" class="span8">
 	    	<h4>@Messages("about")</h4>
 	    	@if(mountain.picture != null) {
-	    		<a id="mountain_pic" href="#"><img class="pull-left img-thumbnail" height="200" width="200" style="margin: 0 10px 10px 0;" src="@routes.MountainsController.getImage(mountain.id)"></a>
+	    		<a id="mountain_pic" href="#"><img alt="@mountain.name" class="pull-left img-thumbnail" height="200" width="200" style="margin: 0 10px 10px 0;" src="@routes.MountainsController.getImage(mountain.id)" /></a>
 	    	}
 	    	@Html(mountain.description)
 	    </div>
@@ -91,7 +91,7 @@
 		<h4>@Messages("mountain.pictures.from", mountain.name)</h4>
 		<div class=span12>
 		@for(detail <- ascentImages) {
-			<a id="@detail.id" class="ascent_img" href="#"><img class="img-thumbnail" alt="@detail.caption" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
+			<a id="@detail.id" class="ascent_img" href="#"><img class="img-thumbnail" alt="@detail.caption" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)" /></a>
 		}
 	    </div>
 	</div>
