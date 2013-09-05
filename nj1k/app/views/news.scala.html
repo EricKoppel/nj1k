@@ -10,6 +10,17 @@
 				window.open("/news/images/" + this.id + "/show", '@news.title', 'width=1024, height=800px');
 				return false;
 			});
+			
+			$('#delete_news').click(function() {
+	    		if (confirm('@Messages("news.delete.prompt")')) {
+		    		jsRoutes.controllers.NewsController.delete(@news.id).ajax({
+		    			success: function(result) {
+		    				window.location.href = "@routes.Application.index()";
+		    		    }
+		    		});
+	    		}
+	    		return false;
+	    	});
 		});
 	</script>
 	
@@ -20,7 +31,8 @@
 	@if(hasRole("admin")) {
 	<div class=row-fluid>
 		<div class="span8">
-			<p><strong><a class="btn btn-small" href=@routes.NewsController.editForm(news.id)>@Messages("news.edit")</a></strong></p>
+			<p><strong><a class="btn btn-small" href="@routes.NewsController.editForm(news.id)">@Messages("news.edit")</a></strong></p>
+			<p><strong><a id="delete_news" class="btn btn-small" href="@routes.NewsController.delete(news.id)">@Messages("news.delete")</a></strong></p>
 		</div>
 	</div>
 	}

@@ -49,6 +49,7 @@ public class Application extends Controller {
 	public static Result javascriptRoutes() {
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(), 
 				controllers.routes.javascript.AscentDetailController.remove(),
+				controllers.routes.javascript.NewsController.delete(),
 				controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(),
 				controllers.routes.javascript.UsersController.showUser(),
 				controllers.routes.javascript.MountainsController.showDistances(), 

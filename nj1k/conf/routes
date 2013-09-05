@@ -39,6 +39,7 @@ GET		/news/:id					controllers.NewsController.showNews(id: Long)
 GET		/news						controllers.NewsController.showForm()
 GET		/news/:id/edit				controllers.NewsController.editForm(id: Long)
 POST	/news						controllers.NewsController.submit()
+DELETE	/news/:id					controllers.NewsController.delete(id: Long)
 
 GET		/news/images/:id			controllers.NewsImageController.getImage(id: Long)
 GET		/news/images/:id/show		controllers.NewsImageController.showNewsImage(id: Long)		

@@ -13,7 +13,7 @@
     		if (confirm('@Messages("ascent.delete.prompt")')) {
 	    		jsRoutes.controllers.AscentController.remove(@ascent.id).ajax({
 	    			success: function(result) {
-	    				window.location.href = "/users/" + @ascent.climber.id;
+	    				window.location.href = "@routes.UsersController.showUser(ascent.climber.id)";
 	    		    }
 	    		});
     		}
