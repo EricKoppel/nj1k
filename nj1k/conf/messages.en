@@ -91,6 +91,7 @@ button.submit.ascent=Submit ascent
 button.submit.login=Login
 button.submit.news=Submit news
 
+password.length=Password must be between 6 and 32 characters
 password.sent=Your new password has been sent to your e-mail address
 mail.resetpassword.subject=Password reset
 mail.resetpassword=You or someone has requested a password reset for your account on NJ1K.org. If you did not make this request, ignore this mail. Otherwise, log in with this temporary password: {0}
