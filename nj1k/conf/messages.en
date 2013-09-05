@@ -41,6 +41,8 @@ news.title=Headline
 news.entry=Story
 news.pics=Upload pictures
 news.edit=Edit article
+news.delete=Delete article
+news.delete.prompt=Are you sure you want to delete this article?
 news.date=Date
 news.nynjtc=News from the NYNJTC
 
