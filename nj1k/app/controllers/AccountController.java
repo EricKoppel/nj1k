@@ -40,7 +40,7 @@ public class AccountController extends Controller {
 		}
 		
 		UserEntity account = accountForm.get();
-		if (!(SecurityUtil.getCurrentUser().id == account.id)) {
+		if (SecurityUtil.getCurrentUser().id != account.id) {
 			return forbidden();
 		}
 		
