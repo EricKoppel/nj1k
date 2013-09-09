@@ -35,7 +35,7 @@ public class RenderUtil {
 			return text.replaceAll("\\n", "<br/>");
 		}
 		
-		return text;
+		return "";
 	}
 	
 //	public static Html unescape(String html) {

@@ -41,7 +41,9 @@
 		    </div>
 		    <h4>About</h4>
 		   	<p>
-		   		<img alt="user.user.name" class="pull-left img-thumbnail" width="200" height="200" style="margin: 0 10px 10px 0;" src="@routes.UsersController.getProfileImage(user.user.id)">
+		   		if (user.user.pic != null) {
+		   			<img alt="@user.user.name" class="pull-left img-thumbnail" width="200" height="200" style="margin: 0 10px 10px 0;" src="@routes.UsersController.getProfileImage(user.user.id)">
+		   		}
 		   		@Html(formatText(user.user.aboutme))
 		   	</p>
 		</div>
