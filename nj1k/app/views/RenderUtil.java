@@ -31,7 +31,11 @@ public class RenderUtil {
 	}
 	
 	public static String formatText(String text) {
-		return text.replaceAll("\\n", "<br/>");
+		if (text != null) {
+			return text.replaceAll("\\n", "<br/>");
+		}
+		
+		return text;
 	}
 	
 //	public static Html unescape(String html) {
