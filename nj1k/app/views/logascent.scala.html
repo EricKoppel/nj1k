@@ -17,7 +17,7 @@
             @inputText(
                 ascentForm("ascent_date"),
                 '_label -> Messages("ascent.date"),
-                'type -> "datetime-local",
+                'type -> "date",
                 '_help -> Messages("help.ascent.date", play.api.Play.current.configuration.getString("date.format").get)
             )
             

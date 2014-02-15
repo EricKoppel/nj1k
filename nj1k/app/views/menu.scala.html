@@ -21,8 +21,12 @@
     </ul>
    	<div class="pull-right">
     	@if(isLoggedIn()) {
-    		<a class="btn" href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a>
-    		<a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a>
+    	<div class="dropdown">
+    		<ul class="dropdown-menu">
+    			<li><a class="btn" href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a></li>
+    			<li><a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
+    		</ul>
+    	</div>
     	} else {
     		<a class="btn" href="@routes.SignInController.showForm()">@Messages("menu.login")</a>
     	}

@@ -17,6 +17,12 @@ public class AscentDetailController extends Controller {
 		return ok(ascentDetail.image).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 	
+	public static Result getThumbnail(Long id) {
+		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
+		byte[] img = ascentDetail.thumbnail != null ? ascentDetail.thumbnail : ascentDetail.image;
+		return ok(img).as(MediaType.ANY_IMAGE_TYPE.type());
+	}
+	
 	public static Result showImage(Long id) {
 		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
 		List<AscentDetailEntity> ascentDetails = ascentDetail.ascent.ascentDetails;

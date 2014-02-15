@@ -1,7 +1,6 @@
 package utils;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +13,13 @@ import org.jsoup.select.Elements;
 
 public class NYNJTCParserTask implements Callable<List<NYNJTCNewsArticle>> {
 
-	private static final URL NEWS_PAGE;
-	
-	static {
-		try {
-			NEWS_PAGE = new URL("http://nynjtc.org/news/news");
-		} catch (MalformedURLException e) {
-			throw new ExceptionInInitializerError(e);
-		}
-	}
+	private static final String NEWS_PAGE = "http://nynjtc.org/news/news";
+	private static final String USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.162 Safari/535.19";
 	
 	@Override
 	public List<NYNJTCNewsArticle> call() throws Exception {
 		List<NYNJTCNewsArticle> articles = new ArrayList<NYNJTCNewsArticle>();
-		Document doc = Jsoup.parse(NEWS_PAGE, 4096);
+		Document doc = Jsoup.connect(NEWS_PAGE).userAgent(USER_AGENT).timeout(4096).get();
 		Elements rows = doc.select("div.view-content-parks-table tbody > tr");
 		
 		for (Element row : rows) {
