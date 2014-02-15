@@ -19,6 +19,10 @@ body {
 	background-attachment: fixed;
 }
 
+table {
+	width: 100%;	
+}
+
 a {
 	color: #333333
 }
@@ -66,6 +70,6 @@ footer, .navbar-inverse .nav > li > a {
 	border: 1px solid #002B40;
 }
 
-img {
+img.img-thumbnail {
 	margin: 5px;
 }
