@@ -1,6 +1,9 @@
 package controllers;
 
 import static play.data.Form.form;
+
+import java.util.concurrent.TimeUnit;
+
 import models.AscentEntity;
 import models.Contact;
 import models.NewsEntity;
@@ -11,8 +14,11 @@ import org.slf4j.LoggerFactory;
 import play.Routes;
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.Akka;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.concurrent.duration.Duration;
+import utils.MailRunnable;
 import utils.MailUtil;
 
 public class Application extends Controller {
@@ -33,8 +39,11 @@ public class Application extends Controller {
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.contact.render(filledForm));
 		}
-
-		MailUtil.sendMail("erk7@njit.edu", filledForm.get().getSubject(), Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage()));
+		
+		Runnable mailer = new MailRunnable("erk7@njit.edu", filledForm.get().getSubject(), Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage()));
+		Akka.system().scheduler().scheduleOnce(Duration.create(0, TimeUnit.SECONDS), mailer, Akka.system().dispatcher());
+		
+		flash("success", Messages.get("email.sent"));
 		return index();
 	}
 
