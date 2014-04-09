@@ -3,8 +3,12 @@
 @import helper._
 
 @main() {
+
+	<div class="page-header">
+		<h3>@Messages("contact")</h3>
+	</div>
+
 	<fieldset>
-    	<legend>@Messages("contact")</legend>
 	@helper.form(action = routes.Application.submitContact) {
 		@inputText(
            contactForm("email"),

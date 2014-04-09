@@ -39,6 +39,7 @@ user.uniquesuccess=Distinct summits attained
 user.percentcomplete=Percent complete
 
 users.aspirants=Aspirants
+users.finishers=Finishers
 
 news.title=Headline
 news.entry=Story
@@ -65,7 +66,7 @@ menu.news.submit=Submit News
 menu.edit.account=Account
 menu.ascent=Log Ascent
 menu.contact=Contact
-menu.about=About us
+menu.about=About Us
 
 validation.email=This e-mail address is not registered
 validation.email.taken=This e-mail address is already registered
@@ -90,6 +91,7 @@ aboutme=About me
 profile.pic=Profile picture
 account.updated=Your account has been updated
 
+registration=Register for the NJ1K Club
 registration.success=Welcome to the NJ1K Club, {0}! You may now sign in.
 
 welcome=Welcome, {0}!

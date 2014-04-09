@@ -39,13 +39,22 @@
 			    	<tr><td><small>@Messages("user.percentcomplete")</small></td><td><small>@formatPercent(user.percentComplete)</small></td></tr>
 			    </table>
 		    </div>
-		    <h4>About</h4>
-		   	<p>
-		   		@if(user.user.pic != null) {
-		   			<img alt="@user.user.name" class="pull-left img-thumbnail" width="200" height="200" style="margin: 0 10px 10px 0;" src="@routes.UsersController.getProfileImage(user.user.id)">
-		   		}
-		   		@Html(formatText(user.user.aboutme))
-		   	</p>
+		    <h4></h4>
+		    
+		    <div class="media">
+				@if(user.user.pic != null) {
+					<a class="pull-left" href="#">
+				   		<img alt="@user.user.name" width="128" height="128" class="media-object" src="@routes.UsersController.getProfileImage(user.user.id)">
+				   	</a>
+				}
+				
+				@if(!user.user.aboutme.trim().isEmpty()) {
+					<div class="media-body">
+					    <h4 class="media-heading">About</h4>
+					    @Html(formatText(user.user.aboutme))
+					</div>
+				}
+			</div>
 		</div>
 	</div>
 }
