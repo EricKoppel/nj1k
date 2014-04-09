@@ -14,7 +14,6 @@ public class TestExternalNews {
 
 	@Test
 	public void testRegistrationAndLogin() {
-		System.out.println("running");
 		running(fakeApplication(), new Runnable() {
 			public void run() {
 				Result result = Helpers.callAction(controllers.routes.ref.ExternalNewsController.getNewsFromNYNJTC(), Helpers.fakeRequest());

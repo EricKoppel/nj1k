@@ -4,12 +4,13 @@
 @import helper._
 
 @main() {
+	<div class="page-header">
+		<h3>@Messages("menu.login")</h3>
+	</div>
     
     @helper.form(action = routes.SignInController.submit) {
         
-        <fieldset>
-            <legend>Login</legend>
-          
+        <fieldset>       
             @if(flash.get("success") != null) {
             	<div class="alert alert-info">@flash.get("success")</div>
             }

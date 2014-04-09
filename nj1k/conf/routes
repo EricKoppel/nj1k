@@ -8,6 +8,7 @@ GET     /contact                    controllers.Application.contact()
 POST    /contact                    controllers.Application.submitContact()
 GET     /about                      controllers.Application.about()
 GET     /links                      controllers.Application.links()
+GET		/images/background.png		controllers.Application.background()
 
 GET 	/login						controllers.SignInController.showForm()
 GET 	/logout						controllers.SignInController.logout()

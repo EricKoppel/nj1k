@@ -9,9 +9,6 @@
     	}
     	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
     	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
-    	@if(!isLoggedIn()) {
-    	<li><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
-    	}
     	@if(isLoggedIn()) {
     	<li><a href="@routes.AscentController.showForm()">@Messages("menu.ascent")</a></li>
     	}

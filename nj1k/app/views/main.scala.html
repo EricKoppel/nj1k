@@ -19,6 +19,7 @@
         <script src="@routes.Assets.at("javascripts/libs/underscore-min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/jquery-1.7.1.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/backbone-min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/libs/holder.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/jquery.metadata.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/jquery.tablesorter.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/libs/jquery.MultiFile.pack.js")" type="text/javascript"></script>
@@ -34,12 +35,7 @@
 	    		    </div>
 		   		</div>
 			</div>
-			<header>
-				<div class="container container-fluid">
-					<img alt="@Messages("welcome.header")" src="@routes.Assets.at("images/banner_1024.jpg")" />
-				</div>
-			</header>
-			<div class="container container-fluid">
+			<div class="container container-fluid" style="padding: 60px;">
 			@if(flash.get("success") != null) {
 				<script type="text/javascript">
 					$(document).ready(function() {

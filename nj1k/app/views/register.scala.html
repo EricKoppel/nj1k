@@ -4,11 +4,14 @@
 
 @main() {
     
+    <div class="page-header">
+		<h3>@Messages("registration")</h3>
+	</div>
+	
     @helper.form(action = routes.RegistrationController.submit) {
         
         <fieldset>
-            <legend>Registration</legend>
-            
+        
             @if(signupForm.hasGlobalErrors) {
             	<div class="alert alert-error">@signupForm.globalError.message</div>
             }
