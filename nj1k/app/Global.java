@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Application;
+import play.Configuration;
 import play.GlobalSettings;
 import play.data.format.Formatters;
 import utils.CustomDateConverter;
@@ -119,16 +120,12 @@ public class Global extends GlobalSettings {
 	}
 
 	private void registerDateConverter(final Application app) {
-
 		logger.debug("Registering date converter . . .");
-
-		Formatters.register(Timestamp.class, new CustomDateConverter(app.configuration().getString("date.format")));
+		Formatters.register(Timestamp.class, new CustomDateConverter());
 	}
 
 	private void registerMountainConverter(final Application app) {
-
 		logger.debug("Registering mountain converter . . .");
-
 		Formatters.register(MountainEntity.class, new CustomMountainConverter());
 	}
 }

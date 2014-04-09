@@ -14,11 +14,9 @@ public class TestExternalNews {
 
 	@Test
 	public void testRegistrationAndLogin() {
-		running(fakeApplication(), new Runnable() {
-			public void run() {
-				Result result = Helpers.callAction(controllers.routes.ref.ExternalNewsController.getNewsFromNYNJTC(), Helpers.fakeRequest());
-				Assert.assertEquals(Status.OK, Helpers.status(result));
-			}
+		running(fakeApplication(), () -> {
+			Result result = Helpers.callAction(controllers.routes.ref.ExternalNewsController.getNewsFromNYNJTC(), Helpers.fakeRequest());
+			Assert.assertEquals(Status.OK, Helpers.status(result));
 		});
 	}
 }
