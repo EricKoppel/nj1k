@@ -13,12 +13,18 @@ public class RenderUtil {
 
 	private static Logger logger = LoggerFactory.getLogger(RenderUtil.class);
 	
+	private static final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<SimpleDateFormat>() {
+		public SimpleDateFormat initialValue() {
+			return new SimpleDateFormat("MM/dd/yyyy");
+		}
+	};
+	
 	public static String formatAscentDate(Timestamp t) {
 		if (t == null) {
 			return Messages.get("unknown");
 		}
 		else {
-			return new SimpleDateFormat("MM/dd/yyyy").format(t);
+			return df.get().format(t);
 		}
 	}
 	
@@ -37,15 +43,4 @@ public class RenderUtil {
 		
 		return "";
 	}
-	
-//	public static Html unescape(String html) {
-//		
-//		logger.trace("After: \n{}", html);
-//
-//		html = Jsoup.clean(html, Whitelist.basic());
-//		
-//		logger.trace("After: \n{}", html);
-//		
-//		return new Html(html);
-//	}
 }
