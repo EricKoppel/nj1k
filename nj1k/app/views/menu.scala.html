@@ -18,14 +18,14 @@
     </ul>
    	<div class="pull-right">
     	@if(isLoggedIn()) {
-    	<div class="dropdown">
-    		<ul class="dropdown-menu">
-    			<li><a class="btn" href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a></li>
-    			<li><a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
-    		</ul>
-    	</div>
+    	<a class="btn" href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a>
+    	<a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a>
     	} else {
-    		<a class="btn" href="@routes.SignInController.showForm()">@Messages("menu.login")</a>
+   		<form class="navbar-form pull-left" method="POST" action="@routes.SignInController.submit()">
+ 			<input type="text" name="email" placeholder="e-mail address" class="span2">
+ 			<input type="password" name="password" placeholder="password" class="span2">
+			<button type="submit" class="btn">@Messages("menu.login")</button>
+		</form>
     	}
     </div>
     

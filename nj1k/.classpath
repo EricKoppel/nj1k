@@ -62,6 +62,7 @@
   <classpathentry kind="lib" path="/usr/local/play/repository/local/org.hibernate.javax.persistence/hibernate-jpa-2.0-api/1.0.1.Final/jars/hibernate-jpa-2.0-api.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/repository/local/com.typesafe.play/play-cache_2.10/2.2.2/jars/play-cache_2.10.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/repository/local/net.sf.ehcache/ehcache-core/2.6.6/jars/ehcache-core.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/repository/local/com.typesafe.play/filters-helpers_2.10/2.2.2/jars/filters-helpers_2.10.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/mysql/mysql-connector-java/jars/mysql-connector-java-5.1.18.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/net.sf.flexjson/flexjson/jars/flexjson-2.1.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/org.jsoup/jsoup/jars/jsoup-1.6.3.jar"/>

@@ -8,8 +8,9 @@
 		<h3>@Messages("contact")</h3>
 	</div>
 
-	<fieldset>
+	
 	@helper.form(action = routes.Application.submitContact) {
+	<fieldset>
 		@inputText(
            contactForm("email"),
            '_label -> Messages("email.address"),

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.Routes;
+import play.cache.Cached;
 import play.data.Form;
 import play.i18n.Messages;
 import play.libs.Akka;
@@ -101,6 +102,7 @@ public class Application extends Controller {
 		return status;
 	}
 	
+	@Cached(key = "javascriptRoutes")
 	public static Result javascriptRoutes() {
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(), 
 				controllers.routes.javascript.AscentDetailController.remove(),

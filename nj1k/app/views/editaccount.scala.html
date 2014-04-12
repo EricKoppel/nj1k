@@ -20,11 +20,14 @@
     
 	</script>
 	
+	<div class="page-header">
+		<h3>@Messages("account.edit")</h3>
+	</div>
+	
     @helper.form(action = routes.AccountController.submitEdit, 'enctype -> "multipart/form-data") {
         
         <div class=row-fluid>
         	<fieldset>
-		    	<legend>Edit Account</legend>
 		    	
 		    	@if(flash.get("success") != null) {
 		    		<div class="alert alert-info">@flash.get("success")</div>
