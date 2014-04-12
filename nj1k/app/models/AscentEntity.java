@@ -44,7 +44,7 @@ public class AscentEntity extends BaseEntity {
 	@Lob
 	public String trip_report;
 	
-	@OneToMany(mappedBy="ascent", cascade=CascadeType.PERSIST)
+	@OneToMany(mappedBy="ascent", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	public List<AscentDetailEntity> ascentDetails;
 	
 	@ManyToOne

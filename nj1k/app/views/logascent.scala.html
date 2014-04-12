@@ -4,11 +4,20 @@
 @import views.RenderUtil._
 
 @main() {
+
+	<script type="text/javascript">
+		$(function() {
+	    	$("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
+		});
+	
+	</script>
+    <div class="page-header">
+		<h3>@Messages("ascent.log.new")</h3>
+	</div>
     
     @helper.form(action = routes.AscentController.submit, 'enctype -> "multipart/form-data") {
         
         <fieldset>
-            <legend>Log New Ascent</legend>
           
             @if(ascentForm.hasGlobalErrors) {
 				@ascentForm.globalError.message

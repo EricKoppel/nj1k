@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Application;
-import play.Configuration;
 import play.GlobalSettings;
 import play.data.format.Formatters;
 import utils.CustomDateConverter;
@@ -30,10 +29,10 @@ public class Global extends GlobalSettings {
 		registerDateConverter(app);
 		registerMountainConverter(app);
 
-//		 loadProfileImages(app);
-//		 loadTripReportImages(app);
-//		 loadMountainPics(app);
-//		loadNewsImages(app);
+		// loadProfileImages(app);
+		// loadTripReportImages(app);
+		// loadMountainPics(app);
+		// loadNewsImages(app);
 	}
 
 	private void loadNewsImages(Application app) {
@@ -57,7 +56,7 @@ public class Global extends GlobalSettings {
 			}
 		}
 	}
-	
+
 	private void loadMountainPics(Application app) {
 		List<MountainEntity> details = MountainEntity.find.all();
 

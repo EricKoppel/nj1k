@@ -8,7 +8,7 @@ object ApplicationBuild extends Build {
     val appVersion      = "1.0-SNAPSHOT"
 
     val appDependencies = Seq(
-      javaCore, javaJdbc, javaEbean, cache,
+      javaCore, javaJdbc, javaEbean, cache, filters,
       "mysql" % "mysql-connector-java" % "5.1.18",
       "net.sf.flexjson" % "flexjson" % "2.1" withSources() withJavadoc(),
       "org.jsoup" % "jsoup" % "1.6.3" withSources() withJavadoc(),

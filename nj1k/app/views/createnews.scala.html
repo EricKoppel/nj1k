@@ -3,11 +3,14 @@
 @import helper._
 
 @main() {
-    
+
+    <div class="page-header">
+		<h3>@Messages("news.submit")</h3>
+	</div>
+	
     @helper.form(action = routes.NewsController.submit, 'enctype -> "multipart/form-data") {
         
         <fieldset>
-            <legend>Submit News</legend>
           
             @if(newsForm.hasGlobalErrors) {
 				@newsForm.globalError.message
