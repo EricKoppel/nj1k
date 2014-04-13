@@ -73,23 +73,23 @@ public class Application extends Controller {
 		
 		switch (cal.get(Calendar.MONTH)) {
 		case 11: case 0: case 1:
-			status = ok(Play.application().getFile("public/images/winter.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/winter.png"));
 			cal.set(Calendar.MONTH, 2);
 			break;
 		case 2: case 3: case 4:
-			status = ok(Play.application().getFile("public/images/spring.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/spring.png"));
 			cal.set(Calendar.MONTH, 5);
 			break;
 		case 5: case 6: case 7:
-			status = ok(Play.application().getFile("public/images/summer.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/summer.png"));
 			cal.set(Calendar.MONTH, 8);
 			break;
 		case 8: case 9: case 10:
-			status = ok(Play.application().getFile("public/images/fall.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/fall.png"));
 			cal.set(Calendar.MONTH, 11);
 			break;
 		default: 
-			status = ok(Play.application().getFile("public/images/default.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/default.png"));
 			break;
 		}
 		
