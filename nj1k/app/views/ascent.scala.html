@@ -10,8 +10,7 @@
     $(document).ready(function() {
     	$('#delete_ascent').click(function() {
     		if (confirm('@Messages("ascent.delete.prompt")')) {
-    			var container = $(this).parents(".img_container")[0];
-	    		jsRoutes.controllers.AscentController.remove(container.id).ajax({
+	    		jsRoutes.controllers.AscentController.remove(@ascent.id).ajax({
 	    			success: function(result) {
 	    				window.location.href = "@routes.UsersController.showUser(ascent.climber.id)";
 	    		    }
