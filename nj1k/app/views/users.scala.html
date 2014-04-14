@@ -1,6 +1,6 @@
 @(finishers: List[FinisherEntity], users: List[UserEntityAggregate])
 
-@import java.text.SimpleDateFormat
+@import views.RenderUtil._
 
 @main() {
 
@@ -27,7 +27,7 @@
 	    @for(f <- finishers) {
 	        <tr>
 		        <td><a href="@routes.UsersController.showUser(f.user.id)">@f.user.name</a></td>
-		        <td>@{new SimpleDateFormat("MM/dd/yyyy").format(f.final_ascent.ascent_date)}</td>
+		        <td>@formatAscentDate(f.final_ascent.ascent_date)</td>
 		        <td><a href="@routes.AscentController.showTripReport(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
 	        </tr>
 	    }
