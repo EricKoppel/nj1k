@@ -48,7 +48,7 @@
 				</thead>
 				@for(a <- recentAscents) {
 					<tr>
-						<td><a href="@routes.AscentController.showTripReport(a.id)">@{new SimpleDateFormat("MM/dd/yyyy").format(a.ascent_date)}</a></td>
+						<td><a href="@routes.AscentController.showTripReport(a.id)">@formatAscentDate(a.ascent_date)</a></td>
 						<td><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></td>
 						<td><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></td>
 					</tr>
@@ -69,7 +69,7 @@
 						</thead>
 						@for(n <- news) {
 							<tr>
-								<td>@{new SimpleDateFormat("MM/dd/yyyy").format(n.news_date)}</td>
+								<td>@formatAscentDate(n.news_date)</td>
 								<td><a href="@routes.NewsController.showNews(n.id)">@n.title</a></td>
 							</tr>
 						}
