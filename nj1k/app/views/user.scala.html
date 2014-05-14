@@ -2,7 +2,8 @@
 @import java.text.SimpleDateFormat
 @import views.RenderUtil._
 
-@main() {
+@hero = {}
+@main()(hero) {
     
     <script type="text/javascript">
     	$(document).ready(function() {
@@ -20,7 +21,7 @@
     
 	    <div class="span4">
 			<h4>@Messages("ascent.climb.list")</h4>
-			<table id="climbs" class="table table-striped table-condensed table-hover">
+			<table id="climbs" class="table table-condensed">
 			@for(a <- ascents) {
 				<tr>
 					<td><a href="@routes.AscentController.showTripReport(a.id)">@formatAscentDate(a.ascent_date)</a></td>
@@ -48,7 +49,7 @@
 				   	</a>
 				}
 				
-				@if(!user.user.aboutme.trim().isEmpty()) {
+				@if(user.user.aboutme != null && !user.user.aboutme.trim().isEmpty()) {
 					<div class="media-body">
 					    <h4 class="media-heading">About</h4>
 					    @Html(formatText(user.user.aboutme))

@@ -37,7 +37,7 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		return ok(views.html.index.render(NewsEntity.findAll(), AscentEntity.findRecent(25)));
+		return ok(views.html.index.render(NewsEntity.findRecent(5), AscentEntity.findRecent(5)));
 	}
 
 	public static Result contact() {
@@ -45,13 +45,16 @@ public class Application extends Controller {
 	}
 
 	public static Result submitContact() {
-		Form<Contact> filledForm = contactForm.bindFromRequest();
+		final Form<Contact> filledForm = contactForm.bindFromRequest();
+		final String subject = filledForm.get().getSubject();
+		final String message = Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage());
+		
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.contact.render(filledForm));
 		}
 		
 		Akka.system().scheduler().scheduleOnce(Duration.create(0, TimeUnit.SECONDS), () -> {
-			MailUtil.sendMail("erk7@njit.edu", filledForm.get().getSubject(), Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage()));
+			MailUtil.sendMail("erk7@njit.edu", subject, message);
 		}, Akka.system().dispatcher());
 		
 		flash("success", Messages.get("email.sent"));
@@ -66,7 +69,6 @@ public class Application extends Controller {
 		return ok(views.html.links.render());
 	}
 
-//	@Cached(duration = 3600, key = "background")
 	public static Result background() {
 		Calendar cal = Calendar.getInstance();
 		Status status = null;
@@ -96,6 +98,8 @@ public class Application extends Controller {
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		
 		response().setHeader(CACHE_CONTROL, "public");
 		response().setHeader(EXPIRES, dateFormat.get().format(cal.getTime()));
 		
@@ -108,6 +112,7 @@ public class Application extends Controller {
 				controllers.routes.javascript.AscentDetailController.remove(),
 				controllers.routes.javascript.NewsController.delete(),
 				controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(),
+				controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
 				controllers.routes.javascript.UsersController.showUser(),
 				controllers.routes.javascript.MountainsController.showDistances(), 
 				controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");

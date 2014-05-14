@@ -20,18 +20,22 @@ public class NYNJTCParserFunction implements Function<Response, List<NYNJTCNewsA
 	private static final Logger logger = LoggerFactory.getLogger(NYNJTCParserFunction.class);
 	public static final String NEWS_PAGE = "http://nynjtc.org/news/news";
 	
+	private int maxResults;
+	
+	public NYNJTCParserFunction(int maxResults) {
+		this.maxResults = maxResults;
+	}
+
 	@Override
 	public List<NYNJTCNewsArticle> apply(Response response) throws Exception {
 		List<NYNJTCNewsArticle> articles = new ArrayList<NYNJTCNewsArticle>();
 		Document doc = Jsoup.parse(response.getBodyAsStream(), null, NEWS_PAGE);
-		Elements rows = doc.select("div.view-content-parks-table tbody > tr");
+		Elements rows = doc.select("div.view-content-parks-table tbody > tr:lt(" + maxResults + ")");
 		
 		for (Element row : rows) {
 			articles.add(new NYNJTCNewsArticle(extractTitle(row), extractDate(row), extractURL(row)));
 		}
-		
-		logger.debug("Found response\n\n{}", articles);
-		
+
 		return articles;
 	}
 	

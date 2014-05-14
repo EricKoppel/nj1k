@@ -2,7 +2,8 @@
 
 @import views.RenderUtil._
 
-@main() {
+@hero = {}
+@main()(hero) {
 
 	<script type="text/javascript">
 		$(document).ready(function() { 
@@ -15,7 +16,7 @@
 		<h3>@Messages("users.finishers")</h3>
 	</div>
 	
-    <table id="finisherList" class="table table-striped tablesorter">
+    <table id="finisherList" class="table tablesorter">
 	    <thead>
 	    	<tr>
 		    	<th>Climber</th>
@@ -38,7 +39,7 @@
 		<h3>@Messages("users.aspirants")</h3>
     </div>
     
-    <table id="climbList" class="table table-striped tablesorter">
+    <table id="climbList" class="table tablesorter">
         <thead>
         	<tr>
 	    		<th>Climber</th>

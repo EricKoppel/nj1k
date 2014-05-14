@@ -28,8 +28,8 @@ public class ImageUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ImageUtil.class);
 
-	public static List<? extends ImageEntity> extractPictures(List<FilePart> files, Class<? extends ImageEntity> clazz) {
-		List<ImageEntity> pictures = new ArrayList<ImageEntity>();
+	public static <T extends ImageEntity> List<T> extractPictures(List<FilePart> files, Class<T> clazz) {
+		List<T> pictures = new ArrayList<T>();
 		CompletionService<byte[]> taskCompletionService = new ExecutorCompletionService<byte[]>(Executors.newCachedThreadPool());
 		int submittedTasks = 0;
 
@@ -48,7 +48,7 @@ public class ImageUtil {
 		for (int i = 0; i < submittedTasks; i++) {
 			try {
 				Future<byte[]> future = taskCompletionService.take();
-				ImageEntity entity = clazz.newInstance();
+				T entity = clazz.newInstance();
 				entity.image = future.get();
 				pictures.add(entity);
 				logger.debug("Processed image");

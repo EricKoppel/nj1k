@@ -1,7 +1,6 @@
 package models;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,6 +9,8 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Required;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
 
 @Entity
 public class NewsEntity extends BaseEntity {
@@ -20,7 +21,8 @@ public class NewsEntity extends BaseEntity {
 	@Id
 	public Long id;
 	
-	public Timestamp news_date = new Timestamp(new Date().getTime());
+	@CreatedTimestamp
+	public Timestamp news_date;
 	
 	@Required
 	public String title;
@@ -34,6 +36,10 @@ public class NewsEntity extends BaseEntity {
 	
 	public static List<NewsEntity> findAll() {
 		return find.orderBy().desc("news_date").findList();
+	}
+	
+	public static List<NewsEntity> findRecent(int i) {
+		return find.setMaxRows(i).orderBy().desc("news_date").findList();
 	}
 	
 	public static Integer findNumberOfPages(Integer pageSize) {

@@ -65,7 +65,7 @@ public class NewsController extends Controller {
 		}
 
 		NewsEntity news = filledForm.get();
-		news.pictures = (List<NewsImageEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), NewsImageEntity.class);
+		news.pictures.addAll(ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), NewsImageEntity.class));
 
 		if (news.id == null) {
 			news.save();
