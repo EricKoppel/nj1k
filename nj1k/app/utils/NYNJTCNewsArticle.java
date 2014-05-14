@@ -42,6 +42,4 @@ public class NYNJTCNewsArticle {
 	public String toString() {
 		return "NYNJTCNewsArticle [title=" + title + ", date=" + date + ", link=" + link + "]";
 	}
-	
-	
 }

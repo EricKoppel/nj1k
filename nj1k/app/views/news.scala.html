@@ -3,7 +3,8 @@
 @import utils.SecurityUtil._
 @import views.RenderUtil._
 
-@main() {
+@hero = {}
+@main(title = news.title)(hero) {
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.news_img').click(function(e) {

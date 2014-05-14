@@ -35,6 +35,7 @@ GET		/users/:id					controllers.UsersController.showUser(id: Long)
 GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
 
 GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()
+GET		/externalNews/:id			controllers.ExternalNewsController.getNewsArticleFromNYNJTC(id: String)
 
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
 GET		/news						controllers.NewsController.showForm()
@@ -64,5 +65,3 @@ GET		/radius/:id					controllers.MountainsController.showDistances(id: Long, how
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /routes.js  				controllers.Application.javascriptRoutes()
-GET     /assets/img/glyphicons-halflings-white.png      controllers.Assets.at(path="/public", file="/images/glyphicons-halflings-white.png")
-GET     /assets/img/glyphicons-halflings.png            controllers.Assets.at(path="/public", file="/images/glyphicons-halflings.png")

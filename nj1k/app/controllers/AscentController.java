@@ -80,7 +80,7 @@ public class AscentController extends Controller {
 
 		AscentEntity ascent = filledForm.get();
 		ascent.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
-		ascent.ascentDetails.addAll((List<AscentDetailEntity>) ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class));
+		ascent.ascentDetails.addAll(ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class));
 
 		if (ascent.id == null) {
 			ascent.save();

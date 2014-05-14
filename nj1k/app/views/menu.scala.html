@@ -1,5 +1,5 @@
 @import utils.SecurityUtil._
-    <ul class="nav">
+    <ul class="nav navbar-nav">
     	@if(isLoggedIn()) {
     	<li><a class="brand" href="#">@Messages("welcome", getCurrentUser().name)</a></li>
     	}
@@ -24,7 +24,7 @@
    		<form class="navbar-form pull-left" method="POST" action="@routes.SignInController.submit()">
  			<input type="text" name="email" placeholder="e-mail address" class="span2">
  			<input type="password" name="password" placeholder="password" class="span2">
-			<button type="submit" class="btn">@Messages("menu.login")</button>
+			<button type="submit" class="btn btn-default">@Messages("menu.login")</button>
 		</form>
     	}
     </div>

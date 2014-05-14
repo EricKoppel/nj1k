@@ -1,6 +1,7 @@
 @(mountains: List[MountainEntity])
 
-@main() {
+@hero = {}
+@main()(hero) {
     <script type="text/javascript">
 		$(document).ready(function() { 
 			$("#mountainList").tablesorter( {sortList: [[0,0], [1,0], [2,0]]} ); 
@@ -13,7 +14,7 @@
 	
 	<div class="row-fluid">
 		<div class="span12">
-		    <table id="mountainList" class="table table-striped">
+		    <table id="mountainList" class="table">
 		    	<thead>
 		    		<tr>
 			    		<th>Name</th>
