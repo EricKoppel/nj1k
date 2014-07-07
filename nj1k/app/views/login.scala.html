@@ -9,34 +9,42 @@
 		<h3>@Messages("menu.login")</h3>
 	</div>
     
-    @helper.form(action = routes.SignInController.submit) {
-        
-        <fieldset>       
-            @if(flash.get("success") != null) {
-            	<div class="alert alert-info">@flash.get("success")</div>
-            }
-            
-            @if(signupForm.hasGlobalErrors) {
-            	<div class="alert alert-error">@signupForm.globalError.message</div>
-				
-            }
-            
-            @inputText(
-                signupForm("email"), '_label -> Messages("email"), '_showConstraints -> false
-            )
-            
-            @inputPassword(
-                signupForm("password"), 
-                '_label -> Messages("password")
-            )
-            
-        </fieldset>
-        
-        <div class="actions">
-            <input type="submit" class="btn primary" value="@Messages("button.submit.login")">
-            <a href="@routes.UsersController.resetPasswordForm" class="btn">@Messages("password.forgot")</a>
-        </div>
-        
-    }
-    
+    <div class="row">
+    	<div class="col-md-4 col-sm-6">
+		    @helper.form(action = routes.SignInController.submit) {
+		        
+		        <fieldset>       
+		            @if(flash.get("success") != null) {
+		            	<div class="alert alert-info">@flash.get("success")</div>
+		            }
+		            
+		            @if(signupForm.hasGlobalErrors) {
+		            	<div class="alert alert-error">@signupForm.globalError.message</div>
+						
+		            }
+		            
+		            <div class="form-group">
+		            @inputText(
+		                signupForm("email"), 
+		                '_label -> Messages("email"), 
+		                '_showConstraints -> false, 
+		                'class -> "form-control"
+		            )
+		            
+		            @inputPassword(
+		                signupForm("password"), 
+		                '_label -> Messages("password"),
+		                'class -> "form-control"
+		            )
+		            </div>
+		        </fieldset>
+		        
+		        <div class="actions">
+		            <input type="submit" class="btn btn-primary" value="@Messages("button.submit.login")">
+		            <a href="@routes.UsersController.resetPasswordForm">@Messages("password.forgot")</a>
+		        </div>
+		        
+		    }
+	    </div>
+    </div>
 }

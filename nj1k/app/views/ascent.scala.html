@@ -44,52 +44,77 @@
 		<h3>@Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation)</h3>
 	</div>
 	
-	<div class="row-fluid">
-		<div class="span4">
-			<h4>@Messages("mountain.stats")</h4>
-			<table class="table">
-				<tr>
-					<td>@Messages("ascent.summit")</td>
-					<td><a href="@routes.MountainsController.showMountain(ascent.mountain.id)">@ascent.mountain.name</a></td>
-				</tr>
-				<tr>
-					<td>@Messages("ascent.climber")</td>
-					<td><a href="@routes.UsersController.showUser(ascent.climber.id)">@ascent.climber.name</a></td>
-				</tr>
-				<tr>
-					<td>@Messages("ascent.date")</td>
-					<td>@formatAscentDate(ascent.ascent_date)</td>
-				</tr>
-				<tr>
-					<td>@Messages("ascent.successful")</td>
-					<td>@renderBoolean(ascent.successful)</td>
-				</tr>
-			</table>
-			
-			@if(ownsAscent(ascent.id)) {
-				<p><strong><a class="btn btn-small" href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></strong></p>
-				<p><strong><a id="delete_ascent" class="btn btn-small" href="#">@Messages("ascent.delete")</a></strong></p>
-			}
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">@Messages("ascent.trip_report")</h3>
+				</div>
+				<div class="panel-body">
+				@Html(formatText(ascent.trip_report))
+				</div>
+			</div>
 		</div>
-		<div class="span8">
-			@Html(formatText(ascent.trip_report))
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">@Messages("mountain.stats")</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table">
+						<tr>
+							<td>@Messages("ascent.summit")</td>
+							<td><a href="@routes.MountainsController.showMountain(ascent.mountain.id)">@ascent.mountain.name</a></td>
+						</tr>
+						<tr>
+							<td>@Messages("ascent.climber")</td>
+							<td><a href="@routes.UsersController.showUser(ascent.climber.id)">@ascent.climber.name</a></td>
+						</tr>
+						<tr>
+							<td>@Messages("ascent.date")</td>
+							<td>@formatAscentDate(ascent.ascent_date)</td>
+						</tr>
+						<tr>
+							<td>@Messages("ascent.successful")</td>
+							<td>@renderBoolean(ascent.successful)</td>
+						</tr>
+					</table>
+					
+					@if(ownsAscent(ascent.id)) {
+						<p><strong><a class="btn btn-small" href="@routes.AscentController.editForm(ascent.id)">@Messages("ascent.edit")</a></strong></p>
+						<p><strong><a id="delete_ascent" class="btn btn-small" href="#">@Messages("ascent.delete")</a></strong></p>
+					}
+				</div>
+			</div>
 		</div>
+
 	</div>
 	@if(!ascent.ascentDetails.isEmpty()) {
-	<div class="row-fluid">
-		<div id="span12">
-			@for(detail <- ascent.ascentDetails) {
-	        	<div id="@detail.id" class="img_container" style="position: relative; display: inline-block; height: 200px;">
-					<a class="ascent_img" href="#"><img class="img-thumbnail" alt="@detail.caption" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
-					<p>@detail.caption</p>
-					@if(ownsAscent(ascent.id)) {
-						<div style="position: absolute; left: 205px; top: -8px;">
-				   			<a class="icon-remove delete_button" href="#"></a>
-				   		</div>
-				   	}
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">@Messages("ascent.report.pictures")</h3>
+					</div>
+					<div class="panel-body">
+						@for(detail <- ascent.ascentDetails) {
+							<div class="col-sm-6 col-md-2">
+								<div class="thumbnail">
+									<a href="#"><img alt="@detail.caption" height="200" width="200" src="@routes.AscentDetailController.getImage(detail.id)"></a>
+									<div class="caption">
+										<p>@detail.caption</p>
+										@if(ownsAscent(ascent.id)) {
+											<div style="position: absolute; left: 205px; top: -8px;">
+									   			<a class="icon-remove delete_button" href="#"></a>
+									   		</div>
+									   	}
+								   	</div>
+								</div>
+							</div>
+						}
+					</div>
 				</div>
-			}
+			</div>
 		</div>
-	</div>
 	}
 }

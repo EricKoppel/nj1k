@@ -66,7 +66,6 @@ public class AscentController extends Controller {
 		return ok();
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Result submit() throws Exception {
 		if (!SecurityUtil.isLoggedIn()) {
 			return forbidden();

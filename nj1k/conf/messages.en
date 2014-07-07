@@ -1,9 +1,9 @@
 title=A website dedicated to climbing New Jersey''s thousand foot mountains
 nj1k.org=NJ1K.org
-welcome.header=The New Jersey 1K Club
+welcome.header=New Jersey 1K Club
 welcometext=Peakbagging in the humble hills of New Jersey
 copyright=Copyright © 2008-{0} Eric Koppel
-most.recent.climbs=Most recent climbs
+most.recent.climbs=Most Recent Climbs
 headlines=Headlines
 unknown=unknown
 
@@ -15,7 +15,7 @@ mountain.owner=Owner
 mountain.trail_map=Trail map
 mountain.topo=Topo map
 mountain.nhn=Nearest higher neighbor
-mountain.others=Ascents of {0}
+mountain.others=Recent Ascents of {0}
 mountain.stats=Statistics
 mountain.pictures.from=Pictures from {0}
 
@@ -30,6 +30,7 @@ ascent.successful=Successful
 ascent.log=Log ascent
 ascent.log.new=Log New Ascent
 ascent.report=Trip report
+ascent.report.pictures=Trip report pictures
 ascent.pics=Upload pictures
 ascent.edit=Modify ascent
 ascent.climb.list=Climb list
@@ -41,6 +42,7 @@ account.edit=Edit Account
 user.totalclimbs=Total climbs
 user.uniquesuccess=Distinct summits attained
 user.percentcomplete=Percent complete
+user.peaksremaining=Peaks remaining
 
 users.aspirants=Aspirants
 users.finishers=Finishers

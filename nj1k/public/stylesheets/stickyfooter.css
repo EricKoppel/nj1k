@@ -1,25 +1,38 @@
-* {
-	margin: 0;
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
 }
-html, body {
-	height: 100%;
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
 }
-.wrapper {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	margin: 0 auto -100px; /* the bottom margin is the negative value of the footer's height */
-}
-.footer, .push {
-	height: 100px; /* .push must be the same height as .footer */
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
 }
 
-.push {
-	padding-top: 40px;
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 20px 15px 0;
 }
-/*
+.container .text-muted {
+  margin: 20px 0;
+}
 
-Sticky Footer by Ryan Fait
-http://ryanfait.com/
+#footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
 
-*/
+code {
+  font-size: 80%;
+}

@@ -2,6 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import models.AscentEntity;
@@ -14,6 +15,7 @@ import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.Configuration;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -21,7 +23,12 @@ import play.mvc.Result;
 import utils.MailUtil;
 import utils.PasswordUtil;
 
+import com.avaje.ebean.Page;
 import com.google.common.net.MediaType;
+
+import flexjson.JSONSerializer;
+import flexjson.transformer.DateTransformer;
+import flexjson.transformer.Transformer;
 
 public class UsersController extends Controller {
 
@@ -44,7 +51,26 @@ public class UsersController extends Controller {
 			return notFound();
 		}
 		
-		return ok(views.html.user.render(user, AscentEntity.findByUserId(id)));
+		return ok(views.html.user.render(user, AscentEntity.findByUserId(id, 0, 10).getList()));
+	}
+	
+	public static Result showUserAscents(Long id, int page, int num) {
+		
+		if (page < 0) {
+			return badRequest(String.valueOf(page));
+		}
+		
+		JSONSerializer serializer = new JSONSerializer();
+		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
+		serializer.include("id", "ascent_date", "mountain.id", "mountain.name");
+		serializer.exclude("*");
+		serializer.transform(transformer, Timestamp.class);
+		
+		Page<AscentEntity> pg = AscentEntity.findByUserId(id, page, num);
+		
+		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
+		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
+		return ok(serializer.serialize(pg.getList()));
 	}
 	
 	public static Result resetPasswordForm() {
