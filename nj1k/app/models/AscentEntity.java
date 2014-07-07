@@ -17,6 +17,7 @@ import javax.validation.constraints.Past;
 import play.data.validation.Constraints.Required;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;
@@ -67,8 +68,8 @@ public class AscentEntity extends BaseEntity {
 		return find.fetch("climber").where().eq("climber_id", userId).eq("id", ascentId).findUnique();
 	}
 	
-	public static List<AscentEntity> findByUserId(Long userId) {
-		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
+	public static Page<AscentEntity> findByUserId(Long userId, int page, int num) {
+		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page);
 	}
 
 	public static int distinctClimbs(Long userId) {
@@ -78,7 +79,7 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id) {
-		return find.fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
+		return find.setMaxRows(5).fetch("climber").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
 	}
 	
 	public static AscentEntity findTripReport(Long id) {
@@ -86,7 +87,7 @@ public class AscentEntity extends BaseEntity {
 	}
 
 	public static List<AscentEntity> findRecent(int i) {
-		return find.setMaxRows(i).orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).findList();
+		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).setMaxRows(i).findList();
 	}
 
 	@Override

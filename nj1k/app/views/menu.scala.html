@@ -1,31 +1,56 @@
-@import utils.SecurityUtil._
-    <ul class="nav navbar-nav">
-    	@if(isLoggedIn()) {
-    	<li><a class="brand" href="#">@Messages("welcome", getCurrentUser().name)</a></li>
-    	}
-    	<li><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
-    	@if(hasRole("admin")) {
-    	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
-    	}
-    	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
-    	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
-    	@if(isLoggedIn()) {
-    	<li><a href="@routes.AscentController.showForm()">@Messages("menu.ascent")</a></li>
-    	}
-		<li><a href="@routes.Application.contact()">@Messages("menu.contact")</a></li>
-    	<li><a href="@routes.Application.about()">@Messages("menu.about")</a></li>
-    	<li><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
-    </ul>
-   	<div class="pull-right">
-    	@if(isLoggedIn()) {
-    	<a class="btn" href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a>
-    	<a class="btn" href="@routes.SignInController.logout()">@Messages("menu.logout")</a>
-    	} else {
-   		<form class="navbar-form pull-left" method="POST" action="@routes.SignInController.submit()">
- 			<input type="text" name="email" placeholder="e-mail address" class="span2">
- 			<input type="password" name="password" placeholder="password" class="span2">
-			<button type="submit" class="btn btn-default">@Messages("menu.login")</button>
-		</form>
-    	}
-    </div>
-    
+@import utils.SecurityUtil._    
+<nav class="navbar navbar-default">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu_navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="visible-xs navbar-brand" href="@routes.Application.index()">@Messages("welcome.header")</a>
+		</div>
+
+		<div id="menu_navbar" class="collapse navbar-collapse">
+		    <ul class="nav navbar-nav navbar-left">
+		    	<li class="hidden-xs"><a href="@routes.Application.index()">@Messages("menu.news")</a></li>
+		    	@if(!isLoggedIn()) {
+		    	<li class="visible-xs"><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
+		    	<li class="visible-xs"><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
+		    	}
+		    	@if(isLoggedIn()) {
+		    	<li><a href="@routes.AscentController.showForm()">@Messages("menu.ascent")</a></li>
+		    	}
+		    	@if(hasRole("admin")) {
+		    	<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
+		    	}
+		    	<li><a href="@routes.MountainsController.list()">@Messages("menu.list")</a></li>
+		    	<li><a href="@routes.UsersController.list()">@Messages("menu.members")</a></li>
+				<li><a href="@routes.Application.contact()">@Messages("menu.contact")</a></li>
+		    	<li><a href="@routes.Application.about()">@Messages("menu.about")</a></li>
+		    	<li class="hidden-xs"><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
+		    </ul>
+	    
+	   	@if(isLoggedIn()) {
+	   		<ul class="hidden-xs nav navbar-nav navbar-right">
+		    	<li class="dropdown">
+		    		<a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("welcome", getCurrentUser().name) <b class="caret"></b></a>
+		    		<ul class="dropdown-menu">
+		    			<li><a href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a></li>
+		    			<li class="divider"></li>
+		    			<li><a href="@routes.SignInController.logout()">@Messages("menu.logout")</a></li>
+		    		</ul>
+		    	</li>
+	    	</ul>
+	   	} else {
+	   		<form class="hidden-xs navbar-form navbar-right" style="margin-top: 0; margin-bottom: 0;" method="POST" action="@routes.SignInController.submit()">
+		   		<div class="form-group">
+		 			<input class="form-control" type="text" name="email" placeholder="e-mail address">
+		 			<input class="form-control" type="password" name="password" placeholder="password">
+		 		</div>
+				<button type="submit" class="btn btn-success navbar-btn">@Messages("menu.login")</button>
+			</form>
+	   	}
+   	</div>
+	</div>
+</nav>

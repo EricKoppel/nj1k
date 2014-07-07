@@ -21,7 +21,6 @@ object ApplicationBuild extends Build {
     )
         
     val main = play.Project(appName, appVersion, appDependencies).settings(
-    		resolvers += "Slf4j Repository" at "http://repo2.maven.org/maven2/org/slf4j/",
     		
     		testOptions in Test ~= { args =>
 	    		for {

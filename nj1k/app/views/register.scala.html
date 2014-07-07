@@ -9,51 +9,62 @@
 		<h3>@Messages("registration")</h3>
 	</div>
 	
-    @helper.form(action = routes.RegistrationController.submit) {
-        
-        <fieldset>
-        
-            @if(signupForm.hasGlobalErrors) {
-            	<div class="alert alert-error">@signupForm.globalError.message</div>
-            }
+	<div class="row">
+		<div class="col-md-4 col-sm-6">
+
+		    @helper.form(action = routes.RegistrationController.submit) {
+		        
+		        <fieldset>
+		        	<div class="form-group">
+		            @if(signupForm.hasGlobalErrors) {
+		            	<div class="alert alert-error">@signupForm.globalError.message</div>
+		            }
+		            
+		            @inputText(
+		                signupForm("email"), 
+		                '_label -> Messages("email"),
+		                'type -> "email",
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
             
-            @inputText(
-                signupForm("email"), 
-                '_label -> Messages("email"),
-                'type -> "email",
-                '_showConstraints -> false
-            )
-            @inputText(
-                signupForm("name"), 
-                '_label -> Messages("name"),
-                '_showConstraints -> false
-            )
-            @inputPassword(
-                signupForm("password"), 
-                '_label -> Messages("password"),
-                '_showConstraints -> false
-            )
-            
-            @inputPassword(
-                signupForm("confirmPassword"), 
-                '_label -> Messages("confirmpassword"),
-                '_showConstraints -> false
-            )
-            
-            @inputText(
-           		signupForm("challenge"),
-           		'_label -> Messages("email.antispam"),
-           		'_showConstraints -> false,
-           		'class -> "story_title"
-        )
-            
-        </fieldset>
-        
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Sign Up">
-            <a href="@routes.Application.index" class="btn">Cancel</a>
-        </div>
-        
-    }
-    
+		            @inputText(
+		                signupForm("name"), 
+		                '_label -> Messages("name"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+
+		            @inputPassword(
+		                signupForm("password"), 
+		                '_label -> Messages("password"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+
+		            @inputPassword(
+		                signupForm("confirmPassword"), 
+		                '_label -> Messages("confirmpassword"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+
+		            @inputText(
+		           		signupForm("challenge"),
+		           		'_label -> Messages("email.antispam"),
+		           		'_showConstraints -> false,
+		           		'class -> "story_title form-control"
+		        	)
+
+		            </div>
+		        </fieldset>
+		        
+		        <div class="actions">
+		            <input type="submit" class="btn btn-primary" value="Sign Up">
+		            <a href="@routes.Application.index" class="btn btn-danger">Cancel</a>
+		        </div>
+		        
+		    }
+    	</div>
+	</div>
 }

@@ -17,59 +17,66 @@
 	</div>
     
     @helper.form(action = routes.AscentController.submit, 'enctype -> "multipart/form-data") {
-        
-        <fieldset>
           
-            @if(ascentForm.hasGlobalErrors) {
-				@ascentForm.globalError.message
-            }
-            
-            @inputText(
-                ascentForm("ascent_date"),
-                '_label -> Messages("ascent.date"),
-                'type -> "date",
-                '_help -> Messages("help.ascent.date", play.api.Play.current.configuration.getString("date.format").get)
-            )
-            
-            @select(
-            	ascentForm("mountain"),
-            	mountains.map{
-            		m => m.id.toString() -> (m.name)
-            	},
-            	'_label -> Messages("ascent.summit")
-            )
-            
-            @select(
-            	ascentForm("successful"),
-            	options("true"->Messages("yes"), "false"->Messages("no")),
-            	'_label -> Messages("ascent.successful"),
-            	'_help -> Messages("help.ascent.success")
-            )
-            
-            @textarea(
-            	ascentForm("trip_report"),
-            	'_label -> Messages("ascent.report"),
-            	'class -> "story"
-            )
-            
-
-   			@inputFile(
-   				ascentForm("ascentDetails"), 
-   				'_label -> Messages("ascent.pics"),
-   				'class -> "multi"
-   			)
-
-            @input(ascentForm("id"), 
-            	'_label -> null) { (id, name, value, args) =>
-    			<input type="hidden" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
-			} 
-        </fieldset>
+        @if(ascentForm.hasGlobalErrors) {
+			@ascentForm.globalError.message
+        }
+        <div class="row">    
+			<div class="col-md-4">
+	            @inputText(
+	                ascentForm("ascent_date"),
+	                '_label -> Messages("ascent.date"),
+	                'class -> "form-control",
+	                'type -> "date",
+	                '_help -> Messages("help.ascent.date", play.api.Play.current.configuration.getString("date.format").get)
+	            )
+	            
+	            @select(
+	            	ascentForm("mountain"),
+	            	mountains.map{
+	            		m => m.id.toString() -> (m.name)
+	            	},
+	            	'_label -> Messages("ascent.summit"),
+	            	'class -> "form-control"
+	            )
+	            
+	            @select(
+	            	ascentForm("successful"),
+	            	options("true"->Messages("yes"), "false"->Messages("no")),
+	            	'_label -> Messages("ascent.successful"),
+	            	'class -> "form-control",
+	            	'_help -> Messages("help.ascent.success")
+	            )
+	        </div>
         
-        <div class="actions">
-            <input type="submit" class="btn primary" value="@Messages("button.submit.ascent")">
-            <a href="@routes.Application.index" class="btn">@Messages("cancel")</a>
+	        <div class="col-md-8">
+	            @textarea(
+	            	ascentForm("trip_report"),
+	            	'_label -> Messages("ascent.report"),
+	            	'class -> "story form-control"
+	            )
+	        </div>
+        
         </div>
-        
+        <div class="row">
+        	<div class="col-md-4">
+		   		@inputFile(
+		   			ascentForm("ascentDetails"), 
+		   			'_label -> Messages("ascent.pics"),
+		   			'class -> "multi form-control"
+		   		)
+			</div>
+		</div>
+		
+        @input(ascentForm("id"), 
+            '_label -> null) { (id, name, value, args) =>
+    		<input type="hidden" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
+		}
+		
+        <div class="actions">
+            <input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
+            <a href="@routes.Application.index" class="btn btn-danger">@Messages("cancel")</a>
+        </div>
     }
     
 }

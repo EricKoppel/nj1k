@@ -32,6 +32,7 @@ DELETE	/account/pic				controllers.AccountController.deleteProfilePic()
 
 GET		/users						controllers.UsersController.list()
 GET		/users/:id					controllers.UsersController.showUser(id: Long)
+GET		/users/:id/ascents			controllers.UsersController.showUserAscents(id: Long, page: Integer ?= 0, num: Integer ?= 10)
 GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
 
 GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()

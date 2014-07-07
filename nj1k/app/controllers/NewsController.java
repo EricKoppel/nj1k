@@ -52,7 +52,6 @@ public class NewsController extends Controller {
 		return ok(views.html.createnews.render(newsForm.fill(NewsEntity.find(id))));
 	}
 
-	@SuppressWarnings("unchecked")
 	public static Result submit() {
 		Form<NewsEntity> filledForm = newsForm.bindFromRequest();
 
