@@ -23,7 +23,6 @@ dd.error {
 }
 
 body {
-		background: url('/images/background.png') no-repeat center center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -32,8 +31,22 @@ body {
 }
 
 .jumbotron {
-/* 	background: url('/images/background.png') no-repeat center center fixed; */
-	background: transparent;
+/* 	background: url('/images/background.png') no-repeat fixed top; */
+}
+.navbar {
+	background: rgb(124, 173, 124);
+/* 	margin-bottom: 0; */
+}
+
+.navbar-default .navbar-nav>li>a {
+	color: white;
+}
+
+.panel-default>.panel-heading {
+	background: rgb(124, 173, 124);
+}
+
+.panel-title {
 	color: white;
 }
 
@@ -44,6 +57,10 @@ table {
 #footer {
 	text-align: center;
 	margin-top: 64px;
+	background: rgb(124, 173, 124);
+	border: 1px solid transparent;
+	border-color: #e7e7e7;
+	border-radius: 4px;
 }
 
 .story_title {
@@ -133,7 +150,7 @@ th.header {
 	font-weight: bold;
 	background-repeat: no-repeat;
 	background-position: center right;
-/* 	padding-left: 20px; */
+	/* 	padding-left: 20px; */
 	border-right: 1px solid #dad9c7;
 	margin-left: -1px;
 }
@@ -146,3 +163,14 @@ th.headerSortDown {
 	background-image: url(../images/desc.gif);
 }
 
+.btn-success {
+	background: rgb(124, 173, 124);
+}
+
+.btn-success:hover {
+	background-color: #569256;
+}
+
+div#credits {
+	padding: 10px 0 10px 0;
+}

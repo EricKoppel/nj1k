@@ -10,7 +10,7 @@ var MapView = Backbone.View.extend({
 	},
 	
 	constructMap: function() {
-		this.$el.css({'width': '1024px', 'height': '768px'})
+		this.$el.css({'width': '800px', 'height': '600px'})
 		this.map = new GMap2(this.$el[0]);
 		var myTopoCopy = new GCopyright(1, new GLatLngBounds(new GLatLng(-90, -180), new GLatLng(90, 180)), 0, 'Topo maps (c) MyTopo.com');
 		var copyrightCollection = new GCopyrightCollection('Mytopo.com');

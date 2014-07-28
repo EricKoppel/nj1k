@@ -79,6 +79,12 @@
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/com.intellij/annotations/jars/annotations-7.0.3.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/org.apache.shiro/shiro-core/jars/shiro-core-1.2.1.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/commons-beanutils/commons-beanutils/jars/commons-beanutils-1.8.3.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/de.l3s.boilerpipe/boilerpipe/jars/boilerpipe-1.1.0.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/edu.stanford.nlp/stanford-corenlp/jars/stanford-corenlp-3.3.1.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/com.io7m.xom/xom/jars/xom-1.2.10.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/de.jollyday/jollyday/jars/jollyday-0.4.7.jar"/>
+  <classpathentry kind="lib" path="/home/eric/.m2/repository/javax/xml/bind/jaxb-api/2.2.7/jaxb-api-2.2.7.jar"/>
+  <classpathentry kind="lib" path="/usr/local/play/framework/../repository/cache/com.googlecode.efficient-java-matrix-library/ejml/jars/ejml-0.23.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/repository/local/com.typesafe.play/play-test_2.10/2.2.2/jars/play-test_2.10.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/repository/local/junit/junit/4.11/jars/junit.jar"/>
   <classpathentry kind="lib" path="/usr/local/play/repository/local/org.hamcrest/hamcrest-core/1.3/jars/hamcrest-core.jar"/>

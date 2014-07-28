@@ -5,9 +5,6 @@
 @main()(hero) {
 	<script type="text/javascript">
 		$(document).ready(function() {
-		  $('#climbs').tableNav({
-			    itemsPerPage: 10
-		  });
 		  
 		  $('#mountain_pic').click(function() {
 			  window.open('@routes.MountainsController.getImagePopup(mountain.id)', '@mountain.name', 'width=1024, height=800px');
@@ -110,18 +107,32 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h3>
-			</div>
-			<div class="panel-body">
-				@for(detail <- ascentImages) {
-					<div class="col-sm-6 col-md-2">
-						<div class="thumbnail">
-							<a id="@detail.id" class="ascent_img" href="#"><img alt="@detail.caption" src="@routes.AscentDetailController.getImage(detail.id)" /></a>
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h3>
+				</div>
+				<div class="panel-body">
+					@for(i <- 0 until ascentImages.size) {
+					
+						@if(i % 4 == 0) {
+							<div class="clearfix"></div>
+						} 
+						@if(i % 2 == 0) {
+							<div class="clearfix visible-sm"></div>
+						}
+
+						<div class="col-sm-6 col-md-3">
+							<div class="thumbnail">
+								<a id="@ascentImages(i).id" class="ascent_img" href="#"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getImage(ascentImages(i).id)" /></a>
+								<div class="caption">
+									
+									<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.showUser(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>
+								</div>
+							</div>
 						</div>
-					</div>
-				}
+					}
+				</div>
 			</div>
 		</div>
 	</div>

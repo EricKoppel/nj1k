@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Configuration;
 import play.i18n.Messages;
+import utils.TextUtils;
 
 public class RenderUtil {
 
@@ -44,5 +45,9 @@ public class RenderUtil {
 		}
 		
 		return "";
+	}
+	
+	public static String formatNews(String text) {
+		return TextUtils.extractFirstSentence(text);
 	}
 }
