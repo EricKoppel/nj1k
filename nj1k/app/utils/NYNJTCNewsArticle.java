@@ -8,7 +8,6 @@ public class NYNJTCNewsArticle {
 	private String link;
 	
 	public NYNJTCNewsArticle(String title, String date, String link) {
-		super();
 		this.title = title;
 		this.date = date;
 		this.link = link;

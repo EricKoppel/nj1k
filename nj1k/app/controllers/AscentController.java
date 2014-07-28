@@ -2,7 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
-import java.util.List;
+import java.sql.Timestamp;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -12,11 +12,21 @@ import models.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.Configuration;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.FirstSentenceTransformer;
+import utils.HasPictureTransformer;
 import utils.ImageUtil;
 import utils.SecurityUtil;
+
+import com.avaje.ebean.Page;
+import com.google.common.net.MediaType;
+
+import flexjson.JSONSerializer;
+import flexjson.transformer.DateTransformer;
+import flexjson.transformer.Transformer;
 
 public class AscentController extends Controller {
 
@@ -49,6 +59,26 @@ public class AscentController extends Controller {
 		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), MountainEntity.findAll()));
 	}
 
+	public static Result showRecentAscents(int page, int num) {
+		
+		if (page < 0) {
+			return badRequest(String.valueOf(page));
+		}
+		
+		JSONSerializer serializer = new JSONSerializer();
+		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
+		serializer.include("id", "ascent_date", "mountain.id", "mountain.name", "climber.id", "climber.name", "climber.pic", "trip_report");
+		serializer.exclude("*");
+		serializer.transform(transformer, Timestamp.class);
+		serializer.transform(new FirstSentenceTransformer(), "trip_report");
+		serializer.transform(new HasPictureTransformer(), "climber.pic");
+		Page<AscentEntity> pg = AscentEntity.findRecent(page, num);
+		
+		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
+		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
+		return ok(serializer.serialize(pg.getList())).as(MediaType.JSON_UTF_8.toString());
+	}
+	
 	public static Result updateTripReport(Long id) {
 		if (!SecurityUtil.ownsAscent(id)) {
 			return forbidden();

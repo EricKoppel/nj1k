@@ -23,11 +23,8 @@ import play.i18n.Messages;
 import play.libs.Akka;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.WebSocket;
 import scala.concurrent.duration.Duration;
 import utils.MailUtil;
-import akka.actor.ActorRef;
-import akka.actor.Props;
 
 public class Application extends Controller {
 
@@ -42,7 +39,7 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		return ok(views.html.index.render(NewsEntity.findRecent(5), AscentEntity.findRecent(5), registrationForm));
+		return ok(views.html.index.render(NewsEntity.findRecent(3), AscentEntity.findRecent(0, 5).getList(), registrationForm));
 	}
 
 	public static Result contact() {
@@ -114,13 +111,15 @@ public class Application extends Controller {
 	
 	@Cached(key = "javascriptRoutes")
 	public static Result javascriptRoutes() {
-		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(), 
+		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
+			controllers.routes.javascript.AscentController.showRecentAscents(),
 			controllers.routes.javascript.AscentDetailController.remove(),
 			controllers.routes.javascript.AscentController.showTripReport(),
 			controllers.routes.javascript.NewsController.delete(),
 			controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(),
 			controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
 			controllers.routes.javascript.UsersController.showUser(),
+			controllers.routes.javascript.UsersController.getProfileImage(),
 			controllers.routes.javascript.MountainsController.showDistances(), 
 			controllers.routes.javascript.UsersController.showUserAscents(),
 			controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");

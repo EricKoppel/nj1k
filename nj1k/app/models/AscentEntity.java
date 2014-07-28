@@ -86,8 +86,8 @@ public class AscentEntity extends BaseEntity {
 		return find.select("*").fetch("climber").fetch("mountain").where().eq("id", id).findUnique();
 	}
 
-	public static List<AscentEntity> findRecent(int i) {
-		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).setMaxRows(i).findList();
+	public static Page<AscentEntity> findRecent(int page, int num) {
+		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).findPagingList(num).getPage(page);
 	}
 
 	@Override

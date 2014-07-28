@@ -10,6 +10,8 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.net.MediaType;
+
 import play.cache.Cached;
 import play.libs.F.Promise;
 import play.libs.WS;
@@ -36,7 +38,7 @@ public class ExternalNewsController extends Controller {
 			JSONSerializer serializer = new JSONSerializer();
 			serializer.include("date", "link", "title");
 			serializer.exclude("*");
-			return ok(serializer.serialize(list));
+			return ok(serializer.serialize(list)).as(MediaType.JSON_UTF_8.toString());
 		});
 	};
 
@@ -52,7 +54,7 @@ public class ExternalNewsController extends Controller {
 		response().setHeader(EXPIRES, dateFormat.get().format(cal.getTime()));
 		response().setHeader(LAST_MODIFIED, dateFormat.get().format(new Date(0)));
 		
-		return WS.url(url).get().map(new NYNJTCArticleParserFunction(url)).map(content -> {
+		return WS.url(url).get().flatMap(new NYNJTCArticleParserFunction(url)).map(content -> {
 			return ok(content);
 		});
 	}

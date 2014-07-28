@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import play.Configuration;
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.MailUtil;

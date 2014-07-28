@@ -17,7 +17,10 @@ object ApplicationBuild extends Build {
       "commons-io" % "commons-io" % "2.4",
       "org.reflections" % "reflections" % "0.9.8",
       "com.typesafe" %% "play-plugins-mailer" % "2.1-RC2",
-      "org.apache.shiro" % "shiro-core" % "1.2.1" withSources() withJavadoc()
+      "org.apache.shiro" % "shiro-core" % "1.2.1" withSources() withJavadoc(),
+      "de.l3s.boilerpipe" % "boilerpipe" % "1.1.0" withSources() withJavadoc(),
+      "net.sourceforge.nekohtml" % "nekohtml" % "1.9.13",
+      "edu.stanford.nlp" % "stanford-corenlp" % "3.3.1" withSources() withJavadoc()
     )
         
     val main = play.Project(appName, appVersion, appDependencies).settings(

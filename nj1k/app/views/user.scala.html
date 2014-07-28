@@ -30,17 +30,13 @@
     		$("#stats").append(statsChart.generateLegend());
     		$("#previous").click(function(e) {
    				var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, ++page, num);
-   				
    				showUserAscents(req);
-   				
    				e.preventDefault();
     		});
     		
     		$("#next").click(function(e) {
     			var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, --page, num);
-    			
     			showUserAscents(req);
-   				
    				e.preventDefault();
     		});
     	});
