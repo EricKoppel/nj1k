@@ -45,6 +45,8 @@ public class MountainEntity extends BaseEntity {
 	@Lob
 	public byte[] picture;
 	@Lob
+	public byte[] thumbnail;
+	@Lob
 	public String description;
 	public String mountainrange;
 	public NameType name_type;

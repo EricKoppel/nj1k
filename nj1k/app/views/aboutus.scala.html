@@ -1,6 +1,14 @@
 @hero = {}
 @main()(hero) {
 
+<script type="text/javascript">
+	require(['jquery', 'fancybox'], function() {
+		$(document).ready(function() {
+			$(".fancybox").fancybox();
+		});
+	});
+</script>
+
 <div class="page-header">
 	<h3>About Us</h3>
 </div>
@@ -17,7 +25,7 @@
 				<div class="panel-body">
 					<div class="col-md-3 col-sm-4 col-xs-6 pull-right">
 						<div class="thumbnail">
-							<img src="@routes.Assets.at("images/founders.jpg")"></img>
+							<a href="@routes.Assets.at("images/founders.jpg")" class="fancybox"><img src="@routes.Assets.at("images/founders.jpg")"></img></a>
 							<div class="caption">
 								<small>Founders <a href="@routes.UsersController.showUser(5)">Eric</a> (right) and <a href="@routes.UsersController.showUser(8)">Jeff</a> (left).</small>
 							</div>

@@ -34,9 +34,9 @@ import flexjson.transformer.Transformer;
 public class UsersController extends Controller {
 
 	private static final Form<UserEntity> userForm = form(UserEntity.class);
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
-	
+
 	public static Result list() {
 		List<FinisherEntity> finishers = FinisherEntity.findFinishers();
 		List<UserEntityAggregate> aspirants = UserEntityAggregate.findAll();
@@ -47,33 +47,33 @@ public class UsersController extends Controller {
 
 	public static Result showUser(Long id) {
 		UserEntityAggregate user = UserEntityAggregate.find(id);
-		
+
 		if (user == null) {
 			return notFound();
 		}
-		
+
 		return ok(views.html.user.render(user, AscentEntity.findByUserId(id, 0, 10).getList()));
 	}
-	
+
 	public static Result showUserAscents(Long id, int page, int num) {
-		
+
 		if (page < 0) {
 			return badRequest(String.valueOf(page));
 		}
-		
+
 		JSONSerializer serializer = new JSONSerializer();
 		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
 		serializer.include("id", "ascent_date", "mountain.id", "mountain.name");
 		serializer.exclude("*");
 		serializer.transform(transformer, Timestamp.class);
-		
+
 		Page<AscentEntity> pg = AscentEntity.findByUserId(id, page, num);
-		
+
 		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
 		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
 		return ok(serializer.serialize(pg.getList()));
 	}
-	
+
 	public static Result resetPasswordForm() {
 		return ok(views.html.resetpassword.render(userForm));
 	}
@@ -84,7 +84,19 @@ public class UsersController extends Controller {
 		if (pic == null) {
 			return notFound();
 		}
-		return ok(UserEntity.find(id).pic).as(MediaType.ANY_IMAGE_TYPE.type());
+		return ok(pic).as(MediaType.ANY_IMAGE_TYPE.type());
+	}
+
+	public static Result getProfileThumbnail(Long id) {
+		UserEntity user = UserEntity.find(id);
+
+		if (user.thumbnail != null) {
+			return ok(user.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());
+		} else if (user.pic != null) {
+			return ok(user.pic).as(MediaType.ANY_IMAGE_TYPE.type());
+		}
+		
+		return notFound();
 	}
 
 	public static Result resetPassword() {
@@ -92,7 +104,7 @@ public class UsersController extends Controller {
 
 		if (!resetForm.hasErrors()) {
 			UserEntity user = UserEntity.findByEmail(resetForm.get().email);
-			
+
 			if (user != null) {
 				resetPassword(user);
 			}

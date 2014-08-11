@@ -3,25 +3,19 @@
 
 @hero = {}
 @main()(hero) {
+
 	<script type="text/javascript">
-		$(document).ready(function() {
-		  
-		  $('#mountain_pic').click(function() {
-			  window.open('@routes.MountainsController.getImagePopup(mountain.id)', '@mountain.name', 'width=1024, height=800px');
-			  return false;
-		  });
-		  
-	    	$('.ascent_img').click(function(e) {
-				window.open("/ascentDetail/" + this.id + "/mountains", '@mountain.name', 'width=1024, height=800px');
-				return false;
+		require(['jquery', 'fancybox'], function() {
+			$(document).ready(function() {
+				$(".fancybox").fancybox();
 			});
 		});
 	</script>
 
 	<div class="page-header">
 		@if(mountain.picture != null) {
-	    	<a id="mountain_pic" href="#">
-	    		<img style="padding-bottom: 15px; max-height: 128px;" alt="@mountain.name" height="200" width="200" src="@routes.MountainsController.getImage(mountain.id)" />
+	    	<a class="fancybox" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
+	    		<img style="padding-bottom: 15px; max-height: 128px;" alt="@mountain.name" height="200" width="200" src="@routes.MountainsController.getThumbnail(mountain.id)" />
 	    	</a>
 	    }
 	    <div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
@@ -29,14 +23,17 @@
 		</div>
     </div>
     <div class="row">
-    	<div class="col-md-4">
-    		<div class="panel panel-default">
-	    		<div class="panel-heading">
-	    			<h3 class="panel-title">@Messages("about") @mountain.name</h3>
-	    		</div>
-		    	<div class="panel-body">@Html(mountain.description)</div>
-	    	</div>
-	    </div>
+    
+    	@if(!mountain.description.isEmpty()) {
+	    	<div class="col-md-4">
+	    		<div class="panel panel-default">
+		    		<div class="panel-heading">
+		    			<h3 class="panel-title">@Messages("about") @mountain.name</h3>
+		    		</div>
+			    	<div class="panel-body">@Html(mountain.description)</div>
+		    	</div>
+		    </div>
+	    }
 	    
     	<div class="col-md-4">
     		<div class="panel panel-default">
@@ -124,7 +121,7 @@
 
 						<div class="col-sm-6 col-md-3">
 							<div class="thumbnail">
-								<a id="@ascentImages(i).id" class="ascent_img" href="#"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getImage(ascentImages(i).id)" /></a>
+								<a class="fancybox" data-fancybox-group="gallery@mountain.id" title="@ascentImages(i).caption" data-fancybox-type="image" href="@routes.AscentDetailController.getImage(ascentImages(i).id)"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getImage(ascentImages(i).id)" /></a>
 								<div class="caption">
 									
 									<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.showUser(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>

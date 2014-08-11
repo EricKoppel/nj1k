@@ -3,22 +3,24 @@
 @hero = {}
 @main()(hero) {
     <script type="text/javascript">
-		$(document).ready(function() { 
-			$("#mountainList").tablesorter({
-				sortList: [[0,0], [1,0], [2,0]],
-				headers: { 
-		            3: { 
-		                sorter: false 
-		            },
-		            4: { 
-		                sorter: false 
-		            },
-		            5: { 
-		                sorter: false 
-		            }
-				}
-			}); 
-		}); 
+	    require(['jquery', 'tablesorter'], function() {
+			$(document).ready(function() { 
+				$("#mountainList").tablesorter({
+					sortList: [[0,0], [1,0], [2,0]],
+					headers: { 
+			            3: { 
+			                sorter: false 
+			            },
+			            4: { 
+			                sorter: false 
+			            },
+			            5: { 
+			                sorter: false 
+			            }
+					}
+				}); 
+			});
+	    });
 	</script>
 	
 	<div class="page-header">

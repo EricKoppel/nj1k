@@ -3,6 +3,9 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map.Entry;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Configuration;
 import play.data.Form;
+import play.data.validation.ValidationError;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.FirstSentenceTransformer;
@@ -102,21 +106,27 @@ public class AscentController extends Controller {
 		}
 
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
-
+		
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.logascent.render(filledForm, MountainEntity.findAll()));
 		}
 
-		AscentEntity ascent = filledForm.get();
-		ascent.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
-		ascent.ascentDetails.addAll(ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), AscentDetailEntity.class));
+		AscentEntity form = filledForm.get();
+		form.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
+		form.ascentDetails.addAll(ImageUtil.extractPictures(request(), AscentDetailEntity.class));
 
-		if (ascent.id == null) {
-			ascent.save();
-		} else {
+		
+		if (form.id == null) {
+			form.save();
+		} else if (SecurityUtil.ownsAscent(form.id)) {
+			AscentEntity ascent = AscentEntity.find(form.id);
+			ascent.ascentDetails.addAll(form.ascentDetails);
+			ascent.ascent_date = form.ascent_date;
+			ascent.trip_report = form.trip_report;
+			ascent.successful = form.successful;
 			ascent.update();
 		}
 
-		return redirect(routes.AscentController.showTripReport(ascent.id));
+		return redirect(routes.AscentController.showTripReport(form.id));
 	}
 }

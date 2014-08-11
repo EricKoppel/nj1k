@@ -113,6 +113,8 @@ public class Application extends Controller {
 	public static Result javascriptRoutes() {
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
 			controllers.routes.javascript.AscentController.showRecentAscents(),
+			controllers.routes.javascript.AscentController.submit(),
+			controllers.routes.javascript.AscentDetailController.updateCaption(),
 			controllers.routes.javascript.AscentDetailController.remove(),
 			controllers.routes.javascript.AscentController.showTripReport(),
 			controllers.routes.javascript.NewsController.delete(),
@@ -120,6 +122,7 @@ public class Application extends Controller {
 			controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
 			controllers.routes.javascript.UsersController.showUser(),
 			controllers.routes.javascript.UsersController.getProfileImage(),
+			controllers.routes.javascript.UsersController.getProfileThumbnail(),
 			controllers.routes.javascript.MountainsController.showDistances(), 
 			controllers.routes.javascript.UsersController.showUserAscents(),
 			controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");

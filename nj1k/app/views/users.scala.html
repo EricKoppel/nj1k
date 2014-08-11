@@ -6,10 +6,12 @@
 @main()(hero) {
 
 	<script type="text/javascript">
-		$(document).ready(function() { 
-			$("#climbList").tablesorter( {sortList: [[0,0]]} );
-			$("#finisherList").tablesorter( {sortList: [[1,0]]} ); 
-		}); 
+		require(['jquery', 'tablesorter'], function() {
+			$(document).ready(function() { 
+				$("#climbList").tablesorter( {sortList: [[0,0]]} );
+				$("#finisherList").tablesorter( {sortList: [[1,0]]} ); 
+			}); 
+		});
 	</script>
     
 	<div class="page-header">

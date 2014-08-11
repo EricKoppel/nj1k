@@ -46,6 +46,10 @@ public class UserEntity extends BaseEntity {
 	public String aboutme;
 	@Lob 
 	public byte[] pic;
+	
+	@Lob
+	public byte[] thumbnail;
+	
 	@OneToMany(mappedBy="climber")
 	public List<AscentEntity> ascents;
 	

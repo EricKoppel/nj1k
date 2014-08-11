@@ -25,10 +25,6 @@ public class NewsController extends Controller {
 		return ok(views.html.news.render(NewsEntity.showArticle(id)));
 	}
 
-	public static Result showNewsImage(Long imgId) {
-		return ok(views.html.news_image.render(NewsImageEntity.find.byId(imgId)));
-	}
-
 	public static Result delete(Long id) {
 		if (!SecurityUtil.hasRole("admin")) {
 			forbidden();
@@ -64,7 +60,7 @@ public class NewsController extends Controller {
 		}
 
 		NewsEntity news = filledForm.get();
-		news.pictures.addAll(ImageUtil.extractPictures(request().body().asMultipartFormData().getFiles(), NewsImageEntity.class));
+		news.pictures.addAll(ImageUtil.extractPictures(request(), NewsImageEntity.class));
 
 		if (news.id == null) {
 			news.save();
