@@ -20,17 +20,23 @@ public class MountainsController extends Controller {
 		return ok(views.html.mountain.render(MountainEntity.findWithDetails(id), AscentEntity.findByMountainId(id), MountainEntity.findNearestHigherNeighbor(id), AscentDetailEntity.findAscentDetailsByMountain(id)));
 	}
 	
+	public static Result getThumbnail(Long id) {
+		MountainEntity mountain = MountainEntity.find(id);
+		if (mountain.thumbnail != null) {
+			return ok(mountain.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());
+		} else if (mountain.picture != null){
+			return ok(mountain.picture).as(MediaType.ANY_IMAGE_TYPE.type());
+		}
+			
+		return notFound();
+	}
 	public static Result getImage(Long id) {
-		MountainEntity ascentDetail = MountainEntity.find(id);
-		if (ascentDetail.picture != null) {
-			return ok(ascentDetail.picture).as(MediaType.ANY_IMAGE_TYPE.type());
+		MountainEntity mountain = MountainEntity.find(id);
+		if (mountain.picture != null) {
+			return ok(mountain.picture).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else {
 			return notFound();
 		}
-	}
-	
-	public static Result getImagePopup(Long id) {
-		return ok(views.html.mountain_image.render(MountainEntity.find(id)));
 	}
 	
 	public static Result showDistances(Long id, Long howMany) {

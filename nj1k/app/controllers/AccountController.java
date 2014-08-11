@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import models.AscentDetailEntity;
 import models.UserEntity;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -21,7 +22,7 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-import utils.ImageResizeTask;
+import utils.CropImageResizeTask;
 import utils.PasswordUtil;
 import utils.SecurityUtil;
 
@@ -32,7 +33,7 @@ public class AccountController extends Controller {
 	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	private static final Form<UserEntity> userForm = form(UserEntity.class);
 	
-	private static final CompletionService<byte[]> taskCompletionService = new ExecutorCompletionService<byte[]>(Executors.newCachedThreadPool());
+	private static final CompletionService<AscentDetailEntity> taskCompletionService = new ExecutorCompletionService<AscentDetailEntity>(Executors.newCachedThreadPool());
 	
 	public static Result editAccount() {
 		if (SecurityUtil.isLoggedIn()) {
@@ -76,8 +77,11 @@ public class AccountController extends Controller {
 		    int w = (int) Math.round(Double.parseDouble(requestData.get("w")));
 		    int h = (int) Math.round(Double.parseDouble(requestData.get("h")));
 		    
-			Future<byte[]> task = taskCompletionService.submit(new ImageResizeTask(pic, x, y, x2, y2, w, h, true));
-			user.pic = task.get();
+			Future<AscentDetailEntity> task = taskCompletionService.submit(new CropImageResizeTask<AscentDetailEntity>(pic, x, y, x2, y2, w, h, AscentDetailEntity.class));
+			AscentDetailEntity images = task.get();
+			
+			user.pic = images.image;
+			user.thumbnail = images.thumbnail;
 		}
 		
 		if (!account.email.isEmpty()) {

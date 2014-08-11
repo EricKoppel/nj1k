@@ -79,111 +79,111 @@
 	
 	<script type="text/javascript">
 	
-		$(document).ready(function() {	
-			var page = 0;
-			var num = 5;
-			
-			$("#previous").on("click", clickPrevious);
-			
-			function clickPrevious(e) {
-				var req = jsRoutes.controllers.AscentController.showRecentAscents(++page, num);
-				showRecentAscents(req);
-				e.preventDefault();
-			}
-			
-			function clickNext(e) {
-				var req = jsRoutes.controllers.AscentController.showRecentAscents(--page, num);
-				showRecentAscents(req);
-				e.preventDefault();
-			}
-			
-	    	function showRecentAscents(req, num) {
-		   		$.ajax({
-					url: req.url,
-					success: function(data, status, xhr) {
-						setButtons(xhr);
-						repopulate(data);
-					}
-				});
-	    	}
-			
-	    	function setButtons(xhr) {
-				if (xhr.getResponseHeader("hasNext") == 'false') {
-					$("#previous").addClass("disabled");
-					$("#previous").off("click");
-				} else {
-					if ($("#previous").hasClass("disabled")) {
-						$("#previous").on("click", clickPrevious);
-						$("#previous").removeClass("disabled");
-					}
+		require(['jquery', 'holder'], function() {
+			$(document).ready(function() {	
+				var page = 0;
+				var num = 5;
+				
+				$("#previous").on("click", clickPrevious);
+				
+				function clickPrevious(e) {
+					var req = jsRoutes.controllers.AscentController.showRecentAscents(++page, num);
+					showRecentAscents(req);
+					e.preventDefault();
 				}
 				
-				if (xhr.getResponseHeader("hasPrev") == 'false') {
-					$("#next").addClass("disabled");
-					$("#next").off("click");
-				} else {
-					if ($("#next").hasClass("disabled")) {
-						$("#next").on("click", clickNext);
-						$("#next").removeClass("disabled");
-					}
+				function clickNext(e) {
+					var req = jsRoutes.controllers.AscentController.showRecentAscents(--page, num);
+					showRecentAscents(req);
+					e.preventDefault();
 				}
-	    	}
-	    	
-	    	function repopulate(array) {
-	    		$("#recentAscents").empty();
-	   		
-				$.each(array, function(i, item) {
-					var userUrl = jsRoutes.controllers.UsersController.showUser(item.climber.id).url;
-					var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
-					var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
-					
-					var media = $('<div class="media">');
-					var mediaBody = $('<div class="media-body">');
-					var imgLink = $('<a class="hidden-xs pull-left" href="' + userUrl + '"></a>');
-					var imgTag = $('<img alt="' + item.climber.name + '" width="64" height="64" class="media-object">');
-					
-					if (item.climber.pic) {
-						imgTag.attr("src", jsRoutes.controllers.UsersController.getProfileImage(item.climber.id).url);
+				
+		    	function showRecentAscents(req, num) {
+			   		$.ajax({
+						url: req.url,
+						success: function(data, status, xhr) {
+							setButtons(xhr);
+							repopulate(data);
+						}
+					});
+		    	}
+				
+		    	function setButtons(xhr) {
+					if (xhr.getResponseHeader("hasNext") == 'false') {
+						$("#previous").addClass("disabled");
+						$("#previous").off("click");
 					} else {
-						imgTag.attr("src", "holder.js/64x64/sky/text:" + item.climber.name);
+						if ($("#previous").hasClass("disabled")) {
+							$("#previous").on("click", clickPrevious);
+							$("#previous").removeClass("disabled");
+						}
 					}
 					
-					$(imgLink).append(imgTag);
-					$(media).append(imgLink);
-  				  	$(mediaBody).append('<h4 class="media-heading"><strong><a href="' + userUrl + '">' + item.climber.name + '</a></strong> - <a href="' + mntUrl + '"><em>' + item.mountain.name + '</em></a></h4>');  				  
-  				  	$(mediaBody).append('<p><strong>' + item.ascent_date + ' - </strong>' + item.trip_report + ' (<a href="' + ascentUrl + '"><em>details...</em></a>)</p>');
-
-  				  	$(media).append(mediaBody);
-					$("#recentAscents").append(media);
+					if (xhr.getResponseHeader("hasPrev") == 'false') {
+						$("#next").addClass("disabled");
+						$("#next").off("click");
+					} else {
+						if ($("#next").hasClass("disabled")) {
+							$("#next").on("click", clickNext);
+							$("#next").removeClass("disabled");
+						}
+					}
+		    	}
+		    	
+		    	function repopulate(array) {
+		    		$("#recentAscents").empty();
+		   		
+					$.each(array, function(i, item) {
+						var userUrl = jsRoutes.controllers.UsersController.showUser(item.climber.id).url;
+						var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
+						var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
+						
+						var media = $('<div class="media">');
+						var mediaBody = $('<div class="media-body">');
+						var imgLink = $('<a class="hidden-xs pull-left" href="' + userUrl + '"></a>');
+						var imgTag = $('<img alt="' + item.climber.name + '" width="64" height="64" class="media-object">');
+						
+						if (item.climber.pic) {
+							imgTag.attr("src", jsRoutes.controllers.UsersController.getProfileThumbnail(item.climber.id).url);
+						} else {
+							imgTag.attr("src", "holder.js/64x64/sky/text:" + item.climber.name);
+						}
+						
+						$(imgLink).append(imgTag);
+						$(media).append(imgLink);
+	  				  	$(mediaBody).append('<h4 class="media-heading"><strong><a href="' + userUrl + '">' + item.climber.name + '</a></strong> - <a href="' + mntUrl + '"><em>' + item.mountain.name + '</em></a></h4>');  				  
+	  				  	$(mediaBody).append('<p><strong>' + item.ascent_date + ' - </strong>' + item.trip_report + ' (<a href="' + ascentUrl + '"><em>details...</em></a>)</p>');
+	
+	  				  	$(media).append(mediaBody);
+						$("#recentAscents").append(media);
+						
+					});
 					
-				});
-				
-				Holder.run();
-	    	}
-		});
-   </script>
-    
-    <script type="text/javascript">
+					Holder.run();
+		    	}
+			
     	
-    	jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
-    		  success: function(data) {
-    			  $.each(data, function(i, item) {
-    				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
-    				  var mediaBody = $('<div class="media-body">');
-    				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
-    				
-    				  $.ajax({
-    					  url: r.url,
-    					  cache: true,
-    					  success: function(data) {
-    	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' (<a target="_blank" href="' + item.link + '"><em>read more...</em></a>)');
-    					  }
-    				  });
-    				  
-    				  $('#externalNews').append('<div class="media">').append(mediaBody);
-    			  });
-    		  }
-    	  });
+		    	jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
+		    		  success: function(data) {
+		    			  $.each(data, function(i, item) {
+		    				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
+		    				  var mediaBody = $('<div class="media-body">');
+		    				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
+		    				
+		    				  $.ajax({
+		    					  url: r.url,
+		    					  cache: true,
+		    					  success: function(data) {
+		    	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' (<a target="_blank" href="' + item.link + '"><em>read more...</em></a>)');
+		    					  }
+		    				  });
+		    				  
+		    				  $('#externalNews').append('<div class="media">').append(mediaBody);
+		    			  });
+		    		  }
+		    	  });
+			});
+		});
     </script>
 	
 	<div class="row">
@@ -241,7 +241,7 @@
 					<div class="media">
 						<a class="pull-left hidden-xs" href="@routes.UsersController.showUser(a.climber.id)">
 							@if(a.climber.pic != null) {
-								<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileImage(a.climber.id)">
+								<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileThumbnail(a.climber.id)">
 							} else {
 								<img alt="@a.climber.name" src="holder.js/64x64/sky" width="64" height="64" class="media-object">
 							}
@@ -250,9 +250,9 @@
 							<h4 class="media-heading"><strong><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></strong> - <a href="@routes.MountainsController.showMountain(a.mountain.id)"><em>@a.mountain.name</em></a></h4>
 							<p>
 								<strong>@formatAscentDate(a.ascent_date) - </strong>
-							@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
-								@Html(formatText(a.trip_report.split("[\\.\\?\\!][\\r\\n\\t ]+").toList.get(0))).
-							}
+								@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
+									@Html(formatText(a.trip_report.split("[\\.\\?\\!][\\r\\n\\t ]+").toList.get(0))).
+								}
 							(<a href="@routes.AscentController.showTripReport(a.id)"><em>details...</em></a>)
 							</p>
 						</div>

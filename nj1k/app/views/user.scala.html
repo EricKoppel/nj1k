@@ -4,94 +4,103 @@
 
 @hero = {}
 @main()(hero) {
-    
+
     <script type="text/javascript">
-    	var page = 0;
-    	var num = 10;
-    	
-    	$(document).ready(function() {
-    		var data = [{
-                value: @user.unique_successful,
-                color: "#2c9c69",
-                label: '@Messages("user.uniquesuccess")'
-            },
-            {
-                value: Math.round(@(user.unique_successful / user.percentComplete - user.unique_successful)),
-                color: "#c62f29",
-                label: '@Messages("user.peaksremaining")'
-            }];
-    		
-    		var config = {animationSteps: 120, animationEasing: "easeOutQuart"};
-    		
-    		var ctx = $("#statsChart").get(0).getContext("2d");
-    		var statsChart = new Chart(ctx).Pie(data, config);
-    		
-    		$("#leg").append(statsChart.generateLegend());
-    		$("#stats").append(statsChart.generateLegend());
-    		$("#previous").click(function(e) {
-   				var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, ++page, num);
-   				showUserAscents(req);
-   				e.preventDefault();
-    		});
-    		
-    		$("#next").click(function(e) {
-    			var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, --page, num);
-    			showUserAscents(req);
-   				e.preventDefault();
-    		});
-    	});
-    	
-    	function showUserAscents(req) {
-	   		$.ajax({
-				url: req.url,
-					success: function(data, status, xhr) {
-						var array = $.parseJSON(data);
-						
-						setButtons(xhr);
-						repopulateClimbsTable(array);
-					}
-			});
-    	}
-    	
-    	function setButtons(xhr) {
-			if (xhr.getResponseHeader("hasNext") == 'false') {
-				$("#previous").addClass("disabled");
-			} else {
-				$("#previous").removeClass("disabled");
-			}
-			
-			if (xhr.getResponseHeader("hasPrev") == 'false') {
-				$("#next").addClass("disabled");
-			} else {
-				$("#next").removeClass("disabled");
-			}
-    	}
-    	
-    	function repopulateClimbsTable(array) {
-    		$("#climbs").empty();
-   		
-			$.each(array, function(i, item) {
-				var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
-				var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
-				var tr = $("<tr/>");
-				$(tr).append('<td><a href="' + ascentUrl + '">' + item.ascent_date + '</a></td>');
-				$(tr).append('<td><a href="' + mntUrl + '">' + item.mountain.name + '</a></td>');
-				$("#climbs").append(tr);
-			});
-			
-			var i = 0;
-			for (i = 0; i < num - array.length; i++) {
-				var tr = $("<tr/>");
-				$(tr).append('<td>&nbsp;</td>');
-				$(tr).append('<td>&nbsp;</td>');
-				$("#climbs").append(tr);
-			}
-    	}
+    
+	    require(['jquery', 'fancybox', 'chart'], function() {
+	    	var page = 0;
+	    	var num = 10;
+	    	
+	    	$(document).ready(function() {
+	    		
+	    		$(".fancybox").fancybox();
+	    		
+	    		var data = [{
+	                value: @user.unique_successful,
+	                color: "#2c9c69",
+	                label: '@Messages("user.uniquesuccess")'
+	            },
+	            {
+	                value: Math.round(@(user.unique_successful / user.percentComplete - user.unique_successful)),
+	                color: "#c62f29",
+	                label: '@Messages("user.peaksremaining")'
+	            }];
+	    		
+	    		var config = {animationSteps: 120, animationEasing: "easeOutQuart"};
+	    		
+	    		var ctx = $("#statsChart").get(0).getContext("2d");
+	    		var statsChart = new Chart(ctx).Pie(data, config);
+	    		
+	    		$("#leg").append(statsChart.generateLegend());
+	    		$("#stats").append(statsChart.generateLegend());
+	    		$("#previous").click(function(e) {
+	   				var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, ++page, num);
+	   				showUserAscents(req);
+	   				e.preventDefault();
+	    		});
+	    		
+	    		$("#next").click(function(e) {
+	    			var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, --page, num);
+	    			showUserAscents(req);
+	   				e.preventDefault();
+	    		});
+	    	});
+	    	
+	    	function showUserAscents(req) {
+		   		$.ajax({
+					url: req.url,
+						success: function(data, status, xhr) {
+							var array = $.parseJSON(data);
+							
+							setButtons(xhr);
+							repopulateClimbsTable(array);
+						}
+				});
+	    	}
+	    	
+	    	function setButtons(xhr) {
+				if (xhr.getResponseHeader("hasNext") == 'false') {
+					$("#previous").addClass("disabled");
+				} else {
+					$("#previous").removeClass("disabled");
+				}
+				
+				if (xhr.getResponseHeader("hasPrev") == 'false') {
+					$("#next").addClass("disabled");
+				} else {
+					$("#next").removeClass("disabled");
+				}
+	    	}
+	    	
+	    	function repopulateClimbsTable(array) {
+	    		$("#climbs").empty();
+	   		
+				$.each(array, function(i, item) {
+					var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
+					var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
+					var tr = $("<tr/>");
+					$(tr).append('<td><a href="' + ascentUrl + '">' + item.ascent_date + '</a></td>');
+					$(tr).append('<td><a href="' + mntUrl + '">' + item.mountain.name + '</a></td>');
+					$("#climbs").append(tr);
+				});
+				
+				var i = 0;
+				for (i = 0; i < num - array.length; i++) {
+					var tr = $("<tr/>");
+					$(tr).append('<td>&nbsp;</td>');
+					$(tr).append('<td>&nbsp;</td>');
+					$("#climbs").append(tr);
+				}
+	    	}
+	    });
     </script>
     
     <div class="page-header">
     	@if(user.user.pic != null) {
-	   		<img style="padding-bottom: 15px; max-height: 128px;" alt="@user.user.name" src="@routes.UsersController.getProfileImage(user.user.id)">
+	   		<a href="@routes.UsersController.getProfileImage(user.user.id)" class="fancybox" title="@user.user.name" data-fancybox-type="image">
+	   		
+	   		<img style="padding-bottom: 15px; max-height: 128px;" alt="@user.user.name" src="@routes.UsersController.getProfileThumbnail(user.user.id)">
+	   		</a>
 		}
 		<div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
 	   		<h1>@user.user.name

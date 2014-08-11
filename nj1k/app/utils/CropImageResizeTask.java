@@ -4,9 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.concurrent.Callable;
 
 import javax.imageio.ImageIO;
 
@@ -17,45 +15,32 @@ import org.slf4j.LoggerFactory;
 
 import play.mvc.Http.MultipartFormData.FilePart;
 
-public class ImageResizeTask<T extends ImageEntity> implements Callable<T> {
+public class CropImageResizeTask<T extends ImageEntity> extends ImageResizeTask<T> {
 
-	private static final Logger logger = LoggerFactory.getLogger(ImageResizeTask.class);
-	public static final int IMAGE = 1024;
-	public static final int THUMBNAIL = 256;
+	private static final Logger logger = LoggerFactory.getLogger(CropImageResizeTask.class);
 	
-	protected FilePart filePart;
-	protected String caption;
-	protected Class<T> clazz;
+	private int x;
+	private int y;
+	private int w;
+	private int h;
 	
-	public ImageResizeTask(FilePart filePart, Class<T> clazz) {
-		this.filePart = filePart;
-		this.clazz = clazz;
-	}
-	
-	public ImageResizeTask(FilePart filePart, String caption, Class<T> clazz) {
-		this.filePart = filePart;
-		this.caption = caption;
-		this.clazz = clazz;
+	public CropImageResizeTask(FilePart filePart, int x, int y, int x2, int y2, int w, int h, Class<T> clazz) {
+		super(filePart, clazz);
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
 	}
 	
 	@Override
-	public T call() throws Exception {
-		T image = clazz.newInstance();
-		
-		image.image = resize(IMAGE);
-		image.thumbnail = resize(THUMBNAIL);
-		image.caption = caption;
-		
-		return image;
-	}
-	
-	protected byte[] resize(int size) throws IOException {
+	public byte[] resize(int size) throws IOException {
 		String fileType = filePart.getFilename().substring(filePart.getFilename().lastIndexOf(".") + 1);
 
 		BufferedImage image = ImageIO.read(filePart.getFile());
 		ColorSpace colorSpace = image.getGraphics().getColor().getColorSpace();
+
+		image = image.getSubimage(x, y, w, h);
 		
-		logger.debug("Colorspace is of type {}", colorSpace.getType());
 		int width = image.getWidth(null);
 		int height = image.getHeight(null);
 		double ratio = (double) height / (double) width;
@@ -85,11 +70,5 @@ public class ImageResizeTask<T extends ImageEntity> implements Callable<T> {
 		logger.debug("Original width: {} Original height: {}", width, height);
 		logger.debug("New width: {} New height: {}", resizedImage.getWidth(null), resizedImage.getHeight(null));
 		return convert(resizedImage, fileType);
-	}
-	
-	protected byte[] convert(BufferedImage image, String fileType) throws IOException {
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		ImageIO.write(image, fileType, outputStream);
-		return outputStream.toByteArray();
 	}
 }

@@ -19,6 +19,9 @@ public abstract class ImageEntity extends BaseEntity {
 	public byte[] image;
 	
 	@Lob
+	public byte[] thumbnail;
+	
+	@Lob
 	public String caption;
 
 	public Long getId() {

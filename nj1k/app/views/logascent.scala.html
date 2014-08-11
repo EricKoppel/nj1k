@@ -6,17 +6,45 @@
 @hero = {}
 @main()(hero) {
 
-	<script type="text/javascript">
-		$(function() {
-	    	$("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
-		});
+	<link rel="stylesheet" href="@routes.Assets.at("javascripts/jQuery-File-Upload-9.7.0/css/jquery.fileupload.css")">
 	
+	<script type="text/javascript">
+		require(['jquery', 'jqueryui'], function() {
+			$(document).ready(function() {
+			    $("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
+			    
+			    $('#ascentDetails').change(function() {
+			    	
+			    	$('#thumbnails tr').remove();
+			    	$.each(this.files, function (index, file) {
+		        		
+		        		var tr = $('<tr><td>' + file.name + '</td><td><textarea class="form-control" name="captions[]" placeholder="Caption"/></td></tr>');
+		        		var reader = new FileReader();
+		        		
+		        		reader.onload = function(e) {
+		        			var preview = $('<img width="128"/>');
+		        			
+							preview.attr("src", e.target.result);
+	
+							var img = new Image();
+							img.src = preview.attr("src");
+							
+							$('<td/>').append(preview).prependTo(tr);
+						}
+		        		
+		        		reader.readAsDataURL(file);
+		        		$(tr).hide().appendTo($('#thumbnails')).fadeIn(1000);
+		            });
+			    });
+			});
+		});
 	</script>
+	
     <div class="page-header">
 		<h3>@Messages("ascent.log.new")</h3>
 	</div>
     
-    @helper.form(action = routes.AscentController.submit, 'enctype -> "multipart/form-data") {
+    @helper.form(action = routes.AscentController.submit, 'enctype -> "multipart/form-data", 'id -> "ascentForm") {
           
         @if(ascentForm.hasGlobalErrors) {
 			@ascentForm.globalError.message
@@ -55,28 +83,32 @@
 	            	'_label -> Messages("ascent.report"),
 	            	'class -> "story form-control"
 	            )
+	            
+	            <div class="actions">
+		            <input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
+		            <a href="@routes.Application.index" class="btn btn-danger">@Messages("cancel")</a>
+		        </div>
 	        </div>
-        
         </div>
-        <div class="row">
-        	<div class="col-md-4">
-		   		@inputFile(
-		   			ascentForm("ascentDetails"), 
-		   			'_label -> Messages("ascent.pics"),
-		   			'class -> "multi form-control"
-		   		)
-			</div>
-		</div>
-		
+	
+		<div class="row">
+		    <div class="col-md-12">
+		    	<div class="row">
+			    	<span class="btn btn-success fileinput-button">
+			    		<i class="glyphicon glyphicon-plus"></i>
+			    		<span>Select files...</span>
+			    		<input id="ascentDetails" type="file" name="ascentDetails" multiple />
+			    	</span>
+			    </div>
+			    <div class="row">
+					<table id="thumbnails" class="table">
+			    	</table>
+				</div>
+		    </div>
+		</div>	
         @input(ascentForm("id"), 
             '_label -> null) { (id, name, value, args) =>
     		<input type="hidden" name="@name" value="@value" id="@id" @toHtmlArgs(args)>
 		}
-		
-        <div class="actions">
-            <input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
-            <a href="@routes.Application.index" class="btn btn-danger">@Messages("cancel")</a>
-        </div>
     }
-    
 }
