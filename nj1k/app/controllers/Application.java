@@ -28,11 +28,11 @@ import utils.MailUtil;
 
 public class Application extends Controller {
 
-	private static Logger logger = LoggerFactory.getLogger(Application.class);
+	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	private static final Form<Contact> contactForm = form(Contact.class);
 	private static final Form<RegisteringUser> registrationForm = form(RegisteringUser.class);
 	
-	private static final ThreadLocal<SimpleDateFormat> dateFormat = new ThreadLocal<SimpleDateFormat>() {
+	public static final ThreadLocal<SimpleDateFormat> cacheDateFormat = new ThreadLocal<SimpleDateFormat>() {
 		public SimpleDateFormat initialValue() {
 			return new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss zzz", Locale.US);
 		}
@@ -85,7 +85,7 @@ public class Application extends Controller {
 			cal.set(Calendar.MONTH, 5);
 			break;
 		case 5: case 6: case 7:
-			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/summer.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/summer.jpg"));
 			cal.set(Calendar.MONTH, 8);
 			break;
 		case 8: case 9: case 10:
@@ -104,13 +104,14 @@ public class Application extends Controller {
 		
 		response().setContentType("image/png");
 		response().setHeader(CACHE_CONTROL, "public");
-		response().setHeader(EXPIRES, dateFormat.get().format(cal.getTime()));
+		response().setHeader(EXPIRES, cacheDateFormat.get().format(cal.getTime()));
 		
 		return status;
 	}
 	
-	@Cached(key = "javascriptRoutes")
 	public static Result javascriptRoutes() {
+		response().setHeader(CACHE_CONTROL, "max-age=3600, public");
+		
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
 			controllers.routes.javascript.AscentController.showRecentAscents(),
 			controllers.routes.javascript.AscentController.submit(),

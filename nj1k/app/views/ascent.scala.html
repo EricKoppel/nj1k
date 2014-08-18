@@ -3,8 +3,7 @@
 @import views.RenderUtil._
 @import utils.SecurityUtil._
 
-@hero = {}
-@main()(hero) {
+@main(title = Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation))(null)(null) {
 
 	<script type="text/javascript">
 

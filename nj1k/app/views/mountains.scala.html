@@ -1,7 +1,6 @@
 @(mountains: List[MountainEntity])
 
-@hero = {}
-@main()(hero) {
+@main(title = Messages("menu.list"))(null)(null) {
     <script type="text/javascript">
 	    require(['jquery', 'tablesorter'], function() {
 			$(document).ready(function() { 

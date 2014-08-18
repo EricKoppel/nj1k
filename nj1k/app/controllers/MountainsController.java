@@ -22,6 +22,10 @@ public class MountainsController extends Controller {
 	
 	public static Result getThumbnail(Long id) {
 		MountainEntity mountain = MountainEntity.find(id);
+		
+		response().setHeader("Cache-Control", "max-age=31556926, public");
+		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(mountain.lastUpdate));
+		
 		if (mountain.thumbnail != null) {
 			return ok(mountain.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else if (mountain.picture != null){
@@ -32,6 +36,9 @@ public class MountainsController extends Controller {
 	}
 	public static Result getImage(Long id) {
 		MountainEntity mountain = MountainEntity.find(id);
+		
+		response().setHeader("Cache-Control", "max-age=31556926, public");
+		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(mountain.lastUpdate));
 		if (mountain.picture != null) {
 			return ok(mountain.picture).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else {
