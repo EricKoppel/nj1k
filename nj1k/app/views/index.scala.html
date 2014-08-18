@@ -4,7 +4,9 @@
 @import utils.SecurityUtil._
 @import helper._
 
-@main() {
+@main(title = Messages("welcome.header")) {
+<meta name="description" content="NJ1K.org - A website dedicated to climbing New Jersey's thousand foot mountains">
+} {
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -68,12 +70,54 @@
 
 	<div class="jumbotron hidden-sm hidden-xs">
 		<div class="container">
-			<h1>@Messages("welcome.header")</h1>
-			<h4>@formatText(Messages("welcometext"))</h4>
-			@if(!isLoggedIn()) {
-				<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">@Messages("menu.register")</button>
-			}
+			<div class="row">
+				<div class="col-md-12" style="border-radius: 5px; background-color:rgba(0,0,0,0.6);">
+					<h1 style="font-family: Futura, Trebuchet MS, Arial, sans-serif;">@Messages("welcome.header")</h1>
+					<p class="lead">@formatText(Messages("welcometext"))</p>
+					@if(!isLoggedIn()) {
+						<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
+							<span class="glyphicon glyphicon-check"></span>
+							<span>@Messages("menu.register")</span>
+						</button>
+					}
+					<div style="margin-bottom: 30px;"></div>
+				</div>
+			</div>
+			<div style="margin-bottom: 20px;"></div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">@Messages("headlines")</h3>
+						</div>
+						<div class="panel-body">
+						@for(n <- news) {
+							<div class="panel panel-default">
+								<div class="panel-body">
+									<div class="media">
+										@if(!n.pictures.isEmpty()) {
+											<a class="hidden-xs pull-right" href="@routes.NewsController.showNews(n.id)">
+												<img alt="@n.title" width="64" height="64" class="media-object" src="@routes.NewsImageController.getImage(n.pictures.get(0).id)">
+											</a>
+										}
+										<div class="media-body">
+											<h4 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><em>@n.title</em></a></h4>
+											<p>
+												<strong>@formatAscentDate(n.news_date) - </strong>
+												@Html(formatNews(n.entry))
+												(<a href="@routes.NewsController.showNews(n.id)"><em>read more...</em></a>)
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						}
+						</div>
+					</div>
+				</div>
 		</div>
+		</div>
+		
 	</div>
 } {
 	
@@ -140,22 +184,20 @@
 						
 						var media = $('<div class="media">');
 						var mediaBody = $('<div class="media-body">');
-						var imgLink = $('<a class="hidden-xs pull-left" href="' + userUrl + '"></a>');
-						var imgTag = $('<img alt="' + item.climber.name + '" width="64" height="64" class="media-object">');
+						var imgTag = null;
 						
 						if (item.climber.pic) {
+							imgTag = $('<img alt="' + item.climber.name + '" width="64" height="64" class="media-object">');
 							imgTag.attr("src", jsRoutes.controllers.UsersController.getProfileThumbnail(item.climber.id).url);
 						} else {
-							imgTag.attr("src", "holder.js/64x64/sky/text:" + item.climber.name);
+							imgTag = $('<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>');
 						}
 						
-						$(imgLink).append(imgTag);
-						$(media).append(imgLink);
+						$('<a class="hidden-xs pull-left" href="' + userUrl + '"></a>').append(imgTag).appendTo(media);
 	  				  	$(mediaBody).append('<h4 class="media-heading"><strong><a href="' + userUrl + '">' + item.climber.name + '</a></strong> - <a href="' + mntUrl + '"><em>' + item.mountain.name + '</em></a></h4>');  				  
 	  				  	$(mediaBody).append('<p><strong>' + item.ascent_date + ' - </strong>' + item.trip_report + ' (<a href="' + ascentUrl + '"><em>details...</em></a>)</p>');
 	
-	  				  	$(media).append(mediaBody);
-						$("#recentAscents").append(media);
+	  				  	$(media).append(mediaBody).appendTo("#recentAscents");
 						
 					});
 					
@@ -178,7 +220,7 @@
 		    					  }
 		    				  });
 		    				  
-		    				  $('#externalNews').append('<div class="media">').append(mediaBody);
+		    				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
 		    			  });
 		    		  }
 		    	  });
@@ -186,40 +228,7 @@
 		});
     </script>
 	
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("headlines")</h3>
-				</div>
-				<div class="panel-body">
-				@for(n <- news) {
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="media">
-								<a class="hidden-xs pull-left" href="@routes.NewsController.showNews(n.id)">
-								@if(!n.pictures.isEmpty()) {
-									<img alt="@n.title" width="64" height="64" class="media-object" src="@routes.NewsImageController.getImage(n.pictures.get(0).id)">
-								} else {
-									<img alt="@n.title" src="holder.js/64x64/sky/text:headline" width="64" height="64" class="media-object">
-								}
-								</a>
-								<div class="media-body">
-									<h4 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><em>@n.title</em></a></h4>
-									<p>
-										<strong>@formatAscentDate(n.news_date) - </strong>
-										@Html(formatNews(n.entry))
-										(<a href="@routes.NewsController.showNews(n.id)"><em>read more...</em></a>)
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				}
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<div class="row">
 		<div class="col-md-6 hidden-xs">
 			<div class="panel panel-default">
@@ -243,7 +252,7 @@
 							@if(a.climber.pic != null) {
 								<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileThumbnail(a.climber.id)">
 							} else {
-								<img alt="@a.climber.name" src="holder.js/64x64/sky" width="64" height="64" class="media-object">
+								<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 							}
 						</a>
 						<div class="media-body">

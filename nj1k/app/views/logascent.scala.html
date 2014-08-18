@@ -3,10 +3,14 @@
 @import helper._
 @import views.RenderUtil._
 
-@hero = {}
-@main()(hero) {
-
+@head = {
 	<link rel="stylesheet" href="@routes.Assets.at("javascripts/jQuery-File-Upload-9.7.0/css/jquery.fileupload.css")">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+}
+
+@main()(head)(null) {
+
+
 	
 	<script type="text/javascript">
 		require(['jquery', 'jqueryui'], function() {
@@ -94,15 +98,19 @@
 		<div class="row">
 		    <div class="col-md-12">
 		    	<div class="row">
-			    	<span class="btn btn-success fileinput-button">
-			    		<i class="glyphicon glyphicon-plus"></i>
-			    		<span>Select files...</span>
-			    		<input id="ascentDetails" type="file" name="ascentDetails" multiple />
-			    	</span>
+		    		<div class="col-md-12">
+				    	<span class="btn btn-success fileinput-button">
+				    		<i class="glyphicon glyphicon-plus"></i>
+				    		<span>Select files...</span>
+				    		<input id="ascentDetails" type="file" name="ascentDetails" multiple />
+				    	</span>
+			    	</div>
 			    </div>
 			    <div class="row">
-					<table id="thumbnails" class="table">
-			    	</table>
+			    	<div class="col-md-12">
+						<table id="thumbnails" class="table">
+				    	</table>
+			    	</div>
 				</div>
 		    </div>
 		</div>	

@@ -3,12 +3,15 @@
 @import helper.twitterBootstrap._
 @import utils.SecurityUtil._
 
-@hero = {}
-@main()(hero) {
+@head = {
+	<link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v0.9.12/css/jquery.Jcrop.min.css" type="text/css" />
+}
+
+@main()(head)(null) {
 	
 	<script type="text/javascript">
 
-		require(['jquery', 'jcrop'], function() {
+		require(['jquery', 'jcrop', 'modal'], function() {
 			var jcropApi;
 			
 			function updateCoords(e) {
@@ -109,7 +112,7 @@
 				<div class="middle">
 					<div class="inner">
 			      		<div class="thumbnail" style="display: inline-block;">
-							<img id="preview"></img>
+							<img alt="preview" id="preview" src="#" />
 							<div class="caption">
 								<button id="preview_ok" type="button" class="btn btn-primary">Crop image</button>
 							</div>
@@ -144,16 +147,18 @@
 	                'class -> "form-control",
 	                '_showConstraints -> false
 	            )
+	            @helper.textarea(
+	            	editForm("aboutme"),
+	            	'_label -> Messages("aboutme"),
+	            	'_showConstraints -> false,
+	            	'class -> "story form-control"
+	            )
         	</div>
         	<div class="col-md-4">
         		@if(getCurrentUser().pic != null) {
         			<div class="thumbnail" style="display: inline-block;">
 		        		<div id="img_container" style="width: 200px; height: 200px; overflow: hidden;">
-		        			@if(getCurrentUser().thumbnail != null) {
-				   				<img id="profile_img"  width="200" height="200" src="@routes.UsersController.getProfileThumbnail(Long.parseLong(editForm("id").value))" />
-				   			}else {
-				   				<img id="profile_img"  width="200" height="200" src="@routes.UsersController.getProfileImage(Long.parseLong(editForm("id").value))" />
-				   			}
+				   			<img id="profile_img"  alt="profile image" width="200" height="200" src="@routes.UsersController.getProfileThumbnail(Long.parseLong(editForm("id").value))" />
 		   				</div>
 	   				</div>
 	   			}
@@ -169,13 +174,6 @@
         </div>
         <div class="row">
 	        <div class="col-md-6">
-	            @helper.textarea(
-	            	editForm("aboutme"),
-	            	'_label -> Messages("aboutme"),
-	            	'_showConstraints -> false,
-	            	'class -> "story form-control"
-	            )
-	            
 	            @helper.inputPassword(
 	                editForm("password"),
 	                'class -> "form-control", 

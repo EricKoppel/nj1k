@@ -3,8 +3,7 @@
 @import helper.twitterBootstrap._
 @import helper._
 
-@hero = {}
-@main()(hero) {
+@main()(null)(null) {
 	<div class="page-header">
 		<h3>@Messages("menu.login")</h3>
 	</div>
@@ -19,7 +18,7 @@
 		            }
 		            
 		            @if(signupForm.hasGlobalErrors) {
-		            	<div class="alert alert-error">@signupForm.globalError.message</div>
+		            	<div class="alert alert-danger">@signupForm.globalError.message</div>
 						
 		            }
 		            

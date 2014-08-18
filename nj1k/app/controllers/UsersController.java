@@ -79,17 +79,23 @@ public class UsersController extends Controller {
 	}
 
 	public static Result getProfileImage(Long id) {
-		byte[] pic = UserEntity.find(id).pic;
+		UserEntity user = UserEntity.find(id);
 
-		if (pic == null) {
+		response().setHeader("Cache-Control", "max-age=3600, public");
+		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
+		
+		if (user.pic == null) {
 			return notFound();
 		}
-		return ok(pic).as(MediaType.ANY_IMAGE_TYPE.type());
+		return ok(user.pic).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 
 	public static Result getProfileThumbnail(Long id) {
 		UserEntity user = UserEntity.find(id);
 
+		response().setHeader("Cache-Control", "max-age=3600, public");
+		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
+		
 		if (user.thumbnail != null) {
 			return ok(user.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else if (user.pic != null) {

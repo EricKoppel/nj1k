@@ -2,8 +2,11 @@
 @import java.text.SimpleDateFormat
 @import views.RenderUtil._
 
-@hero = {}
-@main()(hero) {
+@head = {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css" type="text/css" media="screen" />
+}
+
+@main(title = user.user.name)(head)(null) {
 
     <script type="text/javascript">
     

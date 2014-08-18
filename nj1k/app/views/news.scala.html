@@ -3,8 +3,10 @@
 @import utils.SecurityUtil._
 @import views.RenderUtil._
 
-@hero = {}
-@main(title = news.title)(hero) {
+@main(title = news.title)(null)(null) {
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css" type="text/css" media="screen" />
+	
 	<script type="text/javascript">
 	require(['jquery', 'fancybox'], function() {
 		$(document).ready(function() {
@@ -55,7 +57,6 @@
 			   		
 				
 				@for(img<- news.pictures) {
-
 					<div class="pull-right col-xs-6 col-md-3">
 						<a data-fancybox-type="image" title="@img.caption" href="@routes.NewsImageController.getImage(img.id)" class="fancybox thumbnail">
 							<img class="img-responsive" alt="@img.caption" src="@routes.NewsImageController.getImage(img.id)">

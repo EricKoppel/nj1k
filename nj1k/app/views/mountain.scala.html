@@ -1,11 +1,13 @@
 @(mountain: MountainEntity, ascents: List[AscentEntity], nhn: MountainEntity, ascentImages: List[AscentDetailEntity])
 @import views.RenderUtil._
 
-@hero = {}
-@main()(hero) {
+@head = {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
+}
 
+@main(title = mountain.name)(head)(null) {
 	<script type="text/javascript">
-		require(['jquery', 'fancybox'], function() {
+		require(['jquery', 'fancybox', 'holder'], function() {
 			$(document).ready(function() {
 				$(".fancybox").fancybox();
 			});
@@ -13,11 +15,6 @@
 	</script>
 
 	<div class="page-header">
-		@if(mountain.picture != null) {
-	    	<a class="fancybox" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
-	    		<img style="padding-bottom: 15px; max-height: 128px;" alt="@mountain.name" height="200" width="200" src="@routes.MountainsController.getThumbnail(mountain.id)" />
-	    	</a>
-	    }
 	    <div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
 			<h1>@mountain.name</h1>
 		</div>
@@ -30,7 +27,14 @@
 		    		<div class="panel-heading">
 		    			<h3 class="panel-title">@Messages("about") @mountain.name</h3>
 		    		</div>
-			    	<div class="panel-body">@Html(mountain.description)</div>
+			    	<div class="panel-body">
+			    	@if(mountain.picture != null) {
+				    	<a class="thumbnail fancybox" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
+				    		<img alt="@mountain.name" src="@routes.MountainsController.getThumbnail(mountain.id)" />
+				    	</a>
+	    			}
+	    			@Html(mountain.description)
+			    	</div>
 		    	</div>
 		    </div>
 	    }
@@ -72,7 +76,12 @@
 						</tr>
 					</table>
 				
-					<p><a class="btn btn-default" href="@routes.MountainsController.showRadius(mountain.id)">@Messages("radius.search")</a></p>
+					<p>
+						<a class="btn btn-default" href="@routes.MountainsController.showRadius(mountain.id)">
+							<i class="glyphicon glyphicon-globe"></i>
+							<span>@Messages("radius.search")</span>
+						</a>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -89,7 +98,7 @@
 								@if(a.climber.pic != null) {
 									<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileImage(a.climber.id)">
 								} else {
-									<img alt="@a.climber.name" src="holder.js/64x64/sky" width="64" height="64" class="media-object">
+									<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 								}
 							</a>
 							<div class="media-body">
@@ -121,9 +130,8 @@
 
 						<div class="col-sm-6 col-md-3">
 							<div class="thumbnail">
-								<a class="fancybox" data-fancybox-group="gallery@mountain.id" title="@ascentImages(i).caption" data-fancybox-type="image" href="@routes.AscentDetailController.getImage(ascentImages(i).id)"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getImage(ascentImages(i).id)" /></a>
+								<a class="fancybox" data-fancybox-group="gallery@mountain.id" title="@ascentImages(i).caption" data-fancybox-type="image" href="@routes.AscentDetailController.getImage(ascentImages(i).id)"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getThumbnail(ascentImages(i).id)" /></a>
 								<div class="caption">
-									
 									<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.showUser(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>
 								</div>
 							</div>
