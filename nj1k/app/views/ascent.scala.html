@@ -3,14 +3,16 @@
 @import views.RenderUtil._
 @import utils.SecurityUtil._
 
-@main(title = Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation))(null)(null) {
+@head = {
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
+}
+
+@main(title = Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation))(head)(null) {
 
 	<script type="text/javascript">
 
-	require(['jquery', 'fancybox'], function() {
+	require(['jquery'], function() {
 	    $(document).ready(function() {
-	    
-			$(".fancybox").fancybox();
 	    
 			$('#delete_ascent').click(function() {
 	    		if (confirm('@Messages("ascent.delete.prompt")')) {
@@ -164,4 +166,10 @@
 			</div>
 		</div>
 	}
+	
+	<script type="text/javascript">
+		require(['fancybox'], function() {
+			$(".fancybox").fancybox();
+		});
+	</script>
 }

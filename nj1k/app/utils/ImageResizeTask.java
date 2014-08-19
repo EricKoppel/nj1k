@@ -1,6 +1,7 @@
 package utils;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -39,7 +40,7 @@ public class ImageResizeTask<T extends ImageEntity> implements Callable<T> {
 	}
 	
 	@Override
-	public T call() throws Exception {
+	public T call() throws InstantiationException, IllegalAccessException, IOException {
 		T image = clazz.newInstance();
 		
 		image.image = resize(IMAGE);
@@ -49,7 +50,7 @@ public class ImageResizeTask<T extends ImageEntity> implements Callable<T> {
 		return image;
 	}
 	
-	protected byte[] resize(int size) throws IOException {
+	protected byte[] resize(final int size) throws IOException {
 		String fileType = filePart.getFilename().substring(filePart.getFilename().lastIndexOf(".") + 1);
 
 		BufferedImage image = ImageIO.read(filePart.getFile());
@@ -58,25 +59,21 @@ public class ImageResizeTask<T extends ImageEntity> implements Callable<T> {
 		logger.debug("Colorspace is of type {}", colorSpace.getType());
 		int width = image.getWidth(null);
 		int height = image.getHeight(null);
-		double ratio = (double) height / (double) width;
 		
-		int newWidth = 0;
-		int newHeight = 0;
+		Image scaledInstance = null;
 		
 		if (width > height) {
-			newWidth = (int) (size / ratio);
-			newHeight = size;
+			scaledInstance = image.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
 		} else {
-			newHeight = (int) (size / ratio);
-			newWidth = size;
+			scaledInstance = image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
 		}
 		
-		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, colorSpace.getType());
+		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpace.getType());
 		Graphics2D graphics = resizedImage.createGraphics();
 		
 		try {
 			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			graphics.drawImage(image, 0, 0, newWidth, newHeight, null);
+			graphics.drawImage(scaledInstance, 0, 0, null);
 		}
 		finally {
 			graphics.dispose();
