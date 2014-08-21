@@ -3,9 +3,6 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map.Entry;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -17,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import play.Configuration;
 import play.data.Form;
-import play.data.validation.ValidationError;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.FirstSentenceTransformer;
@@ -30,13 +26,22 @@ import com.google.common.net.MediaType;
 
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
-import flexjson.transformer.Transformer;
 
 public class AscentController extends Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);
 	private static final Form<AscentEntity> ascentForm = form(AscentEntity.class);
-
+	private static final JSONSerializer serializer;
+	
+	static {
+		serializer = new JSONSerializer();
+		serializer.include("id", "ascent_date", "mountain.id", "mountain.name", "climber.id", "climber.name", "climber.pic", "trip_report");
+		serializer.exclude("*");
+		serializer.transform(new DateTransformer(Configuration.root().getString("render.date.format")), Timestamp.class);
+		serializer.transform(new FirstSentenceTransformer(), "trip_report");
+		serializer.transform(new HasPictureTransformer(), "climber.pic");	
+	}
+	
 	public static Result showTripReport(Long id) {
 		AscentEntity e = AscentEntity.findTripReport(id);
 
@@ -69,13 +74,7 @@ public class AscentController extends Controller {
 			return badRequest(String.valueOf(page));
 		}
 		
-		JSONSerializer serializer = new JSONSerializer();
-		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
-		serializer.include("id", "ascent_date", "mountain.id", "mountain.name", "climber.id", "climber.name", "climber.pic", "trip_report");
-		serializer.exclude("*");
-		serializer.transform(transformer, Timestamp.class);
-		serializer.transform(new FirstSentenceTransformer(), "trip_report");
-		serializer.transform(new HasPictureTransformer(), "climber.pic");
+		
 		Page<AscentEntity> pg = AscentEntity.findRecent(page, num);
 		
 		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));

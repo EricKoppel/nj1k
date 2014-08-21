@@ -32,7 +32,7 @@ public class ImageUtil {
 		List<FilePart> files = form.getFiles();
 		String[] captions = form.asFormUrlEncoded().get("captions[]");
 
-		logger.info("Number of files: {}", files.size());
+		logger.debug("Number of files: {}", files.size());
 		for (int i = 0; i < files.size(); i++) {
 			FilePart file = files.get(i);
 			MediaType mediaType = MediaType.parse(files.get(i).getContentType());

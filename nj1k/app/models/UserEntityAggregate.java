@@ -41,8 +41,8 @@ public class UserEntityAggregate extends UserAggregate {
 		
 		Query<UserEntityAggregate> users = Ebean.find(UserEntityAggregate.class).setRawSql(sql);
 		users.fetch("most_recent", "*", new FetchConfig().query());
-		users.fetch("most_recent.mountain", "*");
-		users.fetch("most_recent.climber", "*");
+		users.fetch("most_recent.mountain", "id,name");
+		users.fetch("most_recent.climber", "id,name");
 		users.where().eq("u.id", id);
 		
 		return users.findUnique();
@@ -55,8 +55,8 @@ public class UserEntityAggregate extends UserAggregate {
 		
 		Query<UserEntityAggregate> users = Ebean.find(UserEntityAggregate.class).setRawSql(sql);
 		users.fetch("most_recent", "*", new FetchConfig().query());
-		users.fetch("most_recent.mountain", "*");
-		users.fetch("most_recent.climber", "*");
+		users.fetch("most_recent.mountain", "id,name");
+		users.fetch("most_recent.climber", "id,name");
 		
 		return users.findList();
 	}
