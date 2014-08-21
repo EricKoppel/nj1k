@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.Routes;
-import play.cache.Cached;
 import play.data.Form;
 import play.i18n.Messages;
 import play.libs.Akka;

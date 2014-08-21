@@ -87,7 +87,7 @@ public class AscentEntity extends BaseEntity {
 	}
 
 	public static Page<AscentEntity> findRecent(int page, int num) {
-		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).findPagingList(num).getPage(page);
+		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber").fetch("mountain").where().eq("club_list", true).findPagingList(num).setFetchAhead(false).getPage(page);
 	}
 
 	@Override

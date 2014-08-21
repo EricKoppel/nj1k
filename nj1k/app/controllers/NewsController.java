@@ -1,9 +1,6 @@
 package controllers;
 
 import static play.data.Form.form;
-
-import java.util.List;
-
 import models.NewsEntity;
 import models.NewsImageEntity;
 

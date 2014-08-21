@@ -1,9 +1,11 @@
 package utils;
 
-import java.net.MalformedURLException;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,11 +14,19 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.Configuration;
 import play.libs.F.Function;
 import play.libs.WS.Response;
 
 public class NYNJTCParserFunction implements Function<Response, List<NYNJTCNewsArticle>> {
 
+	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+		@Override
+		public DateFormat initialValue() {
+			return new SimpleDateFormat(Configuration.root().getString("render.date.format"));
+		}
+	}; 
+	
 	private static final Logger logger = LoggerFactory.getLogger(NYNJTCParserFunction.class);
 	public static final String NEWS_PAGE = "http://nynjtc.org/news/news";
 	
@@ -28,26 +38,26 @@ public class NYNJTCParserFunction implements Function<Response, List<NYNJTCNewsA
 
 	@Override
 	public List<NYNJTCNewsArticle> apply(Response response) throws Exception {
-		List<NYNJTCNewsArticle> articles = new ArrayList<NYNJTCNewsArticle>();
 		Document doc = Jsoup.parse(response.getBodyAsStream(), null, NEWS_PAGE);
 		Elements rows = doc.select("div.view-content-parks-table tbody > tr:lt(" + maxResults + ")");
 		
-		for (Element row : rows) {
-			articles.add(new NYNJTCNewsArticle(extractTitle(row), extractDate(row), extractURL(row)));
-		}
-
-		return articles;
+		return rows.stream().parallel().map(row ->
+			new NYNJTCNewsArticle(extractTitle(row), extractDate(row), extractURL(row))).sorted().collect(Collectors.toList());
 	}
 	
-	private String extractDate(Element row) throws ParseException {
-		return row.child(0).getElementsByTag("span").get(0).text();
+	private Date extractDate(Element row) {
+		try {
+			return dateFormat.get().parse(row.child(0).getElementsByTag("span").get(0).text());
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	private String extractTitle(Element row) {
 		return row.child(2).getElementsByTag("a").get(0).text();
 	}
 	
-	private String extractURL(Element row) throws MalformedURLException {
+	private String extractURL(Element row) {
 		return row.child(2).getElementsByTag("a").attr("abs:href");
 	}
 }

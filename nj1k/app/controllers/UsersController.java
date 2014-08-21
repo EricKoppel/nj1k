@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import play.Configuration;
 import play.data.Form;
 import play.i18n.Messages;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.MailUtil;
@@ -32,11 +31,19 @@ import flexjson.transformer.DateTransformer;
 import flexjson.transformer.Transformer;
 
 public class UsersController extends Controller {
-
+	
 	private static final Form<UserEntity> userForm = form(UserEntity.class);
-
 	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
-
+	private static final JSONSerializer serializer;
+	
+	static {
+		serializer = new JSONSerializer();
+		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
+		serializer.include("id", "ascent_date", "mountain.id", "mountain.name");
+		serializer.exclude("*");
+		serializer.transform(transformer, Timestamp.class);
+	}
+	
 	public static Result list() {
 		List<FinisherEntity> finishers = FinisherEntity.findFinishers();
 		List<UserEntityAggregate> aspirants = UserEntityAggregate.findAll();
@@ -60,12 +67,6 @@ public class UsersController extends Controller {
 		if (page < 0) {
 			return badRequest(String.valueOf(page));
 		}
-
-		JSONSerializer serializer = new JSONSerializer();
-		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
-		serializer.include("id", "ascent_date", "mountain.id", "mountain.name");
-		serializer.exclude("*");
-		serializer.transform(transformer, Timestamp.class);
 
 		Page<AscentEntity> pg = AscentEntity.findByUserId(id, page, num);
 

@@ -12,6 +12,14 @@ import flexjson.JSONSerializer;
 
 public class MountainsController extends Controller {
 
+	private static final JSONSerializer serializer;
+	
+	static {
+		serializer = new JSONSerializer();	
+		serializer.include("distanceAsMiles", "m1.id", "m2.id", "m1.name", "m2.name", "m1.latitude", "m1.longitude", "m2.latitude", "m2.longitude");
+		serializer.exclude("*");
+	}
+	
 	public static Result list() {
 		return ok(views.html.mountains.render(MountainEntity.findAll()));
 	}
@@ -47,10 +55,6 @@ public class MountainsController extends Controller {
 	}
 	
 	public static Result showDistances(Long id, Long howMany) {
-		JSONSerializer serializer = new JSONSerializer();
-		
-		serializer.include("distanceAsMiles", "m1.id", "m2.id", "m1.name", "m2.name", "m1.latitude", "m1.longitude", "m2.latitude", "m2.longitude");
-		serializer.exclude("*");
 		return ok(serializer.serialize(MountainEntity.findNearestNeighbors(id, howMany)));
 	}
 	
@@ -59,10 +63,6 @@ public class MountainsController extends Controller {
 	}
 	
 	public static Result showDistance(Long id1, Long id2) {
-		JSONSerializer serializer = new JSONSerializer();
-		
-		serializer.include("distanceAsMiles", "m1.id", "m2.id", "m1.name", "m2.name", "m1.latitude", "m1.longitude", "m2.latitude", "m2.longitude");
-		serializer.exclude("*");
 		return ok(serializer.serialize(MountainEntity.findDistanceBetweenMountains(id1, id2)));
 	}
 }

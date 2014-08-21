@@ -25,6 +25,7 @@
 	<logger name="org.apache.shiro" level="INFO" />
 	<logger name="security" level="TRACE" />
 	<logger name="utils" level="TRACE" />
+	<logger name="logger.com.jolbox" level="DEBUG"/>
 	
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
