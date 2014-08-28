@@ -212,6 +212,8 @@
 		    				  var mediaBody = $('<div class="media-body">');
 		    				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
 		    				
+		    				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
+		    				  
 		    				  $.ajax({
 		    					  url: r.url,
 		    					  cache: true,
@@ -220,7 +222,7 @@
 		    					  }
 		    				  });
 		    				  
-		    				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
+		    				  
 		    			  });
 		    		  }
 		    	  });
