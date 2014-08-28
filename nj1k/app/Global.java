@@ -17,7 +17,9 @@ import org.slf4j.LoggerFactory;
 
 import play.Application;
 import play.GlobalSettings;
+import play.api.mvc.EssentialFilter;
 import play.data.format.Formatters;
+import play.filters.gzip.GzipFilter;
 import play.mvc.Http.MultipartFormData.FilePart;
 import utils.CustomDateConverter;
 import utils.CustomMountainConverter;
@@ -27,6 +29,10 @@ public class Global extends GlobalSettings {
 
 	private static final Logger logger = LoggerFactory.getLogger(Global.class);
 
+	public <T extends EssentialFilter> Class<T>[] filters() {
+        return new Class[]{GzipFilter.class};
+    }
+	
 	@Override
 	public void onStart(Application app) {
 		super.onStart(app);
