@@ -40,6 +40,9 @@ requirejs.config({
         },
         'jcrop': {
             deps: ['jquery']
+        },
+        'tablesorter': {
+            deps: ['jquery']
         }
     }
 });
