@@ -39,7 +39,7 @@ public class NewsEntity extends BaseEntity {
 	}
 	
 	public static List<NewsEntity> findRecent(int i) {
-		return find.setMaxRows(i).orderBy().desc("news_date").findList();
+		return find.select("*").fetch("pictures").setMaxRows(i).orderBy().desc("news_date").findList();
 	}
 	
 	public static Integer findNumberOfPages(Integer pageSize) {

@@ -37,7 +37,7 @@ GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
 GET		/users/:id/thumbnail		controllers.UsersController.getProfileThumbnail(id: Long)
 
 GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()
-GET		/externalNews/:id			controllers.ExternalNewsController.getNewsArticleFromNYNJTC(id: String)
+GET		/externalNewsArticle		controllers.ExternalNewsController.getNewsArticleFromNYNJTC(url: String)
 
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
 GET		/news						controllers.NewsController.showForm()

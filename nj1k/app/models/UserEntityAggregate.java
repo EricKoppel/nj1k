@@ -40,7 +40,7 @@ public class UserEntityAggregate extends UserAggregate {
 				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create();
 		
 		Query<UserEntityAggregate> users = Ebean.find(UserEntityAggregate.class).setRawSql(sql);
-		users.fetch("most_recent", "*", new FetchConfig().query());
+		users.fetch("most_recent", "*");
 		users.fetch("most_recent.mountain", "id,name");
 		users.fetch("most_recent.climber", "id,name");
 		users.where().eq("u.id", id);

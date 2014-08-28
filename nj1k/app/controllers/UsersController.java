@@ -59,7 +59,7 @@ public class UsersController extends Controller {
 			return notFound();
 		}
 
-		return ok(views.html.user.render(user, AscentEntity.findByUserId(id, 0, 10).getList()));
+		return ok(views.html.user.render(user, AscentEntity.findAscentByUserId(id, 0, 10).getList()));
 	}
 
 	public static Result showUserAscents(Long id, int page, int num) {
@@ -68,7 +68,7 @@ public class UsersController extends Controller {
 			return badRequest(String.valueOf(page));
 		}
 
-		Page<AscentEntity> pg = AscentEntity.findByUserId(id, page, num);
+		Page<AscentEntity> pg = AscentEntity.findAscentByUserId(id, page, num);
 
 		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
 		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
