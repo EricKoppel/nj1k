@@ -15,10 +15,11 @@ import play.Configuration;
 import play.libs.F.Promise;
 import play.libs.WS;
 import play.mvc.Controller;
-import play.mvc.Http.Response;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.NYNJTCArticleParserFunction;
 import utils.NYNJTCParserFunction;
+import actions.ETagAction;
 
 import com.google.common.net.MediaType;
 
@@ -42,21 +43,12 @@ public class ExternalNewsController extends Controller {
 		serializer.exclude("*");
 	}
 
+	@With(ETagAction.class)
 	public static Promise<Result> getNewsFromNYNJTC() {
-		final Response response = response();
-		
-		response.setHeader(CACHE_CONTROL, "max-age=3600, public");
 		return WS.url(NYNJTCParserFunction.NEWS_PAGE).get().map(new NYNJTCParserFunction(5)).map(articles -> {
-			response.setHeader(ETAG, articles.getEtag());
-			response.setHeader(LAST_MODIFIED, articles.getLastModified());
-
-			if (articles.getEtag() != null && articles.getEtag().equals(request().getHeader(IF_NONE_MATCH))) {
-				return status(NOT_MODIFIED);
-			} else {
-				logger.debug("Serializing: {}", articles.getArticles());
-				String ret = serializer.serialize(articles.getArticles());
-				return ok(ret).as(MediaType.JSON_UTF_8.toString());
-			}
+			logger.debug("Serializing: {}", articles);
+			String ret = serializer.serialize(articles);
+			return ok(ret).as(MediaType.JSON_UTF_8.toString());
 		});
 	};
 

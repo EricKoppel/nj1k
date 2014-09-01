@@ -41,7 +41,7 @@ public class Application extends Controller {
 	
 	public static Result index() {
 		Page<AscentEntity> page = AscentEntity.findRecent(0, 5);
-		return ok(views.html.index.render(NewsEntity.findRecent(3), page.getList(), page.getTotalPageCount(), registrationForm));
+		return ok(views.html.index.render(NewsEntity.findRecent(3), page.getList(), registrationForm));
 	}
 
 	public static Result contact() {
