@@ -25,6 +25,8 @@ import play.mvc.Result;
 import scala.concurrent.duration.Duration;
 import utils.MailUtil;
 
+import com.avaje.ebean.Page;
+
 public class Application extends Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
@@ -38,7 +40,8 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		return ok(views.html.index.render(NewsEntity.findRecent(3), AscentEntity.findRecent(0, 5).getList(), registrationForm));
+		Page<AscentEntity> page = AscentEntity.findRecent(0, 5);
+		return ok(views.html.index.render(NewsEntity.findRecent(3), page.getList(), page.getTotalPageCount(), registrationForm));
 	}
 
 	public static Result contact() {
@@ -88,7 +91,7 @@ public class Application extends Controller {
 			cal.set(Calendar.MONTH, 8);
 			break;
 		case 8: case 9: case 10:
-			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/fall.png"));
+			status = ok(Play.class.getClassLoader().getResourceAsStream("public/images/fall.jpg"));
 			cal.set(Calendar.MONTH, 11);
 			break;
 		default: 
