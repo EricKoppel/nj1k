@@ -5,7 +5,7 @@ requirejs.config({
         underscore: 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min',
         holder: 'https://cdnjs.cloudflare.com/ajax/libs/holder/2.3.1/holder.min',
         jqueryui: 'https://code.jquery.com/ui/1.10.4/jquery-ui',
-        jcrop: 'http://jcrop-cdn.tapmodo.com/v0.9.12/js/jquery.Jcrop.min',
+        jcrop: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/js/jquery.Jcrop',
         bootstrap: 'https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min',
         collapse: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/collapse.min',
         dropdown: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/dropdown.min',
