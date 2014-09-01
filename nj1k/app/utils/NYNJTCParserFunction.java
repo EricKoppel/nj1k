@@ -17,9 +17,8 @@ import org.slf4j.LoggerFactory;
 import play.Configuration;
 import play.libs.F.Function;
 import play.libs.WS.Response;
-import play.mvc.Controller;
 
-public class NYNJTCParserFunction implements Function<Response, NYNJTCNewsArticles> {
+public class NYNJTCParserFunction implements Function<Response, List<NYNJTCNewsArticle>> {
 
 	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -38,7 +37,7 @@ public class NYNJTCParserFunction implements Function<Response, NYNJTCNewsArticl
 	}
 
 	@Override
-	public NYNJTCNewsArticles apply(Response response) throws Exception {
+	public List<NYNJTCNewsArticle> apply(Response response) throws Exception {
 		Document doc = Jsoup.parse(response.getBodyAsStream(), null, NEWS_PAGE);
 		
 		Elements rows = doc.select("div.view-content-parks-table tbody > tr:lt(" + maxResults + ")");
@@ -46,12 +45,7 @@ public class NYNJTCParserFunction implements Function<Response, NYNJTCNewsArticl
 		List<NYNJTCNewsArticle> list = rows.stream().parallel().map(row ->
 		new NYNJTCNewsArticle(extractTitle(row), extractDate(row), extractURL(row))).sorted().collect(Collectors.toList());
 		
-		NYNJTCNewsArticles articles = new NYNJTCNewsArticles();
-		articles.setEtag(response.getHeader(Controller.ETAG));
-		articles.setLastModified(response.getHeader(Controller.LAST_MODIFIED));
-		articles.setArticles(list);
-		
-		return articles;
+		return list;
 	}
 	
 	private Date extractDate(Element row) {
