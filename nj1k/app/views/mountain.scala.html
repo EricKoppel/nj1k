@@ -18,7 +18,7 @@
 	    	<div class="col-md-4">
 	    		<div class="panel panel-default">
 		    		<div class="panel-heading">
-		    			<h3 class="panel-title">@Messages("about") @mountain.name</h3>
+		    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
 		    		</div>
 			    	<div class="panel-body">
 			    	@if(mountain.picture != null) {
@@ -35,7 +35,7 @@
     	<div class="col-md-4">
     		<div class="panel panel-default">
 	    		<div class="panel-heading">
-	    			<h3 class="panel-title">@Messages("mountain.stats")</h3>
+	    			<h2 class="panel-title">@Messages("mountain.stats")</h2>
 	    		</div>
 	    		<div class="panel-body">
 					<table id="mountain_info" class="table">
@@ -82,7 +82,7 @@
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("mountain.others", mountain.name)</h3>
+					<h2 class="panel-title">@Messages("mountain.others", mountain.name)</h2>
 				</div>
 				<div class="panel-body">
 					@for(a <- ascents) {
@@ -109,7 +109,7 @@
 		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h3>
+					<h2 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h2>
 				</div>
 				<div class="panel-body">
 					@for(i <- 0 until ascentImages.size) {
