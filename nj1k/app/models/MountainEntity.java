@@ -70,6 +70,10 @@ public class MountainEntity extends BaseEntity {
 		return find.byId(id);
 	}
 
+	public static MountainEntity findByName(String name) {
+		return find.where().eq("name", name).findUnique();
+	}
+	
 	public static int listSize() {
 		return find.where().eq("club_list", true).findRowCount();
 	}
@@ -164,5 +168,4 @@ public class MountainEntity extends BaseEntity {
 	public String toString() {
 		return "MountainEntity [id=" + id + ", name=" + name + "]";
 	}
-
 }
