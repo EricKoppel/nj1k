@@ -25,7 +25,14 @@ public class MountainsController extends Controller {
 	}
 	
 	public static Result showMountain(Long id) {
-		return ok(views.html.mountain.render(MountainEntity.findWithDetails(id), AscentEntity.findByMountainId(id), MountainEntity.findNearestHigherNeighbor(id), AscentDetailEntity.findAscentDetailsByMountain(id)));
+		MountainEntity mountain = MountainEntity.find(id);
+		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), MountainEntity.findNearestHigherNeighbor(mountain.id), AscentDetailEntity.findAscentDetailsByMountain(mountain.id)));
+	}
+	
+	public static Result showMountainByName(String name) {
+		String mountainName = name.replace("-", " ");
+		MountainEntity mountain = MountainEntity.findByName(name);
+		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), MountainEntity.findNearestHigherNeighbor(mountain.id), AscentDetailEntity.findAscentDetailsByMountain(mountain.id)));
 	}
 	
 	public static Result getThumbnail(Long id) {
