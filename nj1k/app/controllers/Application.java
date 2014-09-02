@@ -49,13 +49,14 @@ public class Application extends Controller {
 	}
 
 	public static Result submitContact() {
-		final Form<Contact> filledForm = contactForm.bindFromRequest();
-		final String subject = filledForm.get().getSubject();
-		final String message = Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage());
+		Form<Contact> filledForm = contactForm.bindFromRequest();
 		
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.contact.render(filledForm));
 		}
+		
+		final String subject = filledForm.get().getSubject();
+		final String message = Messages.get("mail.message", filledForm.get().getEmail(), filledForm.get().getMessage());
 		
 		Akka.system().scheduler().scheduleOnce(Duration.create(0, TimeUnit.SECONDS), () -> {
 			MailUtil.sendMail("erk7@njit.edu", subject, message);
