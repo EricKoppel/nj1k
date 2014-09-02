@@ -203,29 +203,6 @@
 					
 					Holder.run();
 		    	}
-			
-    	
-		    	jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
-		    		  success: function(data) {
-		    			  $.each(data, function(i, item) {
-		    				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
-		    				  var mediaBody = $('<div class="media-body">');
-		    				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
-		    				
-		    				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
-		    				  
-		    				  $.ajax({
-		    					  url: r.url,
-		    					  cache: true,
-		    					  success: function(data) {
-		    	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' (<a target="_blank" href="' + item.link + '"><em>read more...</em></a>)');
-		    					  }
-		    				  });
-		    				  
-		    				  
-		    			  });
-		    		  }
-		    	  });
 			});
 		});
     </script>
@@ -242,6 +219,30 @@
 				</div>
 			</div>
 		</div>
+		
+		<script type="text/javascript">
+			require(['jquery'], function() {
+				jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
+		  		  success: function(data) {
+		  			  $.each(data, function(i, item) {
+		  				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
+		  				  var mediaBody = $('<div class="media-body">');
+		  				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
+		  				
+		  				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
+		  				  
+		  				  $.ajax({
+		  					  url: r.url,
+		  					  cache: true,
+		  					  success: function(data) {
+		  	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' (<a target="_blank" href="' + item.link + '"><em>read more...</em></a>)');
+		  					  }
+		  				  });
+		  			  });
+					}
+				});
+			});
+		</script>
 		<div class="col-md-6 col-xs-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">

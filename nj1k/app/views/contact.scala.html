@@ -53,7 +53,11 @@
         </fieldset>
         
         <div class="actions">
-            <input type="submit" class="btn btn-primary" value="@Messages("email.send")">
+            <button type="submit" class="btn btn-primary">
+           		<i class="glyphicon glyphicon-envelope"></i>
+            	<span> @Messages("email.send")</span>
+            </button>
+            
             <a href="@routes.Application.submitContact" class="btn btn-danger">@Messages("cancel")</a>
         </div>
 	}
