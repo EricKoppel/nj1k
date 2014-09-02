@@ -12,9 +12,11 @@ import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;
+import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.Sql;
 
 @Entity
+@CacheStrategy(useBeanCache = true)
 @Sql
 public class FinisherEntity extends UserAggregate {
 
@@ -37,6 +39,7 @@ public class FinisherEntity extends UserAggregate {
 		Query<FinisherEntity> finishers = Ebean.find(FinisherEntity.class).setRawSql(sql);
 		finishers.fetch("final_ascent", "*", new FetchConfig().query());
 		finishers.fetch("final_ascent.mountain", "name");
+		finishers.orderBy("ascent_date");
 		
 		return finishers.findList();
 	}
