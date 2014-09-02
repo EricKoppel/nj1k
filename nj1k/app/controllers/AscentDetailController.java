@@ -4,13 +4,11 @@ package controllers;
 import java.util.List;
 
 import models.AscentDetailEntity;
-import models.UploadedFileWrapper;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.mvc.Controller;
-import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import utils.ImageUtil;
 import utils.SecurityUtil;
@@ -30,14 +28,12 @@ public class AscentDetailController extends Controller {
 		}
 		
 		List<AscentDetailEntity> resizedImages = ImageUtil.extractPictures(request(), AscentDetailEntity.class);
-		UploadedFileWrapper uploadedFiles = new UploadedFileWrapper();
 		
 		for (AscentDetailEntity pic : resizedImages) {
 			pic.save();
 			
 			Long id = pic.id;
 			
-			uploadedFiles.add(String.valueOf(id), "10000", routes.AscentDetailController.getImage(id).url(), routes.AscentDetailController.getThumbnail(id).url(), routes.AscentDetailController.remove(id).url(), "DELETE");
 			logger.info("Pic id: {}", pic.id);
 		}
 		
@@ -46,7 +42,7 @@ public class AscentDetailController extends Controller {
 		serializer.include("*");
 		serializer.exclude("class");
 		
-		return ok(serializer.serialize(uploadedFiles));
+		return ok();
 	}
 	
 	public static Result getImage(Long id) {
