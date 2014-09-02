@@ -5,8 +5,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import play.cache.Cached;
-
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.Query;
@@ -27,7 +25,7 @@ public class UserEntityAggregate extends UserAggregate {
 	private static String query = "SELECT a.climber_id,total,unique_successful,l.ascent_id " +
 			"FROM (SELECT climber_id,COUNT(mountain_id) as total FROM ascent_entity GROUP BY climber_id) a " +
 			"JOIN " +
-			"(SELECT climber_id, COUNT(DISTINCT(mountain_id)) as unique_successful FROM ascent_entity WHERE successful=1 GROUP BY climber_id) s " +
+			"(SELECT climber_id, COUNT(DISTINCT(mountain_id)) as unique_successful FROM ascent_entity WHERE successful=true GROUP BY climber_id) s " +
 			"ON a.climber_id=s.climber_id " +
 			"JOIN (SELECT climber_id,MAX(`ascent_date`) most_recent FROM ascent_entity GROUP BY climber_id) r " +
 			"ON a.climber_id=r.climber_id " +
@@ -48,7 +46,6 @@ public class UserEntityAggregate extends UserAggregate {
 		return users.findUnique();
 	}
 	
-	@Cached(key = "aspirants", duration = 3600)
 	public static List<UserEntityAggregate> findAll() {
 		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a.climber_id", "user.id").columnMapping("total", "total").
 				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create();
@@ -57,7 +54,7 @@ public class UserEntityAggregate extends UserAggregate {
 		users.fetch("most_recent", "*", new FetchConfig().query());
 		users.fetch("most_recent.mountain", "id,name");
 		users.fetch("most_recent.climber", "id,name");
-		
+		users.orderBy("name");
 		return users.findList();
 	}
 	

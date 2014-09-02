@@ -16,15 +16,16 @@ import play.cache.Cached;
 import utils.FixedSizeTreeSet;
 import utils.MountainDistanceBeanComparator;
 
+import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.EnumMapping;
 
 import dto.MountainDistanceBean;
 
 @Entity
+@CacheStrategy(readOnly=true, warmingQuery="order by name")
 public class MountainEntity extends BaseEntity {
 
 	private static final Logger logger = LoggerFactory.getLogger(MountainEntity.class);
-
 	private static final long serialVersionUID = 1829718688996588377L;
 
 	@EnumMapping(nameValuePairs = "OFFICIAL=official,UNOFFICIAL=unofficial")
