@@ -15,7 +15,7 @@ mountain.owner=Owner
 mountain.trail_map=Trail map
 mountain.topo=Topo map
 mountain.nhn=Nearest higher neighbor
-mountain.others=Recent Ascents of {0}
+mountain.others=Recent Ascents
 mountain.stats=Statistics
 mountain.pictures.from=Pictures from {0}
 

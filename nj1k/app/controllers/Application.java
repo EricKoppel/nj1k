@@ -4,6 +4,7 @@ import static play.data.Form.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -25,8 +26,6 @@ import play.mvc.Result;
 import scala.concurrent.duration.Duration;
 import utils.MailUtil;
 
-import com.avaje.ebean.Page;
-
 public class Application extends Controller {
 
 	private static final Logger logger = LoggerFactory.getLogger(Application.class);
@@ -40,8 +39,8 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		Page<AscentEntity> page = AscentEntity.findRecent(0, 5);
-		return ok(views.html.index.render(NewsEntity.findRecent(3), page.getList(), registrationForm));
+		List<AscentEntity> page = AscentEntity.findAscents(0, 5);
+		return ok(views.html.index.render(NewsEntity.findRecent(3), page, registrationForm));
 	}
 
 	public static Result contact() {
@@ -127,7 +126,8 @@ public class Application extends Controller {
 			controllers.routes.javascript.UsersController.showUser(),
 			controllers.routes.javascript.UsersController.getProfileImage(),
 			controllers.routes.javascript.UsersController.getProfileThumbnail(),
-			controllers.routes.javascript.MountainsController.showDistances(), 
+			controllers.routes.javascript.MountainsController.showDistances(),
+			controllers.routes.javascript.MountainsController.getImages(),
 			controllers.routes.javascript.UsersController.showUserAscents(),
 			controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");
 	}

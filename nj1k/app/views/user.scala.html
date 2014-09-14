@@ -36,75 +36,11 @@
 	    		
 	    		$("#leg").append(statsChart.generateLegend());
 	    		$("#stats").append(statsChart.generateLegend());
-	    		$("#previous").click(function(e) {
-	   				var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, ++page, num);
-	   				showUserAscents(req);
-	   				e.preventDefault();
-	    		});
-	    		
-	    		$("#next").click(function(e) {
-	    			var req = jsRoutes.controllers.UsersController.showUserAscents(@user.user.id, --page, num);
-	    			showUserAscents(req);
-	   				e.preventDefault();
-	    		});
 	    	});
-	    	
-	    	function showUserAscents(req) {
-		   		$.ajax({
-					url: req.url,
-						success: function(data, status, xhr) {
-							var array = $.parseJSON(data);
-							
-							setButtons(xhr);
-							repopulateClimbsTable(array);
-						}
-				});
-	    	}
-	    	
-	    	function setButtons(xhr) {
-				if (xhr.getResponseHeader("hasNext") == 'false') {
-					$("#previous").addClass("disabled");
-				} else {
-					$("#previous").removeClass("disabled");
-				}
-				
-				if (xhr.getResponseHeader("hasPrev") == 'false') {
-					$("#next").addClass("disabled");
-				} else {
-					$("#next").removeClass("disabled");
-				}
-	    	}
-	    	
-	    	function repopulateClimbsTable(array) {
-	    		$("#climbs").empty();
-	   		
-				$.each(array, function(i, item) {
-					var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
-					var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
-					var tr = $("<tr/>");
-					$(tr).append('<td><a href="' + ascentUrl + '">' + item.ascent_date + '</a></td>');
-					$(tr).append('<td><a href="' + mntUrl + '">' + item.mountain.name + '</a></td>');
-					$("#climbs").append(tr);
-				});
-				
-				var i = 0;
-				for (i = 0; i < num - array.length; i++) {
-					var tr = $("<tr/>");
-					$(tr).append('<td>&nbsp;</td>');
-					$(tr).append('<td>&nbsp;</td>');
-					$("#climbs").append(tr);
-				}
-	    	}
 	    });
     </script>
     
     <div class="page-header">
-    	@if(user.user.pic != null) {
-	   		<a href="@routes.UsersController.getProfileImage(user.user.id)" class="fancybox" title="@user.user.name" data-fancybox-type="image">
-	   		
-	   		<img style="padding-bottom: 15px; max-height: 128px;" alt="@user.user.name" src="@routes.UsersController.getProfileThumbnail(user.user.id)">
-	   		</a>
-		}
 		<div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
 	   		<h1>@user.user.name
 	   		@if(user.percentComplete == 1) {
@@ -116,43 +52,25 @@
     
     <div class="row">
     	@if(user.user.aboutme != null && !user.user.aboutme.trim().isEmpty()) {
-	    	<div class="col-md-4">
+	    	<div class="col-md-8">
 	    		<div class="panel panel-default">
 				
 				    <div class="panel-heading">
 				    	<h3 class="panel-title">About</h3>
 				    </div>
 				    <div class="panel-body">
+				    @if(user.user.pic != null) {
+				   		<a href="@routes.UsersController.getProfileImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
+				   			<img alt="@user.user.name" src="@routes.UsersController.getProfileThumbnail(user.user.id)">
+				   		</a>
+					}
 				    @Html(formatText(user.user.aboutme))
 				   	</div>
 				
 				</div>
 			</div>
 		}
-	    <div class="col-md-4">
-		    <div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("ascent.climb.list")</h3>
-				</div>
-				<div class="panel-body">
-					<table id="climbs" class="table table-condensed">
-					@for(a <- ascents) {
-						<tr>
-							<td><a href="@routes.AscentController.showTripReport(a.id)">@formatAscentDate(a.ascent_date)</a></td>
-							<td><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></td>
-						</tr>
-					}
-					</table>
-				</div>
-				<div class="panel-footer">
-					<ul class="pager" style="margin: 0;">
-					  <li id="previous" class="previous"><a href="#">&larr; Older</a></li>
-					  <li id="next" class="next disabled" ><a href="#">Newer &rarr;</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
+		
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -165,11 +83,23 @@
 				    	<tr><td><small>@Messages("user.percentcomplete")</small></td><td><small>@formatPercent(user.percentComplete)</small></td></tr>
 				    </table>
 				    <div style="text-align: center; padding-left: auto; padding-right: auto;">
-				    <canvas id="statsChart" width="150" height="150"></canvas>
-				    
+				    	<canvas id="statsChart" width="150" height="150"></canvas>
 				    </div>
 				    <div id="leg"></div>
 			    </div>
+			</div>
+		</div>
+	    
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+		    <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">@Messages("ascent.climb.list")</h3>
+				</div>
+				<div id="infiniteScroll">
+				@userAscentPanel(user.user.id, ascents, 1, 5)
+				</div>
 			</div>
 		</div>
 	</div>

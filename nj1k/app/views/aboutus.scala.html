@@ -106,8 +106,20 @@
 </div>
 
 <script type="text/javascript">
-	require(['fancybox'], function() {
+	require(['fancybox', 'collapse'], function() {
 		$(".fancybox").fancybox();
+
+		console.log('window is ' + $(window).width());
+
+		if ($(window).width() <= 768) {
+			console.log("hiding");
+			$('.panel .collapse').collapse('hide');
+		} else {
+			console.log("showing");
+			if (!$('.panel .collapse').hasClass('in')) {
+				$('.panel .collapse').collapse('show');
+			}
+		}
 	});
 </script>
 }

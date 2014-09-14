@@ -14,7 +14,8 @@ requirejs.config({
         fancybox: 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack',
         chart: '/assets/javascripts/libs/chart',
         metadata: '/assets/javascripts/libs/jquery.metadata',
-        tablesorter: '/assets/javascripts/libs/jquery.tablesorter'
+        tablesorter: '/assets/javascripts/libs/jquery.tablesorter',
+        jscroll: '/assets/javascripts/libs/jscroll.min'
     },
     shim: {
     	'bootstrap': {
@@ -42,6 +43,9 @@ requirejs.config({
             deps: ['jquery']
         },
         'tablesorter': {
+            deps: ['jquery']
+        },
+        'jscroll': {
             deps: ['jquery']
         }
     }

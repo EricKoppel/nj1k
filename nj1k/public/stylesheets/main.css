@@ -63,6 +63,11 @@ body {
 	color: white;
 }
 
+.navbar-default .navbar-brand:hover {
+	color: white;
+	text-decoration: underline;
+}
+
 .panel-default>.panel-heading {
 	background: #569256;
 }

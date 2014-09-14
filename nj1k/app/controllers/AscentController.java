@@ -3,6 +3,7 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -21,7 +22,6 @@ import utils.HasPictureTransformer;
 import utils.ImageUtil;
 import utils.SecurityUtil;
 
-import com.avaje.ebean.Page;
 import com.google.common.net.MediaType;
 
 import flexjson.JSONSerializer;
@@ -51,6 +51,16 @@ public class AscentController extends Controller {
 			return notFound();
 		}
 	}
+	
+	public static Result showRecentAscents(int page, int size) {
+		List<AscentEntity> ascents = AscentEntity.findAscents(page, size);
+		
+		if (request().accepts(MediaType.HTML_UTF_8.type())) {
+			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));
+		} else {
+			return ok(serializer.serialize(ascents)).as(MediaType.JSON_UTF_8.toString());	
+		}
+	}
 
 	public static Result showForm() {
 		if (!SecurityUtil.isLoggedIn()) {
@@ -66,20 +76,6 @@ public class AscentController extends Controller {
 		}
 
 		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), MountainEntity.findAll()));
-	}
-
-	public static Result showRecentAscents(int page, int num) {
-		
-		if (page < 0) {
-			return badRequest(String.valueOf(page));
-		}
-		
-		
-		Page<AscentEntity> pg = AscentEntity.findRecent(page, num);
-		
-		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
-		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
-		return ok(serializer.serialize(pg.getList())).as(MediaType.JSON_UTF_8.toString());
 	}
 	
 	public static Result updateTripReport(Long id) {
