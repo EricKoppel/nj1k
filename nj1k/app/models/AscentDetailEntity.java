@@ -25,4 +25,8 @@ public class AscentDetailEntity extends ImageEntity {
 	public static List<AscentDetailEntity> findAscentDetailsByMountain(Long mountainId) {
 		return find.select("*").fetch("ascent").fetch("ascent.mountain", "id,name").fetch("ascent.climber", "id,name").where().eq("ascent.mountain.id", mountainId).findList();
 	}
+
+	public static List<AscentDetailEntity> findAscentDetailsByMountain(Long mountainId, int page, int num) {
+		return find.fetch("ascent").fetch("ascent.mountain", "id,name").fetch("ascent.climber", "id,name").where().eq("ascent.mountain.id", mountainId).findPagingList(num).getPage(page).getList();
+	}
 }

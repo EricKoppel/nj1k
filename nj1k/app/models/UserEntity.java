@@ -61,10 +61,6 @@ public class UserEntity extends BaseEntity {
 		return find.byId(id);
 	}
 	
-	public static UserEntity findCompleteUser(Long id) {
-		return find.select("name,aboutme").where().eq("id", id).findUnique();
-	}
-	
 	public static UserEntity findByEmail(String email) {
 		return find.where().eq("email", email).findUnique();
 	}

@@ -22,8 +22,10 @@ POST	/register					controllers.RegistrationController.submit()
 
 GET		/mountains					controllers.MountainsController.list()
 GET		/mountains/:id				controllers.MountainsController.showMountain(id: Long)
+GET		/mountains/:id/ascents		controllers.MountainsController.getAscents(id: Long, page: Integer ?= 0, num: Integer ?= 5)
 GET		/mountains/:id/radius		controllers.MountainsController.showRadius(id: Long)
 GET		/mountains/:id/image		controllers.MountainsController.getImage(id: Long)
+GET		/mountains/:id/images		controllers.MountainsController.getImages(id: Long, page: Integer ?= 0, num: Integer ?= 4)
 GET		/mountains/:id/thumbnail	controllers.MountainsController.getThumbnail(id: Long)
 
 GET		/account					controllers.AccountController.editAccount()

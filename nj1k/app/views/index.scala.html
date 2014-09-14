@@ -120,94 +120,6 @@
 		
 	</div>
 } {
-	
-	<script type="text/javascript">
-	
-		require(['jquery', 'holder'], function() {
-			$(document).ready(function() {	
-				var page = 0;
-				var num = 5;
-				
-				$("#previous").on("click", clickPrevious);
-				
-				function clickPrevious(e) {
-					var req = jsRoutes.controllers.AscentController.showRecentAscents(++page, num);
-					showRecentAscents(req);
-					e.preventDefault();
-				}
-				
-				function clickNext(e) {
-					var req = jsRoutes.controllers.AscentController.showRecentAscents(--page, num);
-					showRecentAscents(req);
-					e.preventDefault();
-				}
-				
-		    	function showRecentAscents(req, num) {
-			   		$.ajax({
-						url: req.url,
-						success: function(data, status, xhr) {
-							setButtons(xhr);
-							repopulate(data);
-						}
-					});
-		    	}
-				
-		    	function setButtons(xhr) {
-					if (xhr.getResponseHeader("hasNext") == 'false') {
-						$("#previous").addClass("disabled");
-						$("#previous").off("click");
-					} else {
-						if ($("#previous").hasClass("disabled")) {
-							$("#previous").on("click", clickPrevious);
-							$("#previous").removeClass("disabled");
-						}
-					}
-					
-					if (xhr.getResponseHeader("hasPrev") == 'false') {
-						$("#next").addClass("disabled");
-						$("#next").off("click");
-					} else {
-						if ($("#next").hasClass("disabled")) {
-							$("#next").on("click", clickNext);
-							$("#next").removeClass("disabled");
-						}
-					}
-		    	}
-		    	
-		    	function repopulate(array) {
-		    		$("#recentAscents").empty();
-		   		
-					$.each(array, function(i, item) {
-						var userUrl = jsRoutes.controllers.UsersController.showUser(item.climber.id).url;
-						var mntUrl = jsRoutes.controllers.MountainsController.showMountain(item.mountain.id).url;
-						var ascentUrl = jsRoutes.controllers.AscentController.showTripReport(item.id).url;
-						
-						var media = $('<div class="media">');
-						var mediaBody = $('<div class="media-body">');
-						var imgTag = null;
-						
-						if (item.climber.pic) {
-							imgTag = $('<img alt="' + item.climber.name + '" width="64" height="64" class="media-object">');
-							imgTag.attr("src", jsRoutes.controllers.UsersController.getProfileThumbnail(item.climber.id).url);
-						} else {
-							imgTag = $('<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>');
-						}
-						
-						$('<a class="hidden-xs pull-left" href="' + userUrl + '"></a>').append(imgTag).appendTo(media);
-	  				  	$(mediaBody).append('<h4 class="media-heading"><strong><a href="' + userUrl + '">' + item.climber.name + '</a></strong> - <a href="' + mntUrl + '"><em>' + item.mountain.name + '</em></a></h4>');  				  
-	  				  	$(mediaBody).append('<p><strong>' + item.ascent_date + ' - </strong>' + item.trip_report + ' (<a href="' + ascentUrl + '"><em>details...</em></a>)</p>');
-	
-	  				  	$(media).append(mediaBody).appendTo("#recentAscents");
-						
-					});
-					
-					Holder.run();
-		    	}
-			});
-		});
-    </script>
-	
-	
 	<div class="row">
 		<div class="col-md-6 hidden-xs">
 			<div class="panel panel-default">
@@ -248,34 +160,8 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">@Messages("most.recent.climbs")</h3>
 				</div>
-				<div id="recentAscents" class="panel-body">
-				@for(a <- recentAscents) {
-					<div class="media">
-						<a class="pull-left hidden-xs" href="@routes.UsersController.showUser(a.climber.id)">
-							@if(a.climber.pic != null) {
-								<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileThumbnail(a.climber.id)">
-							} else {
-								<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
-							}
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading"><strong><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></strong> - <a href="@routes.MountainsController.showMountain(a.mountain.id)"><em>@a.mountain.name</em></a></h4>
-							<p>
-								<strong>@formatAscentDate(a.ascent_date) - </strong>
-								@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
-									@Html(formatText(a.trip_report.split("[\\.\\?\\!][\\r\\n\\t ]+").toList.get(0))).
-								}
-							(<a href="@routes.AscentController.showTripReport(a.id)"><em>details...</em></a>)
-							</p>
-						</div>
-					</div>
-				}
-				</div>
-				<div class="panel-footer">
-					<ul class="pager" style="margin: 0;">
-					  <li id="previous" class="previous"><a href="#">&larr; Older</a></li>
-					  <li id="next" class="next disabled" ><a href="#">Newer &rarr;</a></li>
-					</ul>
+				<div id="infiniteScroll">
+				@recentAscentsPanel(recentAscents, 1, 5)
 				</div>
 			</div>
 		</div>

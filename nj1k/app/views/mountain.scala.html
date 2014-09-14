@@ -15,14 +15,14 @@
     <div class="row">
     
     	@if(!mountain.description.isEmpty()) {
-	    	<div class="col-md-4">
+	    	<div class="col-md-8">
 	    		<div class="panel panel-default">
 		    		<div class="panel-heading">
 		    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
 		    		</div>
 			    	<div class="panel-body">
 			    	@if(mountain.picture != null) {
-				    	<a class="thumbnail fancybox" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
+				    	<a class="pull-left thumbnail fancybox" style="margin-right: 20px;" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
 				    		<img alt="@mountain.name" src="@routes.MountainsController.getThumbnail(mountain.id)" />
 				    	</a>
 	    			}
@@ -78,29 +78,15 @@
 				</div>
 			</div>
 		</div>
-	
-		<div class="col-md-4">
+	</div>
+	<div class="row">
+		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h2 class="panel-title">@Messages("mountain.others", mountain.name)</h2>
+					<h2 class="panel-title">@Messages("mountain.others")</h2>
 				</div>
-				<div class="panel-body">
-					@for(a <- ascents) {
-						<div class="media">
-							<a class="pull-left" href="@routes.UsersController.showUser(a.climber.id)">
-								@if(a.climber.pic != null) {
-									<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileImage(a.climber.id)">
-								} else {
-									<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
-								}
-							</a>
-							<div class="media-body">
-								<h5 class="media-heading">
-									<strong><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></strong> - <em><a href="@routes.AscentController.showTripReport(a.id)">@formatAscentDate(a.ascent_date)</a></em>
-								</h5>
-							</div>
-						</div>
-					}
+				<div id="infiniteScroll">
+				@ascentPanel(mountain.id, ascents, 1, 5)
 				</div>
 			</div>
 		</div>
@@ -112,25 +98,8 @@
 				<div class="panel-heading">
 					<h2 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h2>
 				</div>
-				<div class="panel-body">
-					@for(i <- 0 until ascentImages.size) {
-					
-						@if(i % 4 == 0) {
-							<div class="clearfix"></div>
-						} 
-						@if(i % 2 == 0) {
-							<div class="clearfix visible-sm"></div>
-						}
-
-						<div class="col-sm-6 col-md-3">
-							<div class="thumbnail">
-								<a class="fancybox" data-fancybox-group="gallery@mountain.id" title="@ascentImages(i).caption" data-fancybox-type="image" href="@routes.AscentDetailController.getImage(ascentImages(i).id)"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getThumbnail(ascentImages(i).id)" /></a>
-								<div class="caption">
-									<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.showUser(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>
-								</div>
-							</div>
-						</div>
-					}
+				<div id="images" class="panel-body">
+				@ascentImagePanel(mountain.id, ascentImages, 1, 4)
 				</div>
 			</div>
 		</div>
@@ -138,8 +107,12 @@
 	</div>
 	
 	<script type="text/javascript">
-		require(['jquery', 'fancybox', 'holder'], function() {
+		require(['jquery', 'fancybox', 'holder', 'jscroll'], function() {
 			$(".fancybox").fancybox();
+			
+			$('#images').jscroll(function() {
+				$('.jscroll-loading').remove();
+			});
 		});
 	</script>
 }

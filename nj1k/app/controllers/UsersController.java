@@ -23,7 +23,6 @@ import play.mvc.Result;
 import utils.MailUtil;
 import utils.PasswordUtil;
 
-import com.avaje.ebean.Page;
 import com.google.common.net.MediaType;
 
 import flexjson.JSONSerializer;
@@ -31,11 +30,11 @@ import flexjson.transformer.DateTransformer;
 import flexjson.transformer.Transformer;
 
 public class UsersController extends Controller {
-	
+
 	private static final Form<UserEntity> userForm = form(UserEntity.class);
 	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 	private static final JSONSerializer serializer;
-	
+
 	static {
 		serializer = new JSONSerializer();
 		Transformer transformer = new DateTransformer(Configuration.root().getString("render.date.format"));
@@ -43,7 +42,7 @@ public class UsersController extends Controller {
 		serializer.exclude("*");
 		serializer.transform(transformer, Timestamp.class);
 	}
-	
+
 	public static Result list() {
 		List<FinisherEntity> finishers = FinisherEntity.findFinishers();
 		List<UserEntityAggregate> aspirants = UserEntityAggregate.findAll();
@@ -59,20 +58,21 @@ public class UsersController extends Controller {
 			return notFound();
 		}
 
-		return ok(views.html.user.render(user, AscentEntity.findAscentByUserId(id, 0, 10).getList()));
+		return ok(views.html.user.render(user, AscentEntity.findAscentByUserId(id, 0, 5)));
 	}
 
 	public static Result showUserAscents(Long id, int page, int num) {
+		List<AscentEntity> ascents = AscentEntity.findAscentByUserId(id, page, num);
 
-		if (page < 0) {
-			return badRequest(String.valueOf(page));
+		if (ascents.isEmpty()) {
+			return noContent();
 		}
-
-		Page<AscentEntity> pg = AscentEntity.findAscentByUserId(id, page, num);
-
-		response().setHeader("hasPrev", String.valueOf(pg.hasPrev()));
-		response().setHeader("hasNext", String.valueOf(pg.hasNext()));
-		return ok(serializer.serialize(pg.getList()));
+		
+		if (request().accepts(MediaType.HTML_UTF_8.type())) {
+			return ok(views.html.userAscentPanel.render(id, ascents, page + 1, num));
+		} else {
+			return ok(serializer.serialize(ascents));
+		}
 	}
 
 	public static Result resetPasswordForm() {
@@ -84,7 +84,7 @@ public class UsersController extends Controller {
 
 		response().setHeader("Cache-Control", "max-age=3600, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
-		
+
 		if (user.pic == null) {
 			return notFound();
 		}
@@ -96,13 +96,13 @@ public class UsersController extends Controller {
 
 		response().setHeader("Cache-Control", "max-age=3600, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
-		
+
 		if (user.thumbnail != null) {
 			return ok(user.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());
 		} else if (user.pic != null) {
 			return ok(user.pic).as(MediaType.ANY_IMAGE_TYPE.type());
 		}
-		
+
 		return notFound();
 	}
 
