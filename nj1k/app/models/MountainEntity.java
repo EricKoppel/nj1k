@@ -1,7 +1,9 @@
 package models;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,8 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.cache.Cached;
-import utils.FixedSizeTreeSet;
-import utils.MountainDistanceBeanComparator;
 
 import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.EnumMapping;
@@ -105,15 +105,17 @@ public class MountainEntity extends BaseEntity {
 	public static SortedSet<MountainDistanceBean> findNearestNeighbors(Long id, Long howMany) {
 		MountainEntity thisMountain = find.byId(id);
 		List<MountainEntity> neighbors = find.where().ne("id", thisMountain.id).eq("club_list", true).findList();
-		SortedSet<MountainDistanceBean> distances = new FixedSizeTreeSet<MountainDistanceBean>(howMany, new MountainDistanceBeanComparator());
+		SortedSet<MountainDistanceBean> distances = new TreeSet<MountainDistanceBean>(new Comparator<MountainDistanceBean>() {
+
+			@Override
+			public int compare(MountainDistanceBean o1, MountainDistanceBean o2) {
+				return Double.compare(o1.getDistance(), o2.getDistance());
+			}
+		});
 
 		for (MountainEntity n : neighbors) {
 			Double distance = calculateDistanceBetweenMountains(thisMountain, n);
 			distances.add(new MountainDistanceBean(thisMountain, n, distance));
-		}
-
-		for (MountainDistanceBean entry : distances) {
-			logger.debug(entry.toString());
 		}
 
 		return distances;

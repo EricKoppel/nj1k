@@ -70,7 +70,7 @@
 					</table>
 				
 					<p>
-						<a class="btn btn-default" href="@routes.MountainsController.showRadius(mountain.id)">
+						<a class="btn btn-default" href="@routes.MountainsController.showDistances(mountain.id)">
 							<i class="glyphicon glyphicon-globe"></i>
 							<span>@Messages("radius.search")</span>
 						</a>
@@ -110,8 +110,11 @@
 		require(['jquery', 'fancybox', 'holder', 'jscroll'], function() {
 			$(".fancybox").fancybox();
 			
-			$('#images').jscroll(function() {
-				$('.jscroll-loading').remove();
+			$('#images').jscroll({
+				callback: function() {
+					$('.jscroll-loading').remove();
+				},
+				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
 			});
 		});
 	</script>

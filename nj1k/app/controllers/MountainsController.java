@@ -5,6 +5,10 @@ import java.util.List;
 import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -13,7 +17,8 @@ import com.google.common.net.MediaType;
 import flexjson.JSONSerializer;
 
 public class MountainsController extends Controller {
-
+	private static final Logger logger = LoggerFactory.getLogger(MountainsController.class);
+	
 	private static final JSONSerializer serializer;
 
 	static {
@@ -28,11 +33,11 @@ public class MountainsController extends Controller {
 
 	public static Result showMountain(Long id) {
 		MountainEntity mountain = MountainEntity.find(id);
-		
+
 		if (mountain == null) {
 			return notFound();
 		}
-		
+
 		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), MountainEntity.findNearestHigherNeighbor(mountain.id),
 				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 4)));
 	}
@@ -61,14 +66,14 @@ public class MountainsController extends Controller {
 
 	public static Result getAscents(Long mountainId, int page, int num) {
 		List<AscentEntity> ascents = AscentEntity.findByMountainId(mountainId, page, num);
-		
+
 		if (ascents.isEmpty()) {
 			return noContent();
 		}
-		
+
 		return ok(views.html.ascentPanel.render(mountainId, ascents, page + 1, num));
 	}
-	
+
 	public static Result getImages(Long mountainId, int page, int num) {
 		List<AscentDetailEntity> details = AscentDetailEntity.findAscentDetailsByMountain(mountainId, page, num);
 
@@ -92,11 +97,14 @@ public class MountainsController extends Controller {
 	}
 
 	public static Result showDistances(Long id, Long howMany) {
-		return ok(serializer.serialize(MountainEntity.findNearestNeighbors(id, howMany)));
-	}
-
-	public static Result showRadius(Long id) {
-		return ok(views.html.radius.render(MountainEntity.find(id)));
+		logger.debug("Accepts: {}", request().acceptedTypes());
+		if (request().accepts("text/html")) {
+			return ok(views.html.radius.render(MountainEntity.find(id)));
+		} else if (request().accepts("application/json")) {
+			return ok(serializer.serialize(MountainEntity.findNearestNeighbors(id, howMany))).as(MediaType.JSON_UTF_8.type());
+		} else {
+			return badRequest();
+		}
 	}
 
 	public static Result showDistance(Long id1, Long id2) {

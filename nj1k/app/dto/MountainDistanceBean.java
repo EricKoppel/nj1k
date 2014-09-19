@@ -11,9 +11,9 @@ public class MountainDistanceBean {
 	private static final double EARTH_RADIUS_KM = 6371;
 	private static final double EARTH_RADIUS_MI = 3959;
 	
-	private MountainEntity m1;
-	private MountainEntity m2;
-	private double distance;
+	private final MountainEntity m1;
+	private final MountainEntity m2;
+	private final double distance;
 
 	public MountainDistanceBean(MountainEntity m1, MountainEntity m2, double distance) {
 		this.m1 = m1;
@@ -25,16 +25,8 @@ public class MountainDistanceBean {
 		return m1;
 	}
 
-	public void setM1(MountainEntity m1) {
-		this.m1 = m1;
-	}
-
 	public MountainEntity getM2() {
 		return m2;
-	}
-
-	public void setM2(MountainEntity m2) {
-		this.m2 = m2;
 	}
 
 	public double getDistance() {
@@ -59,10 +51,6 @@ public class MountainDistanceBean {
 		
 		return Double.parseDouble(df.format(distance * EARTH_RADIUS_MI));
 	}
-	
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -77,10 +65,5 @@ public class MountainDistanceBean {
 		}
 		
 		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("Distance between %s and %s is %s miles\n", m1.name, m2.name, getDistanceAsMiles());
 	}
 }
