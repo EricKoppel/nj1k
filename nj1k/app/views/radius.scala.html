@@ -21,12 +21,18 @@
 	<script type="text/javascript">
 
 		$(function() {
-			
 			var AppView = Backbone.View.extend({
 				el: '#radiusSearch',
 				mapView: null,
 			
 				initialize: function() {
+					
+					$.ajaxSetup({
+					    headers: {
+					        'Accept': 'application/json',
+					    }
+					});
+					
 					this.mapView = new MapView({model: new Mountain({
 						id: @mountain.id,
 						name: '@mountain.name',

@@ -24,6 +24,7 @@ object ApplicationBuild extends Build {
     )
         
     val main = play.Project(appName, appVersion, appDependencies).settings(
+    		ebeanEnabled := true,
     		testOptions in Test ~= { args =>
 	    		for {
 	      			arg <- args
