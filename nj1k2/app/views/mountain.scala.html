@@ -14,7 +14,7 @@
     </div>
     <div class="row">
     
-    	@if(mountain.descript != null && !mountain.description.isEmpty()) {
+    	@if(mountain.description != null && !mountain.description.isEmpty()) {
 	    	<div class="col-md-8">
 	    		<div class="panel panel-default">
 		    		<div class="panel-heading">
@@ -63,10 +63,12 @@
 							<td>@Messages("mountain.topo")</td>
 							<td><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
 						</tr>
+						@if(nhn != null) {
 						<tr>
 							<td>@Messages("mountain.nhn")</td>
 							<td><a href="@routes.MountainsController.showMountain(nhn.id)">@nhn.name</a></td>
 						</tr>
+						}
 					</table>
 				
 					<p>
