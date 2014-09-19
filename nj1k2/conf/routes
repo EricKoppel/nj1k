@@ -4,6 +4,66 @@
 
 # Home page
 GET     /                           controllers.Application.index()
+GET     /contact                    controllers.Application.contact()
+POST    /contact                    controllers.Application.submitContact()
+GET     /about                      controllers.Application.about()
+GET     /links                      controllers.Application.links()
+GET		/images/background.png		controllers.Application.background()
+
+GET 	/login						controllers.SignInController.showForm()
+GET 	/logout						controllers.SignInController.logout()
+POST	/login						controllers.SignInController.submit()
+
+GET		/resetPassword				controllers.UsersController.resetPasswordForm()
+POST	/resetPassword				controllers.UsersController.resetPassword()
+
+GET 	/register					controllers.RegistrationController.showForm()
+POST	/register					controllers.RegistrationController.submit()
+
+GET		/mountains					controllers.MountainsController.list()
+GET		/mountains/:id				controllers.MountainsController.showMountain(id: Long)
+GET		/mountains/:id/ascents		controllers.MountainsController.getAscents(id: Long, page: Integer ?= 0, num: Integer ?= 5)
+GET		/mountains/:id/neighbors	controllers.MountainsController.showDistances(id: Long, howMany: Long ?= 10)
+GET		/mountains/:id1/neighbors/:id2	controllers.MountainsController.showDistance(id1: Long, id2: Long)
+GET		/mountains/:id/image		controllers.MountainsController.getImage(id: Long)
+GET		/mountains/:id/images		controllers.MountainsController.getImages(id: Long, page: Integer ?= 0, num: Integer ?= 4)
+GET		/mountains/:id/thumbnail	controllers.MountainsController.getThumbnail(id: Long)
+
+GET		/account					controllers.AccountController.editAccount()
+POST	/account					controllers.AccountController.submitEdit()
+DELETE	/account/pic				controllers.AccountController.deleteProfilePic()
+
+GET		/users						controllers.UsersController.list()
+GET		/users/:id					controllers.UsersController.showUser(id: Long)
+GET		/users/:id/ascents			controllers.UsersController.showUserAscents(id: Long, page: Integer ?= 0, num: Integer ?= 10)
+GET		/users/:id/pic				controllers.UsersController.getProfileImage(id: Long)
+GET		/users/:id/thumbnail		controllers.UsersController.getProfileThumbnail(id: Long)
+
+GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()
+GET		/externalNewsArticle		controllers.ExternalNewsController.getNewsArticleFromNYNJTC(url: String)
+
+GET		/news/:id					controllers.NewsController.showNews(id: Long)
+GET		/news						controllers.NewsController.showForm()
+GET		/news/:id/edit				controllers.NewsController.editForm(id: Long)
+POST	/news						controllers.NewsController.submit()
+DELETE	/news/:id					controllers.NewsController.delete(id: Long)
+
+GET		/news/images/:id			controllers.NewsImageController.getImage(id: Long)
+
+GET		/ascents					controllers.AscentController.showRecentAscents(page: Integer ?= 0, num: Integer ?= 10)
+GET		/ascent						controllers.AscentController.showForm()
+POST	/ascent						controllers.AscentController.submit()
+GET		/ascent/:id					controllers.AscentController.showTripReport(id: Long)
+GET		/ascent/:id/edit			controllers.AscentController.editForm(id: Long)
+PUT		/ascent/:id					controllers.AscentController.updateTripReport(id: Long)
+DELETE	/ascent/:id					controllers.AscentController.remove(id: Long)
+
+GET		/ascentDetail/:id/image		controllers.AscentDetailController.getImage(id: Long)
+GET		/ascentDetail/:id/thumbnail	controllers.AscentDetailController.getThumbnail(id: Long)
+POST	/ascentDetail/:id/caption	controllers.AscentDetailController.updateCaption(id: Long)
+DELETE	/ascentDetail/:id			controllers.AscentDetailController.remove(id: Long)
+POST	/ascentDetail				controllers.AscentDetailController.upload()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /routes.js  				controllers.Application.javascriptRoutes()

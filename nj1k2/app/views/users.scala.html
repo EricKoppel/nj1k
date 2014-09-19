@@ -1,0 +1,72 @@
+@(finishers: List[FinisherEntity], users: List[UserEntityAggregate])
+
+@import views.RenderUtil._
+
+@main(Messages("menu.members"))(null)(null) {
+
+	<script type="text/javascript">
+		require(['jquery', 'tablesorter'], function() {
+			$(document).ready(function() { 
+				$("#climbList").tablesorter( {sortList: [[0,0]]} );
+				$("#finisherList").tablesorter( {sortList: [[1,0]]} ); 
+			}); 
+		});
+	</script>
+    
+	<div class="page-header">
+		<h3>@Messages("users.finishers")</h3>
+	</div>
+	
+	<div class="panel panel-default">
+		<div class="panel-body">
+		    <table id="finisherList" class="table tablesorter">
+			    <thead>
+			    	<tr>
+				    	<th>Climber</th>
+				    	<th>Date of Finish</th>
+				    	<th class="hidden-xs">Finished On</th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+			    @for(f <- finishers) {
+			        <tr>
+				        <td><a href="@routes.UsersController.showUser(f.user.id)">@f.user.name</a></td>
+				        <td>@formatAscentDate(f.final_ascent.ascent_date)</td>
+				        <td class="hidden-xs"><a href="@routes.AscentController.showTripReport(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
+			        </tr>
+			    }
+			    </tbody>
+		    </table>
+		</div>
+	</div>
+    
+    <div class="page-header">
+		<h3>@Messages("users.aspirants")</h3>
+    </div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<table id="climbList" class="table tablesorter">
+				<thead>
+					<tr>
+						<th>Climber</th>
+						<th class="hidden-xs">Total climbs</th>
+						<th class="hidden-xs">Total unique ascents</th>
+						<th class="hidden-xs">Most recent climb</th>
+					</tr>
+				</thead>
+				<tbody>
+	
+					@for(user <- users) {
+					<tr>
+						<td><a href="@routes.UsersController.showUser(user.user.id)">@user.user.name</a></td>
+						<td class="hidden-xs">@user.total</td>
+						<td class="hidden-xs">@user.unique_successful</td>
+						<td class="hidden-xs"><a href="@routes.AscentController.showTripReport(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}

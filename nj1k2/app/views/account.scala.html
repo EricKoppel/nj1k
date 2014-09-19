@@ -1,0 +1,212 @@
+@(editForm: Form[UserEntity])
+
+@import helper.twitterBootstrap._
+@import utils.SecurityUtil._
+
+@head = {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/css/jquery.Jcrop.css" type="text/css" />
+}
+
+@main()(head)(null) {
+	
+	<script type="text/javascript">
+
+		require(['jquery', 'jcrop', 'modal'], function() {
+			var jcropApi;
+			
+			function updateCoords(e) {
+				$("#x").val(e.x);
+				$("#y").val(e.y);
+				$("#x2").val(e.x2);
+				$("#y2").val(e.y2);
+				$("#w").val(e.w);
+				$("#h").val(e.h);	
+				
+				var containerWidth = parseInt($("#img_container").css("width"), 10);
+				var containerHeight = parseInt($("#img_container").css("height"), 10);
+				
+				var rx = containerWidth / e.w;
+				var ry = containerHeight / e.h;
+				
+				var img = new Image();
+				img.src = $("#preview").attr("src");
+	
+				var origWidth = img.width;
+				var origHeight = img.height;
+	
+				$("#profile_img").css({
+					width: Math.round(rx * origWidth) + 'px',
+					height: Math.round(ry * origHeight) + 'px',
+					marginLeft: '-' + Math.round(rx * e.x) + 'px',
+					marginTop: '-' + Math.round(ry * e.y) + 'px'
+				});
+			}
+			
+			$(document).ready(function() {
+	
+				$('#delete_button').click(function() {
+					$.ajax({
+						url : '@routes.AccountController.deleteProfilePic()',
+						type : 'DELETE',
+						success : function(result) {
+							$('#img_container').fadeOut();
+						}
+					});
+				});
+				
+				$("#preview_ok").click(function() {
+					$("#preview_modal").modal('hide');
+					$('#preview').remove();
+					$('#thumbnail_preview').prepend('<img alt="preview" id="preview" src="#" />');
+					jcropApi.destroy();
+				});
+				
+				
+				$("#profile_img_upload").change(function() {
+					if (this.files && this.files[0]) {
+						var reader = new FileReader();
+						
+						reader.onload = function(e) {
+							var profileImg = $("#profile_img");
+							var preview = $("#preview");
+							
+							preview.attr("src", e.target.result);
+							profileImg.attr("src", e.target.result);
+	
+							var img = new Image();
+							img.src = preview.attr("src");
+	
+							var W = img.width;
+							var H = img.height;
+							var w = W / 2;
+							var h = H / 2;
+							
+							var x = W/2 - w/2
+							var y = H/2 - h/2
+							var x1 = x + w
+							var y1 = y + h
+							
+							preview.Jcrop({
+								addClass: 'jcropCentered',
+								aspectRatio: 1,
+								boxWidth: 800,
+								boxHeight: 800,
+								setSelect: [x, y, x1, y1],
+								onChange: updateCoords,
+								onSelect: updateCoords
+							}, function() {
+								jcropApi = this;
+							});
+						}
+						
+						reader.readAsDataURL(this.files[0]);
+					}
+					
+					$("#preview_modal").modal('show');
+				});
+			});
+		});
+	</script>
+	
+	<div id="preview_modal" class="modal fade">
+		<div class="jcropCentered">
+			<div class="outer">
+				<div class="middle">
+					<div class="inner">
+			      		<div id="thumbnail_preview" class="thumbnail" style="display: inline-block;">
+							<img alt="preview" id="preview" src="#" />
+							<div class="caption">
+								<button id="preview_ok" type="button" class="btn btn-primary">Crop image</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="page-header">
+		<h3>@Messages("account.edit")</h3>
+	</div>
+	
+   	@if(editForm.hasGlobalErrors) {
+         <div class="alert alert-error">@editForm.globalError.message</div>
+    }
+	    
+    @helper.form(action = routes.AccountController.submitEdit, 'enctype -> "multipart/form-data") {
+        <div class="row">    
+       		<div class="col-md-6">
+	            @helper.inputText(
+	                editForm("email"), 
+	                '_label -> Messages("email"),
+	                'class -> "form-control",
+	                'type -> "email",
+	                '_showConstraints -> false
+	            )
+	            @helper.inputText(
+	                editForm("name"), 
+	                '_label -> Messages("name"),
+	                'class -> "form-control",
+	                '_showConstraints -> false
+	            )
+	            @helper.textarea(
+	            	editForm("aboutme"),
+	            	'_label -> Messages("aboutme"),
+	            	'_showConstraints -> false,
+	            	'class -> "story form-control"
+	            )
+        	</div>
+        	<div class="col-md-4">
+        		@if(getCurrentUser().pic != null) {
+        			<div class="thumbnail" style="display: inline-block;">
+		        		<div id="img_container" style="width: 200px; height: 200px; overflow: hidden;">
+				   			<img id="profile_img"  alt="profile image" width="200" height="200" src="@routes.UsersController.getProfileThumbnail(Long.parseLong(editForm("id").value))" />
+		   				</div>
+	   				</div>
+	   			}
+	   			
+        		@helper.inputFile(
+   					editForm("pic"),
+   					'id -> "profile_img_upload", 
+   					'_label -> Messages("profile.pic"),
+   					'_showConstraints -> false
+   				)
+   				
+	    	</div>
+        </div>
+        <div class="row">
+	        <div class="col-md-6">
+	            @helper.inputPassword(
+	                editForm("password"),
+	                'class -> "form-control", 
+	                '_label -> Messages("password"),
+	                '_showConstraints -> false
+	            )
+	            
+	            @helper.inputPassword(
+	                editForm("confirmPassword"),
+	                'class -> "form-control", 
+	                '_label -> Messages("confirmpassword"),
+	                '_showConstraints -> false
+	            )
+	            
+	    		<input type="hidden" name="id" value="@editForm("id").value" id="id" />
+	    		<input type="hidden" name="x" value="@editForm("id").value" id="x" />
+	    		<input type="hidden" name="y" value="@editForm("id").value" id="y" />
+	    		<input type="hidden" name="x2" value="@editForm("id").value" id="x2" />
+	    		<input type="hidden" name="y2" value="@editForm("id").value" id="y2" />
+	    		<input type="hidden" name="w" value="@editForm("id").value" id="w" />
+	    		<input type="hidden" name="h" value="@editForm("id").value" id="h" />
+		    </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-6">
+                <div class="actions">
+	            <input type="submit" class="btn btn-primary" value="Submit">
+	            <a href="@routes.Application.index" class="btn btn-danger">Cancel</a>
+            	</div>
+        	</div>
+        </div>
+
+    }
+}

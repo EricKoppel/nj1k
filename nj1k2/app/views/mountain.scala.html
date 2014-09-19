@@ -1,0 +1,121 @@
+@(mountain: MountainEntity, ascents: List[AscentEntity], nhn: MountainEntity, ascentImages: List[AscentDetailEntity])
+@import views.RenderUtil._
+
+@head = {
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
+}
+
+@main(title = mountain.name)(head)(null) {
+
+	<div class="page-header">
+	    <div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
+			<h1>@mountain.name</h1>
+		</div>
+    </div>
+    <div class="row">
+    
+    	@if(mountain.descript != null && !mountain.description.isEmpty()) {
+	    	<div class="col-md-8">
+	    		<div class="panel panel-default">
+		    		<div class="panel-heading">
+		    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
+		    		</div>
+			    	<div class="panel-body">
+			    	@if(mountain.picture != null) {
+				    	<a class="pull-left thumbnail fancybox" style="margin-right: 20px;" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
+				    		<img alt="@mountain.name" src="@routes.MountainsController.getThumbnail(mountain.id)" />
+				    	</a>
+	    			}
+	    			@Html(mountain.description)
+			    	</div>
+		    	</div>
+		    </div>
+	    }
+	    
+    	<div class="col-md-4">
+    		<div class="panel panel-default">
+	    		<div class="panel-heading">
+	    			<h2 class="panel-title">@Messages("mountain.stats")</h2>
+	    		</div>
+	    		<div class="panel-body">
+					<table id="mountain_info" class="table">
+						<tr>
+							<td>@Messages("mountain.elevation")</td>
+							<td>@mountain.elevation</td>
+						</tr>
+						<tr>
+							<td>@Messages("mountain.decimal_degrees")</td>
+							<td>@mountain.latitude, @mountain.longitude</td>
+						</tr>
+						<tr>
+							<td>@Messages("mountain.county")</td>
+							<td>@mountain.county</td>
+						</tr>		
+						<tr>	
+							<td>@Messages("mountain.ownership")</td>
+							<td>@mountain.ownership</td>
+						</tr>
+						<tr>	
+							<td>@Messages("mountain.owner")</td>
+							<td>@mountain.owner</td>
+						</tr>
+						<tr>
+							<td>@Messages("mountain.topo")</td>
+							<td><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+						</tr>
+						<tr>
+							<td>@Messages("mountain.nhn")</td>
+							<td><a href="@routes.MountainsController.showMountain(nhn.id)">@nhn.name</a></td>
+						</tr>
+					</table>
+				
+					<p>
+						<a class="btn btn-default" href="@routes.MountainsController.showDistances(mountain.id)">
+							<i class="glyphicon glyphicon-globe"></i>
+							<span>@Messages("radius.search")</span>
+						</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">@Messages("mountain.others")</h2>
+				</div>
+				<div id="infiniteScroll">
+				@ascentPanel(mountain.id, ascents, 1, 5)
+				</div>
+			</div>
+		</div>
+	</div>
+	@if(!ascentImages.isEmpty()) {
+	<div class="row">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h2 class="panel-title">@Messages("mountain.pictures.from", mountain.name)</h2>
+				</div>
+				<div id="images" class="panel-body">
+				@ascentImagePanel(mountain.id, ascentImages, 1, 4)
+				</div>
+			</div>
+		</div>
+		}
+	</div>
+	
+	<script type="text/javascript">
+		require(['jquery', 'fancybox', 'holder', 'jscroll'], function() {
+			$(".fancybox").fancybox();
+			
+			$('#images').jscroll({
+				callback: function() {
+					$('.jscroll-loading').remove();
+				},
+				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
+			});
+		});
+	</script>
+}
