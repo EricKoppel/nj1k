@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 import play.Configuration;
 
 
-public class NYNJTCNewsArticle implements Comparable<NYNJTCNewsArticle> {
+public class NYNJTCNewsArticle {
 	
 	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
 		@Override
@@ -56,11 +56,6 @@ public class NYNJTCNewsArticle implements Comparable<NYNJTCNewsArticle> {
 	@Override
 	public String toString() {
 		return "NYNJTCNewsArticle [title=" + title + ", date=" + date + ", link=" + link + "]";
-	}
-
-	@Override
-	public int compareTo(NYNJTCNewsArticle o) {
-		return o.getDate().compareTo(this.getDate());
 	}
 	
 	public static Date extractDate(Element row) {

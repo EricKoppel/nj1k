@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class NYNJTCParserFunction implements Function<WSResponse, List<NYNJTCNew
 		
 		List<NYNJTCNewsArticle> list = rows.stream().parallel()
 			.map(row -> new NYNJTCNewsArticle(NYNJTCNewsArticle.extractTitle(row), NYNJTCNewsArticle.extractDate(row), NYNJTCNewsArticle.extractURL(row)))
-			.sorted()
+			.sorted(Comparator.comparing(NYNJTCNewsArticle::getDate).reversed())
 			.collect(Collectors.toList());
 		
 		return list;

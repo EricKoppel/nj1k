@@ -11,6 +11,7 @@ libraryDependencies ++= Seq(
   javaEbean,
   cache,
   javaWs,
+  filters,
   "mysql" % "mysql-connector-java" % "5.1.18",
   "net.sf.flexjson" % "flexjson" % "2.1" withSources() withJavadoc(),
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0",
