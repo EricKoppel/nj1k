@@ -1,0 +1,64 @@
+@(contactForm: Form[Contact])
+
+@import helper._
+
+@main(title = Messages("contact"))(null)(null) {
+
+	<div class="page-header">
+		<h3>@Messages("contact")</h3>
+	</div>
+
+	@helper.form(action = routes.Application.submitContact) {
+	<fieldset>
+		<div class="row">
+			<div class="col-md-4">
+				@inputText(
+		           contactForm("email"),
+		           '_label -> Messages("email.address"),
+		           '_showConstraints -> false,
+		           'class -> "form-control"
+		        )
+	        </div>
+        </div>
+		<div class="row">
+			<div class="col-md-4">
+				@inputText(
+		           contactForm("subject"),
+		           '_label -> Messages("email.subject"),
+		           '_showConstraints -> false,
+		           'class -> "form-control"
+		        )
+	        </div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">
+		        @textarea(
+		        	contactForm("message"),
+		        	'_label -> Messages("email.message"),
+		        	'_showConstraints -> false,
+		        	'class -> "form-control story"
+		        )
+	        </div>
+        </div>
+        <div class="row">
+			<div class="col-md-6">
+		        @inputText(
+		           contactForm("answer"),
+		           '_label -> Messages("email.antispam"),
+		           '_showConstraints -> false,
+		           'class -> "form-control"
+		        )
+        	</div>
+		</div>
+        </fieldset>
+        
+        <div class="actions">
+            <button type="submit" class="btn btn-primary">
+           		<i class="glyphicon glyphicon-envelope"></i>
+            	<span> @Messages("email.send")</span>
+            </button>
+            
+            <a href="@routes.Application.submitContact" class="btn btn-danger">@Messages("cancel")</a>
+        </div>
+	}
+}

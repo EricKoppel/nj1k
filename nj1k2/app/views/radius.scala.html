@@ -1,0 +1,81 @@
+@(mountain: MountainEntity)
+@import java.text.SimpleDateFormat
+@import play.api.Play
+@import play.api.Play.current
+
+@head = {
+	<script src="@routes.Assets.at("javascripts/libs/jquery-1.11.1.min.js")" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/models/Mountain.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/models/MountainDistanceModel.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/views/MountainDistanceView.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/views/MapView.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("javascripts/collections/MountainDistanceModelCollection.js")" type="text/javascript"></script>
+	<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=@Play.current.configuration.getString("googlemaps.api.key")"></script>
+}
+
+@main(title = Messages("radius.title", mountain.name))(head)(null) {
+
+
+	<script type="text/javascript">
+
+		$(function() {
+			var AppView = Backbone.View.extend({
+				el: '#radiusSearch',
+				mapView: null,
+			
+				initialize: function() {
+					
+					$.ajaxSetup({
+					    headers: {
+					        'Accept': 'application/json',
+					    }
+					});
+					
+					this.mapView = new MapView({model: new Mountain({
+						id: @mountain.id,
+						name: '@mountain.name',
+						latitude: @mountain.latitude,
+						longitude: @mountain.longitude
+					})}),
+					this.distances = new MountainDistanceModelCollection();
+					this.distances.collectionId = @mountain.id;
+					this.distances.bind('add', this.addOne, this);
+					this.distances.fetch({add: true});
+				},
+				
+				addOne: function(m) {
+					var mountainDistanceView = new MountainDistanceView({model: m});
+					this.$el.append(mountainDistanceView.render().$el);
+					this.mapView.addPoint(m.get("m2"));
+				}
+			});
+			
+			var App = new AppView();
+		});
+	</script>
+	<div class="page-header">
+		<h3>@Messages("radius.title", mountain.name)</h3>
+    </div>
+    
+   	<div class="row">
+   		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table id="radiusSearch" class="table">
+						<thead>
+							<tr>
+								<th>Mountain</th>
+								<th>Distance</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+   		<div class="hidden-xs col-md-8">
+			<div id="map_canvas"></div>
+		</div>
+	</div>
+}

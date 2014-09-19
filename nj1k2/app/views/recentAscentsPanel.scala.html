@@ -1,0 +1,51 @@
+@(recentAscents: List[AscentEntity], page: Integer, size: Integer)
+
+@import views.RenderUtil._
+
+<div class="panel-body">
+	@for(a <- recentAscents) {
+		<div class="media">
+			<a class="pull-left" href="@routes.UsersController.showUser(a.climber.id)">
+				@if(a.climber.pic != null) {
+					<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileThumbnail(a.climber.id)">
+				} else {
+					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
+				}
+			</a>
+			<div class="media-body">
+				<h4 class="media-heading"><strong><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></strong> - <a href="@routes.MountainsController.showMountain(a.mountain.id)"><em>@a.mountain.name</em></a></h4>
+				<p>
+					<strong>@formatAscentDate(a.ascent_date) - </strong>
+					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
+						@Html(formatNews(a.trip_report))
+					}
+				(<a href="@routes.AscentController.showTripReport(a.id)"><em>details...</em></a>)
+				</p>
+			</div>
+		</div>
+	}
+</div>
+<div class="panel-footer">
+	<a href="@routes.AscentController.showRecentAscents(page, size)">more <span class="glyphicon glyphicon-chevron-down"></span></a>
+</div>
+
+<script type="text/javascript">
+	require(['jscroll'], function() {
+		if ($(window).width() <= 768) {
+			$('#infiniteScroll').jscroll({
+				callback: function() {
+					$('.jscroll-loading').remove();
+				},
+				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
+			});
+		} else {
+			$('#infiniteScroll a:last').click(function(e) {
+				e.preventDefault();
+				$.get($(this).attr('href'), function(data) {
+					$('#infiniteScroll').empty();
+					$(data).hide().appendTo($('#infiniteScroll')).fadeIn();
+				});
+			});
+		}
+	});
+</script>
