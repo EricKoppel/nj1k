@@ -47,6 +47,9 @@ requirejs.config({
         },
         'jscroll': {
             deps: ['jquery']
-        }
+        },
+        'jqueryui': {
+            deps: ['jquery']
+        },
     }
 });
