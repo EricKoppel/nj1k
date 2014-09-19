@@ -15,6 +15,12 @@ public class MountainDistanceBean {
 	private final MountainEntity m2;
 	private final double distance;
 
+	public MountainDistanceBean() {
+		this.m1 = null;
+		this.m2 = null;
+		this.distance = 0;
+	}
+	
 	public MountainDistanceBean(MountainEntity m1, MountainEntity m2, double distance) {
 		this.m1 = m1;
 		this.m2 = m2;

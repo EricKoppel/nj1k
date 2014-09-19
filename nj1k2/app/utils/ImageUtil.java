@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import models.ImageEntity;
 
@@ -54,6 +55,11 @@ public class ImageUtil {
 				logger.warn("Caught exception while processing image", e);
 			}
 		}
+		
+//		files.stream()
+//		.filter(file -> MediaType.parse(file.getContentType()).is(MediaType.ANY_IMAGE_TYPE))
+//		.map(file -> new ImageResizeTask<T>(file, "", clazz).call())
+//		.collect(Collectors.toList());
 
 		return pictures;
 	}

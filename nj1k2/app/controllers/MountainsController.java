@@ -1,6 +1,8 @@
 package controllers;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -11,9 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.DistanceUtil;
 
 import com.google.common.net.MediaType;
 
+import dto.MountainDistanceBean;
 import flexjson.JSONSerializer;
 
 public class MountainsController extends Controller {
@@ -38,15 +42,8 @@ public class MountainsController extends Controller {
 			return notFound();
 		}
 
-		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), MountainEntity.findNearestHigherNeighbor(mountain.id),
+		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), findNearestHigherNeighbor(mountain.id),
 				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 4)));
-	}
-
-	public static Result showMountainByName(String name) {
-		String mountainName = name.replace("-", " ");
-		MountainEntity mountain = MountainEntity.findByName(name);
-		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), MountainEntity.findNearestHigherNeighbor(mountain.id),
-				AscentDetailEntity.findAscentDetailsByMountain(mountain.id)));
 	}
 
 	public static Result getThumbnail(Long id) {
@@ -96,18 +93,46 @@ public class MountainsController extends Controller {
 		}
 	}
 
-	public static Result showDistances(Long id, Long howMany) {
-		logger.debug("Accepts: {}", request().acceptedTypes());
+	public static Result showDistances(Long id, Integer howMany) {
+		MountainEntity m = MountainEntity.find(id);
+		
+		if (m == null) {
+			return notFound();
+		}
+		
 		if (request().accepts("text/html")) {
-			return ok(views.html.radius.render(MountainEntity.find(id)));
+			return ok(views.html.radius.render(m));
 		} else if (request().accepts("application/json")) {
-			return ok(serializer.serialize(MountainEntity.findNearestNeighbors(id, howMany))).as(MediaType.JSON_UTF_8.type());
+			return ok(serializer.serialize(MountainsController.findNearestNeighbors(m, howMany))).as(MediaType.JSON_UTF_8.type());
 		} else {
 			return badRequest();
 		}
 	}
 
 	public static Result showDistance(Long id1, Long id2) {
-		return ok(serializer.serialize(MountainEntity.findDistanceBetweenMountains(id1, id2)));
+		MountainEntity m1 = MountainEntity.find.byId(id1);
+		MountainEntity m2 = MountainEntity.find.byId(id2);
+		MountainDistanceBean distance = new MountainDistanceBean(m1, m2, DistanceUtil.calculateDistance(m1.latitude, m1.longitude, m2.latitude, m2.longitude));
+		return ok(serializer.serialize(distance));
+	}
+
+	public static MountainEntity findNearestHigherNeighbor(Long id) {
+		MountainEntity m1 = MountainEntity.find.byId(id);
+		List<MountainEntity> higherMountains = MountainEntity.find.where().ne("id", m1.id).eq("club_list", true).gt("elevation", m1.elevation).findList();
+	
+		return higherMountains.parallelStream()
+		.map(m2 -> new MountainDistanceBean(m1, m2, DistanceUtil.calculateDistance(m1.latitude, m1.longitude, m2.latitude, m2.longitude)))
+		.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
+		.findFirst()
+		.orElse(new MountainDistanceBean()).getM2();
+	}
+
+	public static List<MountainDistanceBean> findNearestNeighbors(MountainEntity mountain, int howMany) {
+		List<MountainEntity> neighbors = MountainEntity.find.where().ne("id", mountain.id).eq("club_list", true).findList();
+	
+		return neighbors.parallelStream()
+		.map(m -> new MountainDistanceBean(mountain, m, DistanceUtil.calculateDistance(mountain.latitude, mountain.longitude, m.latitude, m.longitude)))
+		.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
+		.collect(Collectors.toList()).subList(0, howMany);
 	}
 }
