@@ -1,4 +1,4 @@
-name := """nj1k2"""
+name := """nj1k"""
 
 version := "1.0-SNAPSHOT"
 
