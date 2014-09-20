@@ -29,8 +29,8 @@
 			    </thead>
 			    <tbody>
 			    @for(f <- finishers) {
-			        <tr>
-				        <td><a href="@routes.UsersController.showUser(f.user.id)">@f.user.name</a></td>
+			        <tr itemscope itemtype="https://schema.org/Person">
+				        <td><a itemprop="url" href="@routes.UsersController.showUser(f.user.id)"><span itemprop="name">@f.user.name</span></a></td>
 				        <td>@formatAscentDate(f.final_ascent.ascent_date)</td>
 				        <td class="hidden-xs"><a href="@routes.AscentController.showTripReport(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
 			        </tr>
@@ -58,8 +58,8 @@
 				<tbody>
 	
 					@for(user <- users) {
-					<tr>
-						<td><a href="@routes.UsersController.showUser(user.user.id)">@user.user.name</a></td>
+					<tr itemscope itemtype="https://schema.org/Person">
+						<td><a itemprop="url" href="@routes.UsersController.showUser(user.user.id)"><span itemprop="name">@user.user.name</span></a></td>
 						<td class="hidden-xs">@user.total</td>
 						<td class="hidden-xs">@user.unique_successful</td>
 						<td class="hidden-xs"><a href="@routes.AscentController.showTripReport(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
