@@ -72,7 +72,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12" style="border-radius: 5px; background-color:rgba(0,0,0,0.6);">
-					<h1 style="font-family: Futura, Trebuchet MS, Arial, sans-serif;">@Messages("welcome.header")</h1>
+					<h1 itemscope itemtype="https://schema.org/Organization" style="font-family: Futura, Trebuchet MS, Arial, sans-serif;">@Messages("welcome.header")</h1>
 					<p class="lead">@formatText(Messages("welcometext"))</p>
 					@if(!isLoggedIn()) {
 						<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">

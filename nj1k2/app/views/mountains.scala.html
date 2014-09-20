@@ -43,13 +43,13 @@
 				    	</thead>
 				        <tbody>
 				        @for(mountain <- mountains) {
-				            <tr>
-				            	<td><a href="@routes.MountainsController.showMountain(mountain.id)">@mountain.name</a></td>
+				            <tr itemscope itemtype="https://schema.org/Mountain">
+				            	<td><a itemprop="url" href="@routes.MountainsController.showMountain(mountain.id)"><span itemprop="name">@mountain.name</span></a></td>
 				               	<td class="hidden-xs">@mountain.elevation</td>
-				               	<td class="hidden-xs">@mountain.county</td>
+				               	<td itemprop="containedIn" class="hidden-xs">@mountain.county</td>
 				               	<td class="hidden-xs">@mountain.latitude</td>
 				               	<td class="hidden-xs">@mountain.longitude</td>
-				               	<td class="hidden-xs tableCell"><a href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+				               	<td class="hidden-xs tableCell"><a itemprop="hasMap" href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
 				            </tr>
 				        }
 				        </tbody>
