@@ -18,7 +18,7 @@
 	    		if (confirm('@Messages("ascent.delete.prompt")')) {
 		    		jsRoutes.controllers.AscentController.remove(@ascent.id).ajax({
 		    			success: function(result) {
-		    				window.location.href = "@routes.UsersController.showUser(ascent.climber.id)";
+		    				window.location.href = "@routes.UsersController.user(ascent.climber.id)";
 		    		    }
 		    		});
 	    		}
@@ -105,7 +105,7 @@
 						</tr>
 						<tr>
 							<td>@Messages("ascent.climber")</td>
-							<td><a href="@routes.UsersController.showUser(ascent.climber.id)">@ascent.climber.name</a></td>
+							<td><a href="@routes.UsersController.user(ascent.climber.id)">@ascent.climber.name</a></td>
 						</tr>
 						<tr>
 							<td>@Messages("ascent.date")</td>

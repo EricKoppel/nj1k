@@ -5,23 +5,23 @@
 <div class="panel-body">
 	@for(a <- ascents) {
 		<div class="media">
-			<a class="pull-left" href="@routes.UsersController.showUser(a.climber.id)">
+			<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
 				@if(a.climber.pic != null) {
-					<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.getProfileImage(a.climber.id)">
+					<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.userImage(a.climber.id)">
 				} else {
 					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 				}
 			</a>
 			<div class="media-body">
 				<h4 class="media-heading">
-					<strong><a href="@routes.UsersController.showUser(a.climber.id)">@a.climber.name</a></strong> - <em><a href="@routes.AscentController.showTripReport(a.id)">@formatAscentDate(a.ascent_date)</a></em>
+					<strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> - <em><a href="@routes.AscentController.ascent(a.id)">@formatAscentDate(a.ascent_date)</a></em>
 				</h4>
 				<p>
 					<strong>@formatAscentDate(a.ascent_date) - </strong>
 					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 						@Html(formatNews(a.trip_report))
 					}
-					(<a href="@routes.AscentController.showTripReport(a.id)"><em>details...</em></a>)
+					(<a href="@routes.AscentController.ascent(a.id)"><em>details...</em></a>)
 				</p>
 			</div>
 		</div>

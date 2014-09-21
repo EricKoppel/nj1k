@@ -115,20 +115,20 @@ public class Application extends Controller {
 		response().setHeader(CACHE_CONTROL, "max-age=3600, public");
 		
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
-			controllers.routes.javascript.AscentController.showRecentAscents(),
+			controllers.routes.javascript.AscentController.ascents(),
 			controllers.routes.javascript.AscentController.submit(),
 			controllers.routes.javascript.AscentDetailController.updateCaption(),
 			controllers.routes.javascript.AscentDetailController.remove(),
-			controllers.routes.javascript.AscentController.showTripReport(),
+			controllers.routes.javascript.AscentController.ascent(),
 			controllers.routes.javascript.NewsController.delete(),
 			controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(),
 			controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
-			controllers.routes.javascript.UsersController.showUser(),
-			controllers.routes.javascript.UsersController.getProfileImage(),
-			controllers.routes.javascript.UsersController.getProfileThumbnail(),
+			controllers.routes.javascript.UsersController.user(),
+			controllers.routes.javascript.UsersController.userImage(),
+			controllers.routes.javascript.UsersController.userThumbnail(),
 			controllers.routes.javascript.MountainsController.showDistances(),
 			controllers.routes.javascript.MountainsController.getImages(),
-			controllers.routes.javascript.UsersController.showUserAscents(),
+			controllers.routes.javascript.UsersController.userAscents(),
 			controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");
 	}
 }
