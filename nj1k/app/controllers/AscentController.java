@@ -42,7 +42,7 @@ public class AscentController extends Controller {
 		serializer.transform(new HasPictureTransformer(), "climber.pic");	
 	}
 	
-	public static Result showTripReport(Long id) {
+	public static Result ascent(Long id) {
 		AscentEntity e = AscentEntity.findTripReport(id);
 
 		if (e != null) {
@@ -52,7 +52,7 @@ public class AscentController extends Controller {
 		}
 	}
 	
-	public static Result showRecentAscents(int page, int size) {
+	public static Result ascents(int page, int size) {
 		List<AscentEntity> ascents = AscentEntity.findAscents(page, size);
 		
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
@@ -122,6 +122,6 @@ public class AscentController extends Controller {
 			ascent.update();
 		}
 
-		return redirect(routes.AscentController.showTripReport(form.id));
+		return redirect(routes.AscentController.ascent(form.id));
 	}
 }

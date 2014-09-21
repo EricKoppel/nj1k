@@ -160,7 +160,7 @@
         		@if(getCurrentUser().pic != null) {
         			<div class="thumbnail" style="display: inline-block;">
 		        		<div id="img_container" style="width: 200px; height: 200px; overflow: hidden;">
-				   			<img id="profile_img"  alt="profile image" width="200" height="200" src="@routes.UsersController.getProfileThumbnail(Long.parseLong(editForm("id").value))" />
+				   			<img id="profile_img"  alt="profile image" width="200" height="200" src="@routes.UsersController.userThumbnail(Long.parseLong(editForm("id").value))" />
 		   				</div>
 	   				</div>
 	   			}

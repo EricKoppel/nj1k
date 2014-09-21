@@ -2,7 +2,11 @@
 
 @import views.RenderUtil._
 
-@main(Messages("menu.members"))(null)(null) {
+@head = {
+<meta name="description" content="NJ1K.org - List of finishers and aspiring members of the NJ1K Club.">
+}
+
+@main(Messages("menu.members"))(head)(null) {
 
 	<script type="text/javascript">
 		require(['jquery', 'tablesorter'], function() {
@@ -30,9 +34,9 @@
 			    <tbody>
 			    @for(f <- finishers) {
 			        <tr itemscope itemtype="https://schema.org/Person">
-				        <td><a itemprop="url" href="@routes.UsersController.showUser(f.user.id)"><span itemprop="name">@f.user.name</span></a></td>
+				        <td><a itemprop="url" href="@routes.UsersController.user(f.user.id)"><span itemprop="name">@f.user.name</span></a></td>
 				        <td>@formatAscentDate(f.final_ascent.ascent_date)</td>
-				        <td class="hidden-xs"><a href="@routes.AscentController.showTripReport(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
+				        <td class="hidden-xs"><a href="@routes.AscentController.ascent(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
 			        </tr>
 			    }
 			    </tbody>
@@ -59,10 +63,10 @@
 	
 					@for(user <- users) {
 					<tr itemscope itemtype="https://schema.org/Person">
-						<td><a itemprop="url" href="@routes.UsersController.showUser(user.user.id)"><span itemprop="name">@user.user.name</span></a></td>
+						<td><a itemprop="url" href="@routes.UsersController.user(user.user.id)"><span itemprop="name">@user.user.name</span></a></td>
 						<td class="hidden-xs">@user.total</td>
 						<td class="hidden-xs">@user.unique_successful</td>
-						<td class="hidden-xs"><a href="@routes.AscentController.showTripReport(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
+						<td class="hidden-xs"><a href="@routes.AscentController.ascent(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
 					</tr>
 					}
 				</tbody>

@@ -43,7 +43,7 @@ public class UsersController extends Controller {
 		serializer.transform(transformer, Timestamp.class);
 	}
 
-	public static Result list() {
+	public static Result users() {
 		List<FinisherEntity> finishers = FinisherEntity.findFinishers();
 		List<UserEntityAggregate> aspirants = UserEntityAggregate.findAll();
 		aspirants.removeAll(finishers);
@@ -51,7 +51,7 @@ public class UsersController extends Controller {
 		return ok(views.html.users.render(finishers, aspirants));
 	}
 
-	public static Result showUser(Long id) {
+	public static Result user(Long id) {
 		UserEntityAggregate user = UserEntityAggregate.find(id);
 
 		if (user == null) {
@@ -61,7 +61,7 @@ public class UsersController extends Controller {
 		return ok(views.html.user.render(user, AscentEntity.findAscentByUserId(id, 0, 5)));
 	}
 
-	public static Result showUserAscents(Long id, int page, int num) {
+	public static Result userAscents(Long id, int page, int num) {
 		List<AscentEntity> ascents = AscentEntity.findAscentByUserId(id, page, num);
 
 		if (ascents.isEmpty()) {
@@ -79,7 +79,7 @@ public class UsersController extends Controller {
 		return ok(views.html.resetpassword.render(userForm));
 	}
 
-	public static Result getProfileImage(Long id) {
+	public static Result userImage(Long id) {
 		UserEntity user = UserEntity.find(id);
 
 		response().setHeader("Cache-Control", "max-age=3600, public");
@@ -91,7 +91,7 @@ public class UsersController extends Controller {
 		return ok(user.pic).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 
-	public static Result getProfileThumbnail(Long id) {
+	public static Result userThumbnail(Long id) {
 		UserEntity user = UserEntity.find(id);
 
 		response().setHeader("Cache-Control", "max-age=3600, public");

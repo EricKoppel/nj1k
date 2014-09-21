@@ -1,6 +1,10 @@
 @(mountains: List[MountainEntity])
 
-@main(title = Messages("menu.list"))(null)(null) {
+@head = {
+<meta name="description" content="NJ1K.org - List of New Jersey's peaks over 1,000 feet.">
+}
+
+@main(title = Messages("menu.list"))(head)(null) {
     <script type="text/javascript">
 	    require(['jquery', 'tablesorter'], function() {
 			$(document).ready(function() { 

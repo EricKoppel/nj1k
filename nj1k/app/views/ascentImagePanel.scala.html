@@ -13,7 +13,7 @@
 		<div class="thumbnail">
 			<a class="fancybox" data-fancybox-group="gallery@mountainId" title="@ascentImages(i).caption" data-fancybox-type="image" href="@routes.AscentDetailController.getImage(ascentImages(i).id)"><img alt="@ascentImages(i).caption" src="@routes.AscentDetailController.getThumbnail(ascentImages(i).id)" /></a>
 			<div class="caption">
-				<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.showUser(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>
+				<p>@ascentImages(i).caption &mdash;<a href="@routes.UsersController.user(ascentImages(i).ascent.climber.id)"><em>@ascentImages(i).ascent.climber.name</em></a></p>
 			</div>
 		</div>
 	</div>
