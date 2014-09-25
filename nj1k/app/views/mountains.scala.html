@@ -48,7 +48,7 @@
 				        <tbody>
 				        @for(mountain <- mountains) {
 				            <tr itemscope itemtype="https://schema.org/Mountain">
-				            	<td><a itemprop="url" href="@routes.MountainsController.showMountain(mountain.id)"><span itemprop="name">@mountain.name</span></a></td>
+				            	<td><a itemprop="url" href="@routes.MountainsController.mountain(mountain.id)"><span itemprop="name">@mountain.name</span></a></td>
 				               	<td class="hidden-xs">@mountain.elevation</td>
 				               	<td itemprop="containedIn" class="hidden-xs">@mountain.county</td>
 				               	<td class="hidden-xs">@mountain.latitude</td>

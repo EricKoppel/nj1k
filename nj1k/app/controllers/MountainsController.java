@@ -31,11 +31,11 @@ public class MountainsController extends Controller {
 		serializer.exclude("*");
 	}
 
-	public static Result list() {
+	public static Result mountains() {
 		return ok(views.html.mountains.render(MountainEntity.findAll()));
 	}
 
-	public static Result showMountain(Long id) {
+	public static Result mountain(Long id) {
 		MountainEntity mountain = MountainEntity.find(id);
 
 		if (mountain == null) {

@@ -129,6 +129,6 @@ public class Application extends Controller {
 			controllers.routes.javascript.MountainsController.showDistances(),
 			controllers.routes.javascript.MountainsController.getImages(),
 			controllers.routes.javascript.UsersController.userAscents(),
-			controllers.routes.javascript.MountainsController.showMountain())).as("text/javascript");
+			controllers.routes.javascript.MountainsController.mountain())).as("text/javascript");
 	}
 }
