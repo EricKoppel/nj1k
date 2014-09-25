@@ -61,8 +61,8 @@
 					    </div>
 					    <div class="panel-body">
 						    @if(user.user.pic != null) {
-						   		<a href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
-						   			<img itemprop="image" alt="@user.user.name" src="@routes.UsersController.userThumbnail(user.user.id)">
+						   		<a itemprop="image" href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
+						   			<img alt="@user.user.name" src="@routes.UsersController.userThumbnail(user.user.id)">
 						   		</a>
 							}
 							<div itemprop="description">
