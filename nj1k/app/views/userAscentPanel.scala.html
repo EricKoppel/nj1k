@@ -5,7 +5,7 @@
 <div class="panel-body">
 	@for(a <- ascents) {
 		<div class="media">
-			<a class="pull-left" href="@routes.MountainsController.showMountain(a.mountain.id)">
+			<a class="pull-left" href="@routes.MountainsController.mountain(a.mountain.id)">
 				@if(a.mountain.picture != null) {
 					<img alt="@a.mountain.name" width="64" height="64" class="media-object" src="@routes.MountainsController.getThumbnail(a.mountain.id)">
 				} else {
@@ -14,7 +14,7 @@
 			</a>
 			<div class="media-body">
 				<h4 class="media-heading">
-					<strong><a href="@routes.MountainsController.showMountain(a.mountain.id)">@a.mountain.name</a></strong>
+					<strong><a href="@routes.MountainsController.mountain(a.mountain.id)">@a.mountain.name</a></strong>
 				</h4>
 				<p>
 					<strong>@formatAscentDate(a.ascent_date) - </strong>

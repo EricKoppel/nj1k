@@ -19,7 +19,13 @@ public class NewsController extends Controller {
 	private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
 
 	public static Result showNews(Long id) {
-		return ok(views.html.news.render(NewsEntity.showArticle(id)));
+		NewsEntity news = NewsEntity.find(id);
+
+		if (news == null) {
+			return notFound();
+		} else {
+			return ok(views.html.news.render(news));
+		}
 	}
 
 	public static Result delete(Long id) {
