@@ -120,6 +120,8 @@
 		
 	</div>
 } {
+
+	@if(isLoggedIn()) {
 	<div class="row">
 		<div class="visible-xs col-xs-12">
 			<p><a id="logMobileAscent" class="btn btn-primary btn-lg btn-block" id="foo" href="#">@Messages("ascent.quick")</a></p>
@@ -178,6 +180,7 @@
 			});
 		});
 	</script>
+	}
 	
 	<div class="row">
 		<div class="col-md-6 hidden-xs">
