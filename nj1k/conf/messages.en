@@ -36,7 +36,7 @@ ascent.edit=Modify ascent
 ascent.climb.list=Climb list
 ascent.delete=Delete ascent
 ascent.delete.prompt=Are you sure you want to delete this ascent?
-ascent.quick=Quick Ascent
+ascent.quick=Quick Ascent (beta)
 
 account.edit=Edit Account
 

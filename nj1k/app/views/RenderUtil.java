@@ -18,7 +18,7 @@ import utils.TextUtils;
 public class RenderUtil {
 
 	public static final Pattern urlPattern = Pattern.compile("(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))");
-
+	public static final Pattern emailPattern = Pattern.compile("([A-Z0-9._%+-]+)@([A-Z0-9.-]+\\.[A-Z]{2,6})", Pattern.CASE_INSENSITIVE);
 	private static Logger logger = LoggerFactory.getLogger(RenderUtil.class);
 	
 	private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
@@ -61,6 +61,16 @@ public class RenderUtil {
 		
 		if (m.find()) {
 			return m.replaceAll("<a target=\"_blank\" href=\"" + m.group() + "\">" + m.group() + " <span class=\"glyphicon glyphicon-share-alt\"></span></a>");
+		} else {
+			return text;
+		}
+	}
+	
+	public static String obfuscateEmail(String text) {
+		Matcher m = emailPattern.matcher(text);
+		
+		if (m.find()) {
+			return m.replaceAll(m.group(1) + "<span style=\"display:none\">foo@bar.com</span>&#64;" + m.group(2));
 		} else {
 			return text;
 		}
