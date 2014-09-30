@@ -116,6 +116,7 @@ public class Application extends Controller {
 		
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
 			controllers.routes.javascript.AscentController.ascents(),
+			controllers.routes.javascript.MountainsController.findNearest(),
 			controllers.routes.javascript.AscentController.submit(),
 			controllers.routes.javascript.AscentDetailController.updateCaption(),
 			controllers.routes.javascript.AscentDetailController.remove(),

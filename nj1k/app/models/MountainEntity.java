@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,13 +68,18 @@ public class MountainEntity extends BaseEntity {
 	}
 
 	public static MountainEntity findByName(String name) {
-		return find.where().eq("name", name).findUnique();
+		return find.where().eq("replace(lower(name), ' ', '-')", name.toLowerCase()).findUnique();
 	}
 	
 	public static int listSize() {
 		return find.where().eq("club_list", true).findRowCount();
 	}
 
+	@Transient
+	public String getNameId() {
+		return name.toLowerCase().replace(" ", "-");
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

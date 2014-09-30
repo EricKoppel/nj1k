@@ -32,16 +32,16 @@ public class AscentController extends Controller {
 	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);
 	private static final Form<AscentEntity> ascentForm = form(AscentEntity.class);
 	private static final JSONSerializer serializer;
-	
+
 	static {
 		serializer = new JSONSerializer();
 		serializer.include("id", "ascent_date", "mountain.id", "mountain.name", "climber.id", "climber.name", "climber.pic", "trip_report");
 		serializer.exclude("*");
 		serializer.transform(new DateTransformer(Configuration.root().getString("render.date.format")), Timestamp.class);
 		serializer.transform(new FirstSentenceTransformer(), "trip_report");
-		serializer.transform(new HasPictureTransformer(), "climber.pic");	
+		serializer.transform(new HasPictureTransformer(), "climber.pic");
 	}
-	
+
 	public static Result ascent(Long id) {
 		AscentEntity e = AscentEntity.findTripReport(id);
 
@@ -51,17 +51,17 @@ public class AscentController extends Controller {
 			return notFound();
 		}
 	}
-	
+
 	public static Result ascents(int page, int size) {
 		List<AscentEntity> ascents = AscentEntity.findAscents(page, size);
-		
+
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
 			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));
 		} else {
-			return ok(serializer.serialize(ascents)).as(MediaType.JSON_UTF_8.toString());	
+			return ok(serializer.serialize(ascents)).as(MediaType.JSON_UTF_8.toString());
 		}
 	}
-
+	
 	public static Result showForm() {
 		if (!SecurityUtil.isLoggedIn()) {
 			return forbidden();
@@ -77,7 +77,7 @@ public class AscentController extends Controller {
 
 		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), MountainEntity.findAll()));
 	}
-	
+
 	public static Result updateTripReport(Long id) {
 		if (!SecurityUtil.ownsAscent(id)) {
 			return forbidden();
@@ -101,16 +101,18 @@ public class AscentController extends Controller {
 		}
 
 		Form<AscentEntity> filledForm = ascentForm.bindFromRequest();
-		
+
 		if (filledForm.hasErrors()) {
 			return badRequest(views.html.logascent.render(filledForm, MountainEntity.findAll()));
 		}
 
 		AscentEntity form = filledForm.get();
 		form.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
-		form.ascentDetails.addAll(ImageUtil.extractPictures(request(), AscentDetailEntity.class));
-
 		
+		if (request().body().asMultipartFormData() != null) {
+			form.ascentDetails.addAll(ImageUtil.extractPictures(request(), AscentDetailEntity.class));
+		}
+
 		if (form.id == null) {
 			form.save();
 		} else if (SecurityUtil.ownsAscent(form.id)) {
