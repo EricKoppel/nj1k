@@ -10,9 +10,12 @@
 
 @main()(head)(null) {
 	<script type="text/javascript">
-		require(['jqueryui'], function() {
+		require(['modernizr', 'jqueryui'], function() {
 			$(document).ready(function() {
-			    $("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
+				
+				if (!Modernizr.inputtypes.date) {
+			   		$("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
+				}
 			    
 			    $('#ascentDetails').change(function() {
 			    	

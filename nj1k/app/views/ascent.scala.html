@@ -80,14 +80,14 @@
 	</div>
 	
 	<div class="row">
-		@if(ascent.trip_report != "") {
+		@if(ascent.trip_report != null && !"".equals(ascent.trip_report)) {
 			<div class="col-md-8">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<h3 class="panel-title">@Messages("ascent.trip_report")</h3>
 					</div>
 					<div class="panel-body">
-					@Html(formatText(ascent.trip_report))
+					@Html(convertUrlToHyperlink(formatText(ascent.trip_report)))
 					</div>
 				</div>
 			</div>
@@ -101,7 +101,7 @@
 					<table class="table">
 						<tr>
 							<td>@Messages("ascent.summit")</td>
-							<td><a href="@routes.MountainsController.mountain(ascent.mountain.id)">@ascent.mountain.name</a></td>
+							<td><a href="@routes.MountainsController.mountain(ascent.mountain.getNameId())">@ascent.mountain.name</a></td>
 						</tr>
 						<tr>
 							<td>@Messages("ascent.climber")</td>
@@ -147,17 +147,19 @@
 									<a class="fancybox" data-fancybox-group="ascentImages" data-fancybox-type="image" title="@ascent.ascentDetails(i).caption" href="@routes.AscentDetailController.getImage(ascent.ascentDetails(i).id)">
 										<img class="img-responsive" alt="@ascent.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(ascent.ascentDetails(i).id)">
 									</a>
-									<div class="caption">
-										<p><small><textarea class="form-control hidden">@ascent.ascentDetails(i).caption</textarea></small></p>
-										<p class="cap">@ascent.ascentDetails(i).caption</p>
-										@if(ownsAscent(ascent.id)) {
-											<p>
-												<a class="save-ascent-detail btn btn-xs btn-primary hidden" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("save")</a>
-												<a class="edit-ascent-detail btn btn-xs btn-primary" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("edit")</a>
-												<a class="delete-ascent-detail btn btn-xs btn-danger" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("delete")</a>
-											</p>
-									   	}
-								   	</div>
+									@if(ascent.ascentDetails(i).caption != null && !"".equals(ascent.ascentDetails(i).caption)) {
+										<div class="caption">
+											<p><small><textarea class="form-control hidden">@ascent.ascentDetails(i).caption</textarea></small></p>
+											<p class="cap">@ascent.ascentDetails(i).caption</p>
+											@if(ownsAscent(ascent.id)) {
+												<p>
+													<a class="save-ascent-detail btn btn-xs btn-primary hidden" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("save")</a>
+													<a class="edit-ascent-detail btn btn-xs btn-primary" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("edit")</a>
+													<a class="delete-ascent-detail btn btn-xs btn-danger" data-image-id="@ascent.ascentDetails(i).id" href="#">@Messages("delete")</a>
+												</p>
+										   	}
+									   	</div>
+									}
 								</div>
 							</div>
 						}

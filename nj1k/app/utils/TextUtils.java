@@ -9,7 +9,7 @@ import edu.stanford.nlp.process.DocumentPreprocessor;
 import edu.stanford.nlp.util.StringUtils;
 
 public class TextUtils {
-
+	
 	public static String extractFirstSentence(String text) {
 		DocumentPreprocessor pr = new DocumentPreprocessor(new StringReader(text));
 

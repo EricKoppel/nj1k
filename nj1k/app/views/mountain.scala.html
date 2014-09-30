@@ -64,12 +64,12 @@
 						</tr>
 						<tr>
 							<td>@Messages("mountain.topo")</td>
-							<td><a itemprop="hasMap" href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+							<td><a itemprop="map" href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
 						</tr>
 						@if(nhn != null) {
 						<tr>
 							<td>@Messages("mountain.nhn")</td>
-							<td><a href="@routes.MountainsController.mountain(nhn.id)">@nhn.name</a></td>
+							<td><a href="@routes.MountainsController.mountain(nhn.getNameId())">@nhn.name</a></td>
 						</tr>
 						}
 					</table>

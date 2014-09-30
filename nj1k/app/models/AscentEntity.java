@@ -17,7 +17,6 @@ import javax.validation.constraints.Past;
 import play.data.validation.Constraints.Required;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Page;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;

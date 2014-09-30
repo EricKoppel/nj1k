@@ -15,7 +15,9 @@ requirejs.config({
         chart: '/assets/javascripts/libs/chart',
         metadata: '/assets/javascripts/libs/jquery.metadata',
         tablesorter: '/assets/javascripts/libs/jquery.tablesorter',
-        jscroll: '/assets/javascripts/libs/jscroll.min'
+        jscroll: '/assets/javascripts/libs/jscroll.min',
+        modernizr: '/assets/javascripts/libs/modernizr.min',
+        moment: '/assets/javascripts/libs/moment.min'
     },
     shim: {
     	'bootstrap': {
@@ -49,7 +51,7 @@ requirejs.config({
             deps: ['jquery']
         },
         'jqueryui': {
-            deps: ['jquery']
+            deps: ['jquery', 'modernizr']
         },
     }
 });

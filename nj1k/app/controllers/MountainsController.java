@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.DistanceUtil;
+import utils.SecurityUtil;
 
 import com.google.common.net.MediaType;
 
@@ -24,24 +25,33 @@ public class MountainsController extends Controller {
 	private static final Logger logger = LoggerFactory.getLogger(MountainsController.class);
 	
 	private static final JSONSerializer serializer;
-
+	private static final JSONSerializer mSerializer;
+	
 	static {
 		serializer = new JSONSerializer();
 		serializer.include("distanceAsMiles", "m1.id", "m2.id", "m1.name", "m2.name", "m1.latitude", "m1.longitude", "m2.latitude", "m2.longitude");
 		serializer.exclude("*");
+		
+		mSerializer = new JSONSerializer();
+		mSerializer.include("id", "name");
+		mSerializer.exclude("*");
 	}
 
 	public static Result mountains() {
 		return ok(views.html.mountains.render(MountainEntity.findAll()));
 	}
 
-	public static Result mountain(Long id) {
-		MountainEntity mountain = MountainEntity.find(id);
-
+	public static Result mountain(String name) {
+		if (name.matches("\\d*")) {
+			return movedPermanently(routes.MountainsController.mountain(MountainEntity.find(Long.parseLong(name)).getNameId()));
+		}
+			
+		MountainEntity mountain = MountainEntity.findByName(name);
+		
 		if (mountain == null) {
 			return notFound();
 		}
-
+		
 		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), findNearestHigherNeighbor(mountain.id),
 				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 4)));
 	}
@@ -93,6 +103,25 @@ public class MountainsController extends Controller {
 		}
 	}
 
+	public static Result findNearest(String latitude, String longitude, double threshold) {
+		if (!SecurityUtil.isLoggedIn()) {
+			return forbidden();
+		}
+		
+		if (latitude == null || longitude == null) {
+			return badRequest();
+		}
+		
+		logger.debug("Finding peaks near: {}, {}", latitude, longitude);
+		
+		return ok(mSerializer.serialize(MountainEntity.findAll().parallelStream()
+			.map(m -> new MountainDistanceBean(m, null, DistanceUtil.calculateDistance(Float.parseFloat(latitude), Float.parseFloat(longitude), m.latitude, m.longitude)))
+			.filter(m -> m.getDistanceAsMiles() < threshold)
+			.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
+			.map(MountainDistanceBean::getM1)
+			.collect(Collectors.toList()))).as("application/json");
+	}
+	
 	public static Result showDistances(Long id, Integer howMany) {
 		MountainEntity m = MountainEntity.find(id);
 		
@@ -103,7 +132,7 @@ public class MountainsController extends Controller {
 		if (request().accepts("text/html")) {
 			return ok(views.html.radius.render(m));
 		} else if (request().accepts("application/json")) {
-			return ok(serializer.serialize(MountainsController.findNearestNeighbors(m, howMany))).as(MediaType.JSON_UTF_8.type());
+			return ok(serializer.serialize(MountainsController.findNearestNeighbors(m, howMany))).as("application/json");
 		} else {
 			return badRequest();
 		}

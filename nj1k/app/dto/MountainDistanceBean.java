@@ -1,7 +1,7 @@
 package dto;
+
+import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.util.Locale;
 
 import models.MountainEntity;
 import flexjson.JSON;
@@ -40,22 +40,16 @@ public class MountainDistanceBean {
 	}
 
 	public double getDistanceAsKm() {
-		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
-
-		df.setRoundingMode(RoundingMode.HALF_UP);
-		df.setMaximumFractionDigits(2);
-		
-		return Double.parseDouble(df.format(distance * EARTH_RADIUS_KM));
+		BigDecimal bd = new BigDecimal(distance * EARTH_RADIUS_KM);
+	    bd = bd.setScale(2, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 	
 	@JSON
 	public double getDistanceAsMiles() {
-		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(Locale.US);
-
-		df.setRoundingMode(RoundingMode.HALF_UP);
-		df.setMaximumFractionDigits(2);
-		
-		return Double.parseDouble(df.format(distance * EARTH_RADIUS_MI));
+		BigDecimal bd = new BigDecimal(distance * EARTH_RADIUS_MI);
+	    bd = bd.setScale(2, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 
 	@Override
