@@ -55,6 +55,10 @@ public class MountainsController extends Controller {
 		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), findNearestHigherNeighbor(mountain.id),
 				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 4)));
 	}
+	
+	public static Result mountainById(Long id) {
+		return movedPermanently(routes.MountainsController.mountain(MountainEntity.find(id).getNameId()));
+	}
 
 	public static Result getThumbnail(Long id) {
 		MountainEntity mountain = MountainEntity.find(id);

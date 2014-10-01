@@ -70,7 +70,7 @@ public class RenderUtil {
 		Matcher m = emailPattern.matcher(text);
 		
 		if (m.find()) {
-			return m.replaceAll(m.group(1) + "<span style=\"display:none\">foo@bar.com</span>&#64;" + m.group(2));
+			return m.replaceAll(m.group(1).replaceAll("\\.", "&#46;") + "<span style=\"display:none\">foo@bar.com</span>&#64;" + m.group(2).replaceAll("\\.", "&#46;"));
 		} else {
 			return text;
 		}
