@@ -69,7 +69,7 @@ public class ExternalNewsController extends Controller {
 		response().setHeader(CACHE_CONTROL, "max-age=31556926, public");
 
 		return WS.url(url).get()
-			.map(r -> TextUtils.extractFirstSentence(ArticleSentencesExtractor.INSTANCE.getText(new InputStreamReader(r.getBodyAsStream()))))
+			.map(r -> TextUtils.extractSentence(ArticleSentencesExtractor.INSTANCE.getText(new InputStreamReader(r.getBodyAsStream())), 1))
 			.map(content -> ok(content));
 	}
 }
