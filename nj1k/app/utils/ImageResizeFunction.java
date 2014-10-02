@@ -62,6 +62,7 @@ public class ImageResizeFunction<T extends ImageEntity> implements Function<Imag
 			scaledInstance = image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
 		}
 		
+//		if originalImage.getColorModel().hasAlpha()
 		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpace.getType());
 		Graphics2D graphics = resizedImage.createGraphics();
 		

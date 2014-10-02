@@ -26,10 +26,24 @@ body {
 	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
 }
 
-.jumbotron {
+.jumbotron:before {
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	content: "";
+	opacity: 0.6;
 	background: url('/images/background.png');
 	background-size: cover;
 	background-repeat: no-repeat;
+	
+}
+.jumbotron {
+	background-color:#000;
+	position: relative;
+	z-index: 1;
 	color: white;
 	margin-top: -20px;
 	

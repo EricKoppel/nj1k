@@ -53,7 +53,7 @@ public class RenderUtil {
 	}
 	
 	public static String formatNews(String text) {
-		return TextUtils.extractFirstSentence(text);
+		return TextUtils.extractSentence(text, 3);
 	}
 	
 	public static String convertUrlToHyperlink(String text) throws MalformedURLException {
