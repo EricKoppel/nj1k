@@ -152,6 +152,7 @@
 	
 	<div class="row">
 		<div class="col-md-12">
+			<h1 style="text-align: center;">Recent Headlines</h1>
 			@for(n <- news) {
 				<div class="media" style="border-bottom: 1px solid #ddd">
 					@if(!n.pictures.isEmpty()) {
@@ -161,62 +162,53 @@
 					}
 					<div class="media-body">
 						<h3 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><strong><em>@n.title</em></strong></a></h3>
-						<p>
-							<strong>@formatAscentDate(n.news_date) - </strong>
-							@Html(formatNews(n.entry))
+							<p>
+								<strong>@formatAscentDate(n.news_date) - </strong>
+								@Html(formatNews(n.entry))
+							</p>
 							<p><a href="@routes.NewsController.showNews(n.id)"><em>Read More...</em></a></p>
-						</p>
 					</div>
 				</div>
 			}
 		</div>
 	</div>
 	
-	<div style="padding-bottom: 30px"></div>
 	<div class="row">
-		<div class="col-md-6 hidden-xs">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("news.nynjtc")</h3>
-				</div>
-				<div class="panel-body">
-					<div id="externalNews"></div>
-				</div>
-			</div>
+		<div id="externalNews" class="col-md-12 hidden-xs">
+			<div style="padding-bottom: 30px"></div>
+			<h2 style="text-align: center;">@Messages("news.nynjtc")</h2>
 		</div>
-		
-		<script type="text/javascript">
-			require(['jquery'], function() {
-				jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
-		  		  success: function(data) {
-		  			  $.each(data, function(i, item) {
-		  				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
-		  				  var mediaBody = $('<div class="media-body">');
-		  				  $(mediaBody).append('<h4 class="media-heading"><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></h4>');
-		  				
-		  				  $('<div class="media">').append(mediaBody).appendTo('#externalNews');
-		  				  
-		  				  $.ajax({
-		  					  url: r.url,
-		  					  cache: true,
-		  					  success: function(data) {
-		  	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' (<a target="_blank" href="' + item.link + '"><em>read more...</em></a>)');
-		  					  }
-		  				  });
-		  			  });
-					}
-				});
+	</div>
+	
+	<script type="text/javascript">
+		require(['jquery'], function() {
+			jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
+	  		  success: function(data) {
+	  			  $.each(data, function(i, item) {
+	  				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
+	  				  var mediaBody = $('<div class="media-body">');
+	  				  $(mediaBody).append('<h4 class="media-heading"><strong><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></strong></h4>');
+	  				
+	  				  $('<div class="media" style="border-bottom: 1px solid #ddd">').append(mediaBody).appendTo('#externalNews');
+	  				  
+	  				  $.ajax({
+	  					  url: r.url,
+	  					  cache: true,
+	  					  success: function(data) {
+	  	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' <p><a target="_blank" href="' + item.link + '"><em>Read More...</em></a></p>');
+	  					  }
+	  				  });
+	  			  });
+				}
 			});
-		</script>
-		
-		<div class="col-md-6 col-xs-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">@Messages("most.recent.climbs")</h3>
-				</div>
-				<div id="infiniteScroll">
-				@recentAscentsPanel(recentAscents, 1, 5)
-				</div>
+		});
+	</script>
+	<div class="row">
+		<div class="col-md-12 col-xs-12">
+			<div style="padding-bottom: 30px"></div>
+			<h3 style="text-align: center;">@Messages("most.recent.climbs")</h3>
+			<div id="infiniteScroll">
+			@recentAscentsPanel(recentAscents, 1, 5)
 			</div>
 		</div>
 	</div>

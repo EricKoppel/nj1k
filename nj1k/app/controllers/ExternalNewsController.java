@@ -54,8 +54,8 @@ public class ExternalNewsController extends Controller {
 	}
 
 	@With(ETagAction.class)
-	public static Promise<Result> getNewsFromNYNJTC() {
-		return WS.url(NEWS_PAGE.toString()).get().map(new NYNJTCParserFunction(5)).map(articles -> {
+	public static Promise<Result> getNewsFromNYNJTC(int howMany) {
+		return WS.url(NEWS_PAGE.toString()).get().map(new NYNJTCParserFunction(howMany)).map(articles -> {
 			String ret = serializer.serialize(articles);
 			return ok(ret).as(MediaType.JSON_UTF_8.toString());
 		});

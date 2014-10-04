@@ -58,7 +58,6 @@ public class MountainEntity extends BaseEntity {
 
 	public static Finder<Long, MountainEntity> find = new Finder<Long, MountainEntity>(Long.class, MountainEntity.class);
 
-	@Cached(key = "mountains")
 	public static List<MountainEntity> findAll() {
 		return find.where().eq("club_list", true).orderBy().asc("name").findList();
 	}

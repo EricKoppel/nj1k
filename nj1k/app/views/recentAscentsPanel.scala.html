@@ -1,13 +1,13 @@
 @(recentAscents: List[AscentEntity], page: Integer, size: Integer)
 
 @import views.RenderUtil._
+@import utils.TextUtils._
 
-<div class="panel-body">
 	@for(a <- recentAscents) {
-		<div class="media">
+		<div class="media" style="border-bottom: 1px solid #ddd">
 			<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
 				@if(a.climber.pic != null) {
-					<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
+					<img alt="@a.climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
 				} else {
 					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 				}
@@ -17,17 +17,16 @@
 				<p>
 					<strong>@formatAscentDate(a.ascent_date) - </strong>
 					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
-						@Html(convertUrlToHyperlink(formatNews(a.trip_report)))
+						@Html(convertUrlToHyperlink(extractSentence(a.trip_report, 1)))
 					}
 				(<a href="@routes.AscentController.ascent(a.id)"><em>details...</em></a>)
 				</p>
 			</div>
 		</div>
 	}
-</div>
-<div class="panel-footer">
-	<a href="@routes.AscentController.ascents(page, size)">more <span class="glyphicon glyphicon-chevron-down"></span></a>
-</div>
+	<div class="col-md-8 col-md-offset-2">
+	<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</span></a>
+	</div>
 
 <script type="text/javascript">
 	require(['jscroll'], function() {
@@ -42,7 +41,7 @@
 			$('#infiniteScroll a:last').click(function(e) {
 				e.preventDefault();
 				$.get($(this).attr('href'), function(data) {
-					$('#infiniteScroll').empty();
+					$('#infiniteScroll a:last').remove();
 					$(data).hide().appendTo($('#infiniteScroll')).fadeIn();
 				});
 			});
