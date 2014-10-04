@@ -41,7 +41,7 @@ GET		/users/:id/ascents			controllers.UsersController.userAscents(id: Long, page
 GET		/users/:id/pic				controllers.UsersController.userImage(id: Long)
 GET		/users/:id/thumbnail		controllers.UsersController.userThumbnail(id: Long)
 
-GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC()
+GET		/externalNews				controllers.ExternalNewsController.getNewsFromNYNJTC(howMany: Integer ?= 3)
 GET		/externalNewsArticle		controllers.ExternalNewsController.getNewsArticleFromNYNJTC(url: String)
 
 GET		/news/:id					controllers.NewsController.showNews(id: Long)
