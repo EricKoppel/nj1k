@@ -24,6 +24,7 @@ dd.error {
 
 body {
 	font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+	background-color: #e9eaed;
 }
 
 .jumbotron:before {

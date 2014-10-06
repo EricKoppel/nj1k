@@ -4,47 +4,61 @@
 @import utils.TextUtils._
 
 	@for(a <- recentAscents) {
-		<div class="media" style="border-bottom: 1px solid #ddd">
-			<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
-				@if(a.climber.pic != null) {
-					<img alt="@a.climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
-				} else {
-					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
-				}
-			</a>
-			<div class="media-body">
-				<h4 class="media-heading"><strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> - <a href="@routes.MountainsController.mountain(a.mountain.getNameId())"><em>@a.mountain.name</em></a></h4>
-				<p>
-					<strong>@formatAscentDate(a.ascent_date) - </strong>
-					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
-						@Html(convertUrlToHyperlink(extractSentence(a.trip_report, 1)))
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="media">
+				<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
+					@if(a.climber.pic != null) {
+						<img alt="@a.climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
+					} else {
+						<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 					}
-				(<a href="@routes.AscentController.ascent(a.id)"><em>details...</em></a>)
-				</p>
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> has climbed <a href="@routes.MountainsController.mountain(a.mountain.getNameId())"><em>@a.mountain.name</em></a><a class="pull-right trip-report-link" title="@Messages("ascent.trip_report")" href="@routes.AscentController.ascent(a.id)" data-toggle="tooltip" data-placement="auto"><span class="glyphicon glyphicon-share-alt"></a></span></h4>
+					<div class="hidden-xs">
+						<p><strong>@formatAscentDate(a.ascent_date)</strong></p>
+						@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
+							<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>
+						}
+						
+						@if(!a.ascentDetails.isEmpty()) {
+							@for(img <- a.ascentDetails) {
+								<div class="col-md-3">
+									<div class="hidden-xs thumbnail">
+										<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@img.caption" href="@routes.AscentDetailController.getImage(img.id)">
+											<img class="img-responsive" alt="@img.caption" src="@routes.AscentDetailController.getThumbnail(img.id)">
+										</a>
+									</div>							
+								</div>
+							}
+						}
+					</div>
+				</div>
 			</div>
 		</div>
+	</div>
 	}
 	<div class="col-md-8 col-md-offset-2">
 	<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</span></a>
 	</div>
 
 <script type="text/javascript">
+
+	require(['tooltip'], function() {
+		$('.trip-report-link').tooltip();
+	});
+	
 	require(['jscroll'], function() {
-		if ($(window).width() <= 768) {
-			$('#infiniteScroll').jscroll({
-				callback: function() {
-					$('.jscroll-loading').remove();
-				},
-				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
-			});
-		} else {
-			$('#infiniteScroll a:last').click(function(e) {
-				e.preventDefault();
-				$.get($(this).attr('href'), function(data) {
-					$('#infiniteScroll a:last').remove();
-					$(data).hide().appendTo($('#infiniteScroll')).fadeIn();
-				});
-			});
-		}
+		$('#infiniteScroll').jscroll({
+			callback: function() {
+				$('.jscroll-loading').remove();
+			},
+			loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
+		});
+	});
+	
+	require(['fancybox'], function() {
+		$(".fancybox").fancybox();
 	});
 </script>

@@ -1,0 +1,58 @@
+@(signupForm: Form[RegisteringUser])
+
+@import helper._
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">@Messages("registration")</h4>
+			</div>
+			<div class="modal-body">
+			@helper.form(action = routes.RegistrationController.submit) {
+		        <fieldset>
+		            @inputText(
+		                signupForm("email"), 
+		                '_label -> Messages("email"),
+		                'type -> "email",
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+		            @inputText(
+		                signupForm("name"), 
+		                '_label -> Messages("name"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+		            @inputPassword(
+		                signupForm("password"), 
+		                '_label -> Messages("password"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+		            @inputPassword(
+		                signupForm("confirmPassword"), 
+		                '_label -> Messages("confirmpassword"),
+		                '_showConstraints -> false,
+		                'class -> "form-control"
+		            )
+		            @inputText(
+		           		signupForm("challenge"),
+		           		'_label -> Messages("email.antispam"),
+		           		'_showConstraints -> false,
+		           		'class -> "story_title form-control"
+		        	)
+		        </fieldset>
+		        
+		        <div class="actions">
+		            <input type="submit" class="btn btn-primary" value="Sign Up">
+		            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+		        </div>
+		    }
+			</div>
+		</div>
+	</div>
+</div>

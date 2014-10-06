@@ -4,6 +4,7 @@ import static play.data.Form.form;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
@@ -55,6 +56,9 @@ public class AscentController extends Controller {
 	public static Result ascents(int page, int size) {
 		List<AscentEntity> ascents = AscentEntity.findAscents(page, size);
 
+		ascents.stream()
+			.collect(Collectors.groupingBy(a -> a.climber.id));
+		
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
 			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));
 		} else {

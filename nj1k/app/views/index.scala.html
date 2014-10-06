@@ -6,73 +6,15 @@
 
 @main(title = Messages("welcome.header")) {
 <meta name="description" content="NJ1K.org - A website dedicated to peakbagging in New Jersey. Climb New Jersey's 52 peaks over 1,000 feet. Peakbagging in the humble hills of New Jersey.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
 } {
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-					</button>
-					<h4 class="modal-title" id="myModalLabel">@Messages("registration")</h4>
-				</div>
-				<div class="modal-body">
-				@helper.form(action = routes.RegistrationController.submit) {
-			        <fieldset>
-			            
-			            @inputText(
-			                signupForm("email"), 
-			                '_label -> Messages("email"),
-			                'type -> "email",
-			                '_showConstraints -> false,
-			                'class -> "form-control"
-			            )
-	            
-			            @inputText(
-			                signupForm("name"), 
-			                '_label -> Messages("name"),
-			                '_showConstraints -> false,
-			                'class -> "form-control"
-			            )
-	
-			            @inputPassword(
-			                signupForm("password"), 
-			                '_label -> Messages("password"),
-			                '_showConstraints -> false,
-			                'class -> "form-control"
-			            )
-	
-			            @inputPassword(
-			                signupForm("confirmPassword"), 
-			                '_label -> Messages("confirmpassword"),
-			                '_showConstraints -> false,
-			                'class -> "form-control"
-			            )
-	
-			            @inputText(
-			           		signupForm("challenge"),
-			           		'_label -> Messages("email.antispam"),
-			           		'_showConstraints -> false,
-			           		'class -> "story_title form-control"
-			        	)
-			        </fieldset>
-			        
-			        <div class="actions">
-			            <input type="submit" class="btn btn-primary" value="Sign Up">
-			            <a href="#" class="btn btn-danger" data-dismiss="modal">Cancel</a>
-			        </div>
-			        
-			    }
-				</div>
-			</div>
-		</div>
-	</div>
+	@registermodal(signupForm)
 
 	<div class="jumbotron hidden-sm hidden-xs">
 		<div class="container">
 			<div class="row">
 				<div itemscope itemtype="https://schema.org/Organization" class="col-md-12">
-					<h1 itemprop="name" style="font-family: Futura, Trebuchet MS, Arial, sans-serif;">@Messages("welcome.header")</h1>
+					<h1 itemprop="name">@Messages("welcome.header")</h1>
 					<p itemprop="description"><strong>@formatText(Messages("welcometext"))</strong></p>
 					<p><small>The New Jersey 1K Club seeks to bring attention to the many hiking opportunities and challenges that the Garden State has to offer. New Hampshire has the AMC 4000'ers; the Adirondacks has its 46'ers; the Catskills and its 3500 Club. And now . . . New Jersey's own peakbagging club: the 1K'ers.</small></p>
 					@if(!isLoggedIn()) {
@@ -83,103 +25,45 @@
 					}
 				</div>
 			</div>
-			
 		</div>
-		
 	</div>
 } {
 
 	@if(isLoggedIn()) {
-	<div class="row">
-		<div class="visible-xs col-xs-12">
-			<p><a id="logMobileAscent" class="btn btn-primary btn-lg btn-block" href="#">@Messages("ascent.quick")</a></p>
-		</div>
-	</div>
-	
-	<script type="text/javascript">
-		require(['jquery', 'moment'], function() {
-			
-			$('#logMobileAscent').click(function() {
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(position) {
-						console.debug(position.coords.latitude + ',' + position.coords.longitude);
-						var threshold = 0.5;
-						
-						var r = jsRoutes.controllers.MountainsController.findNearest(position.coords.latitude, position.coords.longitude, threshold);
-						
-						$.ajax({
-		  					 url: r.url,
-		  					 success: function(data) {
-		  						 
-		  						if ($.isEmptyObject(data)) {
-		  							alert("@Messages("not.on.summit")");
-		  							window.location = '@routes.AscentController.showForm()';
-		  						}
-		  						
-		  						$.each(data, function(i, item) {
-		  							
-		  							if (i > 4) {
-		  								window.location = '@routes.AscentController.showForm()';
-		  								return false;
-		  							}
-		  							
-		  							if(confirm('Are you standing on ' + item.name + '?')) {
-		  								var u = jsRoutes.controllers.AscentController.submit();
-		  								$.ajax({
-		  									type: 'POST',
-		  									url: u.url,
-		  									data: {
-		  										successful: true,
-		  										mountain: item.id,
-		  										ascent_date: moment().format('YYYY-MM-DD')
-		  									},
-		  									success: function() {
-		  										window.location = '@routes.Application.index()';
-		  									}
-		  								});
-		  								
-		  								return false;
-		  							}
-		  						});
-		  					 }
-						});
-					});
-				}
-			});
-		});
-	</script>
+		@quickascent()
 	}
 	
-	<div class="row">
-		<div class="col-md-12">
-			<h1 style="text-align: center;">Recent Headlines</h1>
-			@for(n <- news) {
-				<div class="media" style="border-bottom: 1px solid #ddd">
-					@if(!n.pictures.isEmpty()) {
-						<a class="hidden-xs pull-right" href="@routes.NewsController.showNews(n.id)">
-							<img alt="@n.title" width="64" height="64" class="media-object" src="@routes.NewsImageController.getImage(n.pictures.get(0).id)">
-						</a>
-					}
-					<div class="media-body">
-						<h3 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><strong><em>@n.title</em></strong></a></h3>
-							<p>
-								<strong>@formatAscentDate(n.news_date) - </strong>
-								@Html(formatNews(n.entry))
-							</p>
-							<p><a href="@routes.NewsController.showNews(n.id)"><em>Read More...</em></a></p>
-					</div>
+	<div class="col-md-8">
+		<div id="infiniteScroll">
+		@recentAscentsPanel(recentAscents, 1, 5)
+		</div>
+	</div>
+	<div class="col-md-4 hidden-xs">
+		<h3 style="text-align: center;">Recent Headlines</h3>
+		@for(n <- news) {
+			<div class="media" style="border-bottom: 1px solid #ddd">
+				@if(!n.pictures.isEmpty()) {
+					<a class="hidden-xs pull-right" href="@routes.NewsController.showNews(n.id)">
+						<img alt="@n.title" width="64" height="64" class="media-object" src="@routes.NewsImageController.getImage(n.pictures.get(0).id)">
+					</a>
+				}
+				<div class="media-body">
+					<h4 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><strong><em>@n.title</em></strong></a></h4>
+						<p>
+							<strong>@formatAscentDate(n.news_date) - </strong>
+							@Html(formatNews(n.entry))
+						</p>
+						<p><a href="@routes.NewsController.showNews(n.id)"><em>Read More...</em></a></p>
 				</div>
-			}
-		</div>
+			</div>
+		}
+		
+		<div style="margin-bottom: 30px;"></div>
 	</div>
-	
-	<div class="row">
-		<div id="externalNews" class="col-md-12 hidden-xs">
-			<div style="padding-bottom: 30px"></div>
-			<h2 style="text-align: center;">@Messages("news.nynjtc")</h2>
-		</div>
+	<div id="externalNews" class="col-md-4 hidden-xs">
+		<h3 style="text-align: center;">@Messages("news.nynjtc")</h3>
 	</div>
-	
+
 	<script type="text/javascript">
 		require(['jquery'], function() {
 			jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
@@ -203,13 +87,4 @@
 			});
 		});
 	</script>
-	<div class="row">
-		<div class="col-md-12 col-xs-12">
-			<div style="padding-bottom: 30px"></div>
-			<h3 style="text-align: center;">@Messages("most.recent.climbs")</h3>
-			<div id="infiniteScroll">
-			@recentAscentsPanel(recentAscents, 1, 5)
-			</div>
-		</div>
-	</div>
 }
