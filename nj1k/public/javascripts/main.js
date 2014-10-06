@@ -10,6 +10,7 @@ requirejs.config({
         collapse: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/collapse.min',
         dropdown: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/dropdown.min',
         modal: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/modal.min',
+        tooltip: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/tooltip.min',
         transition: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/transition.min',
         fancybox: 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack',
         chart: '/assets/javascripts/libs/chart',
@@ -17,7 +18,8 @@ requirejs.config({
         tablesorter: '/assets/javascripts/libs/jquery.tablesorter',
         jscroll: '/assets/javascripts/libs/jscroll.min',
         modernizr: '/assets/javascripts/libs/modernizr.min',
-        moment: '/assets/javascripts/libs/moment.min'
+        moment: '/assets/javascripts/libs/moment.min',
+        masonry: '/assets/javascripts/libs/masonry'
     },
     shim: {
     	'bootstrap': {
@@ -48,6 +50,9 @@ requirejs.config({
             deps: ['jquery']
         },
         'jscroll': {
+            deps: ['jquery']
+        },
+        'tooltip': {
             deps: ['jquery']
         },
         'jqueryui': {

@@ -60,7 +60,7 @@ public class RenderUtil {
 		Matcher m = urlPattern.matcher(text);
 		
 		if (m.find()) {
-			return m.replaceAll("<a target=\"_blank\" href=\"" + m.group() + "\">" + m.group() + " <span class=\"glyphicon glyphicon-share-alt\"></span></a>");
+			return m.replaceAll("<a target=\"_blank\" href=\"" + m.group() + "\">" + m.group() + " <span class=\"glyphicon glyphicon-new-window\"></span></a>");
 		} else {
 			return text;
 		}
