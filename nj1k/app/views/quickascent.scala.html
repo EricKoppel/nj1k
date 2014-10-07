@@ -1,58 +1,122 @@
-<div class="row">
-		<div class="visible-xs col-xs-12">
-			<p><a id="logMobileAscent" class="btn btn-primary btn-lg btn-block" href="#">@Messages("ascent.quick")</a></p>
-		</div>
+@(mountains: List[MountainEntity])
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<form enctype="multipart/form-data" method="POST" action="@routes.AscentController.submit()">
+			@uploadImagesModal()
+			<div class="col-md-6">
+				<div class="form-group">
+					<input type="date" class="form-control" name="ascent_date">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="form-group">
+					<select class="form-control" name="mountain">
+					@for(m <- mountains) {
+						<option value="@m.id">@m.name</option>
+					}
+					</select>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="form-group">
+					<textarea name="trip_report" class="form-control" style="min-height: 128px;" placeholder="Write your trip report here"></textarea>
+				</div>
+				<div class="actions">
+					<input type="hidden" name="successful" value="true">
+	            	<input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
+					<span class="btn btn-default fileinput-button pull-right" title="Upload pictures">
+				    	<span class="glyphicon glyphicon-camera"></span>
+				    	<input id="ascentDetails" type="file" name="ascentDetails" multiple />
+				    </span>
+	        	</div>
+        	</div>
+		</form>
 	</div>
+</div>
 	
-	<script type="text/javascript">
-		require(['jquery', 'moment'], function() {
-			
-			$('#logMobileAscent').click(function() {
-				if (navigator.geolocation) {
-					navigator.geolocation.getCurrentPosition(function(position) {
-						console.debug(position.coords.latitude + ',' + position.coords.longitude);
-						var threshold = 0.5;
-						
-						var r = jsRoutes.controllers.MountainsController.findNearest(position.coords.latitude, position.coords.longitude, threshold);
-						
-						$.ajax({
-		  					 url: r.url,
-		  					 success: function(data) {
-		  						 
-		  						if ($.isEmptyObject(data)) {
-		  							alert("@Messages("not.on.summit")");
-		  							window.location = '@routes.AscentController.showForm()';
-		  						}
-		  						
-		  						$.each(data, function(i, item) {
-		  							
-		  							if (i > 4) {
-		  								window.location = '@routes.AscentController.showForm()';
-		  								return false;
-		  							}
-		  							
-		  							if(confirm('Are you standing on ' + item.name + '?')) {
-		  								var u = jsRoutes.controllers.AscentController.submit();
-		  								$.ajax({
-		  									type: 'POST',
-		  									url: u.url,
-		  									data: {
-		  										successful: true,
-		  										mountain: item.id,
-		  										ascent_date: moment().format('YYYY-MM-DD')
-		  									},
-		  									success: function() {
-		  										window.location = '@routes.Application.index()';
-		  									}
-		  								});
-		  								
-		  								return false;
-		  							}
-		  						});
-		  					 }
-						});
-					});
+<script type="text/javascript">
+	require(['jquery'], function() {
+	    $('#ascentDetails').change(function() {
+	    	$('#uploadImagesModal').modal('show');
+	    	
+	    	$('#thumbnails tr').remove();
+	    	$.each(this.files, function (index, file) {
+        		
+        		var tr = $('<tr><td>' + file.name + '</td><td><textarea class="form-control" name="captions[]" placeholder="Caption"/></td></tr>');
+        		var reader = new FileReader();
+        		
+        		reader.onload = function(e) {
+        			var preview = $('<img width="128"/>');
+        			
+					preview.attr("src", e.target.result);
+
+					var img = new Image();
+					img.src = preview.attr("src");
+					
+					$('<td/>').append(preview).prependTo(tr);
 				}
-			});
+        		
+        		reader.readAsDataURL(file);
+        		$(tr).hide().appendTo($('#thumbnails')).fadeIn(1000);
+            });
+	    });
+	});
+</script>
+	
+<div class="visible-xs">
+	<p><a id="logMobileAscent" class="btn btn-primary btn-lg btn-block" href="#">@Messages("ascent.quick")</a></p>
+</div>
+	
+<script type="text/javascript">
+	require(['jquery', 'moment'], function() {
+		
+		$('#logMobileAscent').click(function() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function(position) {
+					console.debug(position.coords.latitude + ',' + position.coords.longitude);
+					var threshold = 0.5;
+					
+					var r = jsRoutes.controllers.MountainsController.findNearest(position.coords.latitude, position.coords.longitude, threshold);
+					
+					$.ajax({
+	  					 url: r.url,
+	  					 success: function(data) {
+	  						 
+	  						if ($.isEmptyObject(data)) {
+	  							alert("@Messages("not.on.summit")");
+	  							window.location = '@routes.AscentController.showForm()';
+	  						}
+	  						
+	  						$.each(data, function(i, item) {
+	  							
+	  							if (i > 4) {
+	  								window.location = '@routes.AscentController.showForm()';
+	  								return false;
+	  							}
+	  							
+	  							if(confirm('Are you standing on ' + item.name + '?')) {
+	  								var u = jsRoutes.controllers.AscentController.submit();
+	  								$.ajax({
+	  									type: 'POST',
+	  									url: u.url,
+	  									data: {
+	  										successful: true,
+	  										mountain: item.id,
+	  										ascent_date: moment().format('YYYY-MM-DD')
+	  									},
+	  									success: function() {
+	  										window.location = '@routes.Application.index()';
+	  									}
+	  								});
+	  								
+	  								return false;
+	  							}
+	  						});
+	  					 }
+					});
+				});
+			}
 		});
-	</script>
+	});
+</script>

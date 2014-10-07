@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import models.AscentEntity;
 import models.Contact;
+import models.MountainEntity;
 import models.NewsEntity;
 import models.RegisteringUser;
 
@@ -40,7 +41,7 @@ public class Application extends Controller {
 	
 	public static Result index() {
 		List<AscentEntity> page = AscentEntity.findAscents(0, 5);
-		return ok(views.html.index.render(NewsEntity.findRecent(3), page, registrationForm));
+		return ok(views.html.index.render(NewsEntity.findRecent(3), page, registrationForm, MountainEntity.findAll()));
 	}
 
 	public static Result contact() {

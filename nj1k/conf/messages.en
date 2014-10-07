@@ -20,7 +20,7 @@ mountain.stats=Statistics
 mountain.pictures.from=Pictures from {0}
 
 ascent.title=Ascent of {0} ({2} feet) by {1}
-ascent.trip_report=Trip report
+ascent.trip_report=Report
 ascent.pictures=Pictures
 ascent.summit=Summit
 ascent.climber=Climber

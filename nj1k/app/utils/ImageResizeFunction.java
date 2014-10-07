@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.function.Function;
 
@@ -13,6 +14,7 @@ import javax.imageio.ImageIO;
 
 import models.ImageEntity;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,22 +49,26 @@ public class ImageResizeFunction<T extends ImageEntity> implements Function<Imag
 	protected byte[] resize(FilePart filePart, final int size) throws IOException {
 		String fileType = filePart.getFilename().substring(filePart.getFilename().lastIndexOf(".") + 1);
 
-		BufferedImage image = ImageIO.read(filePart.getFile());
-		ColorSpace colorSpace = image.getGraphics().getColor().getColorSpace();
+		BufferedImage originalImage = ImageIO.read(filePart.getFile());
+		ColorSpace colorSpace = originalImage.getColorModel().hasAlpha() ? ColorSpace.getInstance(BufferedImage.TYPE_INT_RGB) : originalImage.getGraphics().getColor().getColorSpace();
 		
-//		logger.debug("Colorspace is of type {}", colorSpace.getType());
-		int width = image.getWidth(null);
-		int height = image.getHeight(null);
+		logger.debug("Colorspace is of type {}", colorSpace.getType());
+		int width = originalImage.getWidth(null);
+		int height = originalImage.getHeight(null);
+		
+		if (width < size || height < size) {
+			logger.debug("Image is: {}x{}. No need to resize. Returning", width, height);
+			return IOUtils.toByteArray(new FileInputStream(filePart.getFile()));
+		}
 		
 		Image scaledInstance = null;
 		
 		if (width > height) {
-			scaledInstance = image.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
+			scaledInstance = originalImage.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
 		} else {
-			scaledInstance = image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
+			scaledInstance = originalImage.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
 		}
 		
-//		if originalImage.getColorModel().hasAlpha()
 		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpace.getType());
 		Graphics2D graphics = resizedImage.createGraphics();
 		
@@ -74,8 +80,6 @@ public class ImageResizeFunction<T extends ImageEntity> implements Function<Imag
 			graphics.dispose();
 		}
 		
-//		logger.debug("Original width: {} Original height: {}", width, height);
-//		logger.debug("New width: {} New height: {}", resizedImage.getWidth(null), resizedImage.getHeight(null));
 		return convert(resizedImage, fileType);
 	}
 	
