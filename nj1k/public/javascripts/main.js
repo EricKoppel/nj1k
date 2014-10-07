@@ -55,6 +55,9 @@ requirejs.config({
         'tooltip': {
             deps: ['jquery']
         },
+        'masonry': {
+            deps: ['jquery']
+        },
         'jqueryui': {
             deps: ['jquery', 'modernizr']
         },
