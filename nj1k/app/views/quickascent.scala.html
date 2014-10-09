@@ -1,12 +1,19 @@
 @(mountains: List[MountainEntity])
 
+@import views.RenderUtil._
+
 <div class="panel panel-default">
 	<div class="panel-body">
 		<form enctype="multipart/form-data" method="POST" action="@routes.AscentController.submit()">
 			@uploadImagesModal()
+			<div class="col-md-12">
+				<div class="form-group">
+					<textarea name="trip_report" class="form-control" style="min-height: 128px;" placeholder="Write your trip report here"></textarea>
+				</div>
+			</div>
 			<div class="col-md-6">
 				<div class="form-group">
-					<input type="date" class="form-control" name="ascent_date">
+					<input type="date" max="@formatDate(new Date())" class="form-control" name="ascent_date">
 				</div>
 			</div>
 			<div class="col-md-6">
@@ -18,19 +25,25 @@
 					</select>
 				</div>
 			</div>
-			<div class="col-md-12">
-				<div class="form-group">
-					<textarea name="trip_report" class="form-control" style="min-height: 128px;" placeholder="Write your trip report here"></textarea>
+			<div class="actions">
+				<div class="col-md-4">
+            		<input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
+            	</div>
+            	<div class="col-md-6">
+            		<span>@Messages("help.ascent.success")</span>
+            		<label for="yes">Yes</label>
+	            	<input type="radio" name="successful" id="yes" value="true" checked>
+	            	<label for="no">No</label>
+					<input type="radio" name="successful" id="no" value="false">
 				</div>
-				<div class="actions">
-					<input type="hidden" name="successful" value="true">
-	            	<input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
+				<div class="col-md-2">
 					<span class="btn btn-default fileinput-button pull-right" title="Upload pictures">
 				    	<span class="glyphicon glyphicon-camera"></span>
 				    	<input id="ascentDetails" type="file" name="ascentDetails" multiple />
 				    </span>
-	        	</div>
+			    </div>
         	</div>
+        	
 		</form>
 	</div>
 </div>
@@ -61,6 +74,16 @@
         		$(tr).hide().appendTo($('#thumbnails')).fadeIn(1000);
             });
 	    });
+	});
+</script>
+
+<script type="text/javascript">
+	require(['modernizr', 'jqueryui'], function() {
+		$(document).ready(function() {
+			if (!Modernizr.inputtypes.date) {
+		   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd' });
+			}
+		});
 	});
 </script>
 	

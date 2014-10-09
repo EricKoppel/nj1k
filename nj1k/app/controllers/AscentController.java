@@ -3,7 +3,11 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import models.AscentDetailEntity;
@@ -54,10 +58,10 @@ public class AscentController extends Controller {
 	}
 
 	public static Result ascents(int page, int size) {
-		List<AscentEntity> ascents = AscentEntity.findAscents(page, size);
-
-		ascents.stream()
-			.collect(Collectors.groupingBy(a -> a.climber.id));
+		List<AscentEntity> result = AscentEntity.findAscents(page, size);
+		Map<Date, Map<UserEntity, List<AscentEntity>>> ascents = result.stream()
+				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, Map<UserEntity, List<AscentEntity>>>(Comparator.reverseOrder()),
+						Collectors.groupingBy(a -> a.climber, Collectors.toList())));
 		
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
 			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));

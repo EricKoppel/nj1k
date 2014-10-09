@@ -4,15 +4,21 @@ import static play.data.Form.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import models.AscentEntity;
 import models.Contact;
 import models.MountainEntity;
 import models.NewsEntity;
 import models.RegisteringUser;
+import models.UserEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +46,12 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		List<AscentEntity> page = AscentEntity.findAscents(0, 5);
-		return ok(views.html.index.render(NewsEntity.findRecent(3), page, registrationForm, MountainEntity.findAll()));
+		List<AscentEntity> result = AscentEntity.findAscents(0, 10);
+		Map<Date, Map<UserEntity, List<AscentEntity>>> ascents = result.stream()
+				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, Map<UserEntity, List<AscentEntity>>>(Comparator.reverseOrder()),
+						Collectors.groupingBy(a -> a.climber, Collectors.toList())));
+		
+		return ok(views.html.index.render(NewsEntity.findRecent(3), ascents, registrationForm, MountainEntity.findAll()));
 	}
 
 	public static Result contact() {

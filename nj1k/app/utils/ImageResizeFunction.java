@@ -3,7 +3,6 @@ package utils;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -50,9 +49,8 @@ public class ImageResizeFunction<T extends ImageEntity> implements Function<Imag
 		String fileType = filePart.getFilename().substring(filePart.getFilename().lastIndexOf(".") + 1);
 
 		BufferedImage originalImage = ImageIO.read(filePart.getFile());
-		ColorSpace colorSpace = originalImage.getColorModel().hasAlpha() ? ColorSpace.getInstance(BufferedImage.TYPE_INT_RGB) : originalImage.getGraphics().getColor().getColorSpace();
+		int colorSpaceType = originalImage.getGraphics().getColor().getColorSpace().getType();
 		
-		logger.debug("Colorspace is of type {}", colorSpace.getType());
 		int width = originalImage.getWidth(null);
 		int height = originalImage.getHeight(null);
 		
@@ -69,16 +67,19 @@ public class ImageResizeFunction<T extends ImageEntity> implements Function<Imag
 			scaledInstance = originalImage.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
 		}
 		
-		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpace.getType());
+		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpaceType);
 		Graphics2D graphics = resizedImage.createGraphics();
 		
 		try {
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 			graphics.drawImage(scaledInstance, 0, 0, null);
 		}
 		finally {
 			graphics.dispose();
 		}
+		
+		logger.debug("Original image: {}", originalImage.toString());
+		logger.debug("New image: {}", resizedImage.toString());
 		
 		return convert(resizedImage, fileType);
 	}

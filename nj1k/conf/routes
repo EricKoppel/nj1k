@@ -60,7 +60,7 @@ GET		/ascent/:id/edit			controllers.AscentController.editForm(id: Long)
 PUT		/ascent/:id					controllers.AscentController.updateTripReport(id: Long)
 DELETE	/ascent/:id					controllers.AscentController.remove(id: Long)
 
-GET		/ascentDetail/:id/image		controllers.AscentDetailController.getImage(id: Long)
+GET		/ascentDetail/:id			controllers.AscentDetailController.getImage(id: Long)
 GET		/ascentDetail/:id/thumbnail	controllers.AscentDetailController.getThumbnail(id: Long)
 POST	/ascentDetail/:id/caption	controllers.AscentDetailController.updateCaption(id: Long)
 DELETE	/ascentDetail/:id			controllers.AscentDetailController.remove(id: Long)

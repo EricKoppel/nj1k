@@ -1,10 +1,10 @@
 package views;
 
 import java.net.MalformedURLException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,18 +21,33 @@ public class RenderUtil {
 	public static final Pattern emailPattern = Pattern.compile("([A-Z0-9._%+-]+)@([A-Z0-9.-]+\\.[A-Z]{2,6})", Pattern.CASE_INSENSITIVE);
 	private static Logger logger = LoggerFactory.getLogger(RenderUtil.class);
 	
-	private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
+	private static final ThreadLocal<DateFormat> renderFormat = new ThreadLocal<DateFormat>() {
 		public DateFormat initialValue() {
 			return new SimpleDateFormat(Configuration.root().getString("render.date.format"));
 		}
 	};
 	
-	public static String formatAscentDate(Timestamp t) {
+	private static final ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>() {
+		public DateFormat initialValue() {
+			return new SimpleDateFormat(Configuration.root().getString("date.format"));
+		}
+	};
+	
+	public static String formatRenderDate(Date t) {
 		if (t == null) {
 			return Messages.get("unknown");
 		}
 		else {
-			return df.get().format(t);
+			return renderFormat.get().format(t);
+		}
+	}
+	
+	public static String formatDate(Date t) {
+		if (t == null) {
+			return Messages.get("unknown");
+		}
+		else {
+			return dateFormat.get().format(t);
 		}
 	}
 	
@@ -46,7 +61,7 @@ public class RenderUtil {
 	
 	public static String formatText(String text) {
 		if (text != null) {
-			return text.replaceAll("\\n", "<br/>");
+			return text.trim().replaceAll("\\n", "<br/>");
 		}
 		
 		return "";
