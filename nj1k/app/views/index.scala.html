@@ -1,4 +1,4 @@
-@(news: List[NewsEntity], recentAscents: List[AscentEntity], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
+@(news: List[NewsEntity], recentAscents: Map[Date, Map[UserEntity, List[AscentEntity]]], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
 @import java.text.SimpleDateFormat
 @import views.RenderUtil._
 @import utils.SecurityUtil._
@@ -39,7 +39,7 @@
 			}
 			
 			<div id="infiniteScroll">
-			@recentAscentsPanel(recentAscents, 1, 5)
+			@recentAscentsPanel(recentAscents, 1, 10)
 			</div>
 		</div>
 		<div class="col-md-4 hidden-xs">
@@ -54,7 +54,7 @@
 					<div class="media-body">
 						<h4 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><strong><em>@n.title</em></strong></a></h4>
 							<p>
-								<strong>@formatAscentDate(n.news_date) - </strong>
+								<strong>@formatRenderDate(n.news_date) - </strong>
 								@Html(formatNews(n.entry))
 							</p>
 							<p><a href="@routes.NewsController.showNews(n.id)"><em>Read More...</em></a></p>

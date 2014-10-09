@@ -14,7 +14,7 @@
 			$(document).ready(function() {
 				
 				if (!Modernizr.inputtypes.date) {
-			   		$("#ascent_date").datepicker({ dateFormat: 'yy-mm-dd' });
+			   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd' });
 				}
 			    
 			    $('#ascentDetails').change(function() {

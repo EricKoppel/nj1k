@@ -14,10 +14,10 @@
 			</a>
 			<div class="media-body">
 				<h4 class="media-heading">
-					<strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> - <em><a href="@routes.AscentController.ascent(a.id)">@formatAscentDate(a.ascent_date)</a></em>
+					<strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> - <em><a href="@routes.AscentController.ascent(a.id)">@formatRenderDate(a.ascent_date)</a></em>
 				</h4>
 				<p>
-					<strong>@formatAscentDate(a.ascent_date) - </strong>
+					<strong>@formatRenderDate(a.ascent_date) - </strong>
 					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 						@Html(formatNews(a.trip_report))
 					}

@@ -35,7 +35,7 @@
 			    @for(f <- finishers) {
 			        <tr itemscope itemtype="https://schema.org/Person">
 				        <td><a itemprop="url" href="@routes.UsersController.user(f.user.id)"><span itemprop="name">@f.user.name</span></a></td>
-				        <td>@formatAscentDate(f.final_ascent.ascent_date)</td>
+				        <td>@formatRenderDate(f.final_ascent.ascent_date)</td>
 				        <td class="hidden-xs"><a href="@routes.AscentController.ascent(f.final_ascent.id)">@f.final_ascent.mountain.name</a>
 			        </tr>
 			    }

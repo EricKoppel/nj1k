@@ -17,7 +17,7 @@
 					<strong><a href="@routes.MountainsController.mountain(a.mountain.getNameId())">@a.mountain.name</a></strong>
 				</h4>
 				<p>
-					<strong>@formatAscentDate(a.ascent_date) - </strong>
+					<strong>@formatRenderDate(a.ascent_date) - </strong>
 					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 						@Html(convertUrlToHyperlink(formatNews(a.trip_report)))
 					}
