@@ -64,7 +64,7 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findAscents(int page, int num) {
-		return find.select("id,ascent_date,trip_report").orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber", "id,name").fetch("mountain").where().eq("club_list", true).findPagingList(num).getPage(page).getList();
+		return find.orderBy().desc("ascent_date").orderBy().desc("id").fetch("climber", "id,name").fetch("mountain").where().eq("club_list", true).findPagingList(num).getPage(page).getList();
 	}
 	
 	public static AscentEntity findAscentByUserId(Long ascentId, Long userId) {

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +69,7 @@ public class RenderUtil {
 	}
 	
 	public static String formatNews(String text) {
-		return TextUtils.extractSentence(text, 3);
+		return formatText(text.substring(0, StringUtils.ordinalIndexOf(text, ".", 3) + 1));
 	}
 	
 	public static String convertUrlToHyperlink(String text) throws MalformedURLException {
