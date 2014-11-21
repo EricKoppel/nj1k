@@ -20,8 +20,10 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.MailUtil;
 import utils.PasswordUtil;
+import actions.ETagAction;
 
 import com.google.common.net.MediaType;
 
@@ -79,23 +81,19 @@ public class UsersController extends Controller {
 		return ok(views.html.resetpassword.render(userForm));
 	}
 
+	@With(ETagAction.class)
 	public static Result userImage(Long id) {
 		UserEntity user = UserEntity.find(id);
-
-		response().setHeader("Cache-Control", "max-age=3600, public");
-		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
-
+		
 		if (user.pic == null) {
 			return notFound();
 		}
 		return ok(user.pic).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 
+	@With(ETagAction.class)
 	public static Result userThumbnail(Long id) {
 		UserEntity user = UserEntity.find(id);
-
-		response().setHeader("Cache-Control", "max-age=3600, public");
-		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(user.lastUpdate));
 
 		if (user.thumbnail != null) {
 			return ok(user.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());

@@ -57,14 +57,20 @@ body {
 	font-size: 14px;
 }
 
-.navbar, #footer, .panel-default>.panel-heading {
+@media ( max-width : 768px) {
+	.media-heading {
+		font-size: 14px;
+	}
+}
+
+.navbar,#footer,.panel-default>.panel-heading {
 	background: #569256;
-	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#569256),to(#3A783A));
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#569256),
+		to(#3A783A));
 	background: -webkit-linear-gradient(top, #569256, #3A783A);
 	background: -moz-linear-gradient(top, #569256, #3A783A);
 	background: -ms-linear-gradient(top, #569256, #3A783A);
 	background: -o-linear-gradient(top, #569256, #3A783A);
-
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -75,7 +81,8 @@ body {
 	color: white;
 }
 
-.navbar-default .navbar-toggle:hover,.navbar-default .navbar-toggle:focus {
+.navbar-default .navbar-toggle:hover,.navbar-default .navbar-toggle:focus
+	{
 	background-color: #206220;
 }
 

@@ -19,7 +19,8 @@ requirejs.config({
         jscroll: '/assets/javascripts/libs/jscroll.min',
         modernizr: '/assets/javascripts/libs/modernizr.min',
         moment: '/assets/javascripts/libs/moment.min',
-        masonry: '/assets/javascripts/libs/masonry'
+        masonry: '/assets/javascripts/libs/masonry',
+        flowtype: '/assets/javascripts/libs/flowtype'
     },
     shim: {
     	'bootstrap': {

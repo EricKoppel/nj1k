@@ -29,9 +29,6 @@
 		</div>
 	</div>
 } {
-
-	
-
 	<div class="row">
 		<div class="col-md-8">
 			@if(isLoggedIn()) {
@@ -55,7 +52,7 @@
 						<h4 class="media-heading"><a href="@routes.NewsController.showNews(n.id)"><strong><em>@n.title</em></strong></a></h4>
 							<p>
 								<strong>@formatRenderDate(n.news_date) - </strong>
-								@Html(formatNews(n.entry))
+								@Html(obfuscateEmail(formatNews(n.entry)))
 							</p>
 							<p><a href="@routes.NewsController.showNews(n.id)"><em>Read More...</em></a></p>
 					</div>
@@ -69,27 +66,5 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript">
-		require(['jquery'], function() {
-			jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
-	  		  success: function(data) {
-	  			  $.each(data, function(i, item) {
-	  				  var r = jsRoutes.controllers.ExternalNewsController.getNewsArticleFromNYNJTC(item.link);
-	  				  var mediaBody = $('<div class="media-body">');
-	  				  $(mediaBody).append('<h4 class="media-heading"><strong><em><a target="_blank" href="' + item.link + '">' + item.title + '</a></em></strong></h4>');
-	  				
-	  				  $('<div class="media" style="border-bottom: 1px solid #ddd">').append(mediaBody).appendTo('#externalNews');
-	  				  
-	  				  $.ajax({
-	  					  url: r.url,
-	  					  cache: true,
-	  					  success: function(data) {
-	  	    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' <p><a target="_blank" href="' + item.link + '"><em>Read More...</em></a></p>');
-	  					  }
-	  				  });
-	  			  });
-				}
-			});
-		});
-	</script>
+	<script type="text/javascript" src="@routes.Assets.at("javascripts/ExternalNews.js")"></script>
 }

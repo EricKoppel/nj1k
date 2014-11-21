@@ -23,7 +23,6 @@
 		<script data-main="@routes.Assets.at("javascripts")/main" src="@routes.Assets.at("javascripts/require.js")"></script>
 		<script src="@routes.Assets.at("javascripts/main.js")"></script>
 		<script type="text/javascript" src="@routes.Application.javascriptRoutes"></script>
-        
     </head>
     <body>
     	@if(flash.get("success") != null) {
@@ -67,13 +66,10 @@
 		     	}
 			</div>
 		</div>
-		
-		<script>
-	        require(['jquery', 'dropdown', 'collapse', 'transition', 'modal'], function($) {
-		        $(document).ready(function() {
-		        	$("#validate").attr("href", "http://validator.w3.org/check?uri=" + document.URL);
-		        });
-	        });
-        </script>
+	    <script type="text/javascript">
+		    require(['jquery', 'dropdown', 'collapse', 'transition', 'modal'], function($) {
+		        $("#validate").attr("href", "http://validator.w3.org/check?uri=" + document.URL);
+		    });
+	    </script>
     </body>
 </html>

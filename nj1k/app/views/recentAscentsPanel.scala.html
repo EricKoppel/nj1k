@@ -32,7 +32,7 @@
 				<div class="media-body">
 					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(climber.id)">@climber.name</a></strong> climbed @Html(getAscents(ascents)) on @formatRenderDate(date)</h4>
 					@for(a <- ascents) {
-						<div class="hidden-xs">
+						<div class="hidden-xs" style="margin-top: 20px;">
 							@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 								<p><strong>@a.mountain.name</strong></p>
 								<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>
@@ -60,7 +60,7 @@
 	}
 }
 <div class="col-md-8 col-md-offset-2">
-<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</span></a>
+<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</a>
 </div>
 
 <script type="text/javascript">

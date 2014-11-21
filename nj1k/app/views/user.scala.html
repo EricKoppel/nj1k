@@ -9,46 +9,9 @@
 
 @main(title = user.user.name)(head)(null) {
 
-    <script type="text/javascript">
-    
-	    require(['jquery', 'fancybox', 'chart'], function() {
-	    	var page = 0;
-	    	var num = 10;
-	    	
-	    	$(document).ready(function() {
-	    		
-	    		$(".fancybox").fancybox();
-	    		
-	    		var data = [{
-	                value: @user.unique_successful,
-	                color: "#3A783A",
-	                label: '@Messages("user.uniquesuccess")'
-	            },
-	            {
-	                value: Math.round(@(user.unique_successful / user.percentComplete - user.unique_successful)),
-	                color: "#964949",
-	                label: '@Messages("user.peaksremaining")'
-	            }];
-	    		
-	    		var config = {animationSteps: 120, animationEasing: "easeOutQuart"};
-	    		
-	    		var ctx = $("#statsChart").get(0).getContext("2d");
-	    		var statsChart = new Chart(ctx).Pie(data, config);
-	    		
-	    		$("#leg").append(statsChart.generateLegend());
-	    		$("#stats").append(statsChart.generateLegend());
-	    	});
-	    });
-    </script>
     <div itemscope itemtype="https://schema.org/Person">
 	    <div class="page-header">
-			<div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
-		   		<h1 itemprop="name">@user.user.name
-		   		@if(user.percentComplete == 1) {
-		   			<span title="@Messages("users.finishers")" class="glyphicon glyphicon-star" style="color: yellow; font-size: 0.6em;"></span>
-		   		}
-		   		</h1>
-	   		</div>
+		   	<h3 itemprop="name">@user.user.name</h3>
 	   	</div>
 	    
 	    <div class="row">
@@ -106,4 +69,32 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript">
+	    require(['jquery', 'fancybox', 'chart'], function() {
+	    	var page = 0;
+	    	var num = 10;
+	    	    		
+    		$(".fancybox").fancybox();
+    		
+    		var data = [{
+                value: @user.unique_successful,
+                color: "#3A783A",
+                label: '@Messages("user.uniquesuccess")'
+            },
+            {
+                value: Math.round(@(user.unique_successful / user.percentComplete - user.unique_successful)),
+                color: "#964949",
+                label: '@Messages("user.peaksremaining")'
+            }];
+    		
+    		var config = {animationSteps: 120, animationEasing: "easeOutQuart"};
+    		
+    		var ctx = $("#statsChart").get(0).getContext("2d");
+    		var statsChart = new Chart(ctx).Pie(data, config);
+    		
+    		$("#leg").append(statsChart.generateLegend());
+    		$("#stats").append(statsChart.generateLegend());
+	    });
+    </script>
 }
