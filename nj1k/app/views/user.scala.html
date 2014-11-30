@@ -15,45 +15,40 @@
 	   	</div>
 	    
 	    <div class="row">
-	    	@if(user.user.aboutme != null && !user.user.aboutme.trim().isEmpty()) {
-		    	<div class="col-md-8">
+	    	@if(user.user.aboutme != null || user.user.pic != null) {
+		    	<div class="col-md-12">
 		    		<div class="panel panel-default">
 					
 					    <div class="panel-heading">
 					    	<h3 class="panel-title">About</h3>
 					    </div>
 					    <div class="panel-body">
-						    @if(user.user.pic != null) {
-						   		<a itemprop="image" href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
-						   			<img alt="@user.user.name" src="@routes.UsersController.userThumbnail(user.user.id)">
-						   		</a>
-							}
-							<div itemprop="description">
-						    @Html(formatText(user.user.aboutme))
+					    	<div class="col-md-8">
+							    @if(user.user.pic != null) {
+							   		<a itemprop="image" href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
+							   			<img alt="@user.user.name" src="@routes.UsersController.userThumbnail(user.user.id)">
+							   		</a>
+								}
+							
+						    	<div itemprop="description">
+						    	@Html(formatText(user.user.aboutme))
+						   		</div>
 						   	</div>
+						   	<div class="col-md-4">
+								<table class="table table-bordered table-condensed">
+							    	<tr><td><small>@Messages("user.totalclimbs")</small></td><td><small>@user.total</small></td></tr>
+							    	<tr><td><small>@Messages("user.uniquesuccess")</small></td><td><small>@user.unique_successful</small></td></tr>
+							    	<tr><td><small>@Messages("user.percentcomplete")</small></td><td><small>@formatPercent(user.percentComplete)</small></td></tr>
+							    </table>
+							    <div style="text-align: center; padding-left: auto; padding-right: auto;">
+							    	<canvas id="statsChart" width="150" height="150"></canvas>
+							    </div>
+							    <div id="leg"></div>
+						    </div>
 					   	</div>
 					</div>
 				</div>
 			}
-			
-			<div class="col-md-4">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Statistics</h3>
-					</div>
-					<div class="panel-body">
-						<table class="table table-bordered table-condensed">
-					    	<tr><td><small>@Messages("user.totalclimbs")</small></td><td><small>@user.total</small></td></tr>
-					    	<tr><td><small>@Messages("user.uniquesuccess")</small></td><td><small>@user.unique_successful</small></td></tr>
-					    	<tr><td><small>@Messages("user.percentcomplete")</small></td><td><small>@formatPercent(user.percentComplete)</small></td></tr>
-					    </table>
-					    <div style="text-align: center; padding-left: auto; padding-right: auto;">
-					    	<canvas id="statsChart" width="150" height="150"></canvas>
-					    </div>
-					    <div id="leg"></div>
-				    </div>
-				</div>
-			</div>
 		    
 		</div>
 		<div class="row">
