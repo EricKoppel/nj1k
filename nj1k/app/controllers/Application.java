@@ -90,7 +90,7 @@ public class Application extends Controller {
 		
 		switch (cal.get(Calendar.MONTH)) {
 		case 11: case 0: case 1:
-			status = ok(Play.application().resourceAsStream("public/images/winter.png"));
+			status = ok(Play.application().resourceAsStream("public/images/winter.jpg"));
 			cal.set(Calendar.MONTH, 2);
 			break;
 		case 2: case 3: case 4:

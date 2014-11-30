@@ -1,4 +1,9 @@
 require(['jquery'], function() {
+	
+	if ($(window).width() < 768) {
+		return;
+	}
+	
 	jsRoutes.controllers.ExternalNewsController.getNewsFromNYNJTC().ajax({
 	  success: function(data) {
 		  $.each(data, function(i, item) {
