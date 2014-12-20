@@ -9,80 +9,69 @@
 
 <div itemscope itemtype="https://schema.org/Mountain">
 	<div class="page-header">
-	    <div style="display: inline-block; vertical-align: bottom; padding-left: 5px;">
-			<h1 itemprop="name">@mountain.name</h1>
-		</div>
+		<h3 itemprop="name">@mountain.name</h3>
     </div>
     <div class="row">
-    
-    	@if(mountain.description != null && !mountain.description.isEmpty()) {
-	    	<div class="col-md-8">
-	    		<div class="panel panel-default">
-		    		<div class="panel-heading">
-		    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
-		    		</div>
-			    	<div class="panel-body">
-			    	@if(mountain.picture != null) {
-				    	<a itemprop="photo" class="pull-left thumbnail fancybox" style="margin-right: 20px;" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
-				    		<img alt="@mountain.name" src="@routes.MountainsController.getThumbnail(mountain.id)" />
-				    	</a>
-	    			}
-	    			<div itemprop="description">
-	    			@Html(mountain.description.replace("\n", "<br/>"))
-	    			</div>
-			    	</div>
-		    	</div>
-		    </div>
-	    }
-	    
-    	<div class="col-md-4">
+    	<div class="col-md-12">
     		<div class="panel panel-default">
 	    		<div class="panel-heading">
-	    			<h2 class="panel-title">@Messages("mountain.stats")</h2>
+	    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
 	    		</div>
-	    		<div class="panel-body">
-					<table id="mountain_info" class="table">
-						<tr>
-							<td>@Messages("mountain.elevation")</td>
-							<td>@mountain.elevation</td>
-						</tr>
-						<tr>
-							<td>@Messages("mountain.decimal_degrees")</td>
-							<td itemprop="geo">@mountain.latitude, @mountain.longitude</td>
-						</tr>
-						<tr>
-							<td>@Messages("mountain.county")</td>
-							<td itemprop="containedIn">@mountain.county</td>
-						</tr>		
-						<tr>	
-							<td>@Messages("mountain.ownership")</td>
-							<td>@mountain.ownership</td>
-						</tr>
-						<tr>	
-							<td>@Messages("mountain.owner")</td>
-							<td>@mountain.owner</td>
-						</tr>
-						<tr>
-							<td>@Messages("mountain.topo")</td>
-							<td><a itemprop="map" href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
-						</tr>
-						@if(nhn != null) {
-						<tr>
-							<td>@Messages("mountain.nhn")</td>
-							<td><a href="@routes.MountainsController.mountain(nhn.getNameId())">@nhn.name</a></td>
-						</tr>
-						}
-					</table>
-				
-					<p>
-						<a class="btn btn-default" href="@routes.MountainsController.showDistances(mountain.id)">
-							<i class="glyphicon glyphicon-globe"></i>
-							<span>@Messages("radius.search")</span>
-						</a>
-					</p>
-				</div>
-			</div>
-		</div>
+		    	<div class="panel-body">
+		    		<div class="col-md-8">
+				    	@if(mountain.picture != null) {
+					    	<a itemprop="photo" class="pull-left thumbnail fancybox" style="margin-right: 20px;" data-fancybox-type="image" title="@mountain.name" href="@routes.MountainsController.getImage(mountain.id)">
+					    		<img alt="@mountain.name" src="@routes.MountainsController.getThumbnail(mountain.id)" />
+					    	</a>
+		    			}
+		    			<div itemprop="description">
+		    				<p>@Html(mountain.description.replace("\n", "<br/>"))</p>
+		    			</div>
+	    			</div>
+	    			<div class="col-md-4">
+		    			<table id="mountain_info" class="table">
+							<tr>
+								<td>@Messages("mountain.elevation")</td>
+								<td>@mountain.elevation</td>
+							</tr>
+							<tr>
+								<td>@Messages("mountain.decimal_degrees")</td>
+								<td itemprop="geo">@mountain.latitude, @mountain.longitude</td>
+							</tr>
+							<tr>
+								<td>@Messages("mountain.county")</td>
+								<td itemprop="containedIn">@mountain.county</td>
+							</tr>		
+							<tr>	
+								<td>@Messages("mountain.ownership")</td>
+								<td>@mountain.ownership</td>
+							</tr>
+							<tr>	
+								<td>@Messages("mountain.owner")</td>
+								<td>@mountain.owner</td>
+							</tr>
+							<tr>
+								<td>@Messages("mountain.topo")</td>
+								<td><a itemprop="map" href="http://mapper.acme.com/?t=T&amp;z=15&amp;ll=@mountain.latitude,@mountain.longitude" target="_blank">Acme Mapper</a></td>
+							</tr>
+							
+							@if(mountain.summit_view_url != null) {
+							<tr>
+								<td>@Messages("mountain.summitview")</td>
+								<td><a href="@mountain.summit_view_url" target="_blank">Google Maps</a></td>
+							</tr>
+							}
+							@if(nhn != null) {
+							<tr>
+								<td>@Messages("mountain.nhn")</td>
+								<td><a href="@routes.MountainsController.mountain(nhn.getNameId())">@nhn.name</a></td>
+							</tr>
+							}
+						</table>
+			    	</div>
+		    	</div>
+	    	</div>
+	    </div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
@@ -119,7 +108,7 @@
 				callback: function() {
 					$('.jscroll-loading').remove();
 				},
-				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
+				loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.versioned("images/spinner.gif")"/></div></div>'
 			});
 		});
 	</script>

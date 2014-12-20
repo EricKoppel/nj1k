@@ -7,7 +7,7 @@
 		<div class="media">
 			<a class="pull-left" href="@routes.MountainsController.mountain(a.mountain.getNameId())">
 				@if(a.mountain.picture != null) {
-					<img alt="@a.mountain.name" width="64" height="64" class="media-object" src="@routes.MountainsController.getThumbnail(a.mountain.id)">
+					<img alt="@a.mountain.name" width="64" height="64" class="img-rounded media-object" src="@routes.MountainsController.getThumbnail(a.mountain.id)">
 				} else {
 					<span style="font-size: 64px;" class="glyphicon glyphicon-picture"></span>
 				}
@@ -38,7 +38,7 @@
 			callback: function() {
 				$('.jscroll-loading').remove();
 			},
-			loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block"><img width="32" src="@routes.Assets.at("images/spinner.gif")"/></div></div>'
+			loadingHtml: '<div class="clearfix"></div><div class="text-center"><div class="center-block" style="padding-bottom: 10px;"><img width="32" src="@routes.Assets.versioned("images/spinner.gif")"/></div></div>'
 		});
 	});
 </script>

@@ -1,4 +1,4 @@
-@(news: List[NewsEntity], recentAscents: Map[Date, Map[UserEntity, List[AscentEntity]]], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
+@(news: List[NewsEntity], recentAscents: List[UserAscentAggregate], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
 @import java.text.SimpleDateFormat
 @import views.RenderUtil._
 @import utils.SecurityUtil._
@@ -7,7 +7,7 @@
 @main(title = Messages("welcome.header")) {
 <meta name="description" content="NJ1K.org - A website dedicated to peakbagging in New Jersey. Climb New Jersey's 52 peaks over 1,000 feet. Peakbagging in the humble hills of New Jersey.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
-<link rel="stylesheet" href="@routes.Assets.at("javascripts/jQuery-File-Upload-9.7.0/css/jquery.fileupload.css")">
+<link rel="stylesheet" href="@routes.Assets.versioned("javascripts/jQuery-File-Upload-9.7.0/css/jquery.fileupload.css")">
 } {
 	@registermodal(signupForm)
 
@@ -66,5 +66,5 @@
 		</div>
 	</div>
 	
-	<script type="text/javascript" src="@routes.Assets.at("javascripts/ExternalNews.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.versioned("javascripts/ExternalNews.js")"></script>
 }

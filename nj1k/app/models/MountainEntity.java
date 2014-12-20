@@ -49,7 +49,8 @@ public class MountainEntity extends BaseEntity {
 	public NameType name_type;
 	public Boolean trueoneker;
 	public Boolean club_list;
-
+	public String summit_view_url;
+	
 	@ManyToMany
 	public List<MapsEntity> maps;
 

@@ -18,6 +18,7 @@ mountain.nhn=Nearest higher neighbor
 mountain.others=Recent Ascents
 mountain.stats=Statistics
 mountain.pictures.from=Pictures from {0}
+mountain.summitview=View from the top
 
 ascent.title=Ascent of {0} ({2} feet) by {1}
 ascent.trip_report=Report
