@@ -4,25 +4,20 @@ import static play.data.Form.form;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
-import models.AscentEntity;
 import models.Contact;
 import models.MountainEntity;
 import models.NewsEntity;
 import models.RegisteringUser;
-import models.UserEntity;
+import models.UserAscentAggregate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import actions.ETagAction;
 import play.Play;
 import play.Routes;
 import play.data.Form;
@@ -30,6 +25,7 @@ import play.i18n.Messages;
 import play.libs.Akka;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import scala.concurrent.duration.Duration;
 import utils.MailUtil;
 
@@ -46,12 +42,9 @@ public class Application extends Controller {
 	};
 	
 	public static Result index() {
-		List<AscentEntity> result = AscentEntity.findAscents(0, 10);
-		Map<Date, Map<UserEntity, List<AscentEntity>>> ascents = result.stream()
-				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, Map<UserEntity, List<AscentEntity>>>(Comparator.reverseOrder()),
-						Collectors.groupingBy(a -> a.climber, Collectors.toList())));
+		List<UserAscentAggregate> result = UserAscentAggregate.findAll(0, 10);
 		
-		return ok(views.html.index.render(NewsEntity.findRecent(3), ascents, registrationForm, MountainEntity.findAll()));
+		return ok(views.html.index.render(NewsEntity.findRecent(3), result, registrationForm, MountainEntity.findAll()));
 	}
 
 	public static Result contact() {
@@ -115,16 +108,15 @@ public class Application extends Controller {
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		
-		response().setContentType("image/png");
+		response().setContentType("image/jpg");
 		response().setHeader(CACHE_CONTROL, "public");
 		response().setHeader(EXPIRES, cacheDateFormat.get().format(cal.getTime()));
 		
 		return status;
 	}
 	
+	@With(ETagAction.class)
 	public static Result javascriptRoutes() {
-		response().setHeader(CACHE_CONTROL, "max-age=3600, public");
-		
 		return ok(Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(),
 			controllers.routes.javascript.AscentController.ascents(),
 			controllers.routes.javascript.MountainsController.findNearest(),

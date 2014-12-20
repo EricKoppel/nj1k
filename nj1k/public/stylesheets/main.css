@@ -36,7 +36,7 @@ body {
 	right: 0;
 	content: "";
 	opacity: 0.6;
-	background: url('/images/background.png');
+	background: url('/images/background.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
 }

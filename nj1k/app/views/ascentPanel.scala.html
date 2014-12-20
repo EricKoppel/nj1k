@@ -7,7 +7,7 @@
 		<div class="media">
 			<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
 				@if(a.climber.pic != null) {
-					<img alt="@a.climber.name" width="64" height="64" class="media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
+					<img alt="@a.climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(a.climber.id)">
 				} else {
 					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 				}

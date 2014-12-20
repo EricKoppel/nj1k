@@ -3,21 +3,13 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
+import models.UserAscentAggregate;
 import models.UserEntity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.Configuration;
 import play.data.Form;
 import play.mvc.Controller;
@@ -33,8 +25,6 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
 public class AscentController extends Controller {
-
-	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);
 	private static final Form<AscentEntity> ascentForm = form(AscentEntity.class);
 	private static final JSONSerializer serializer;
 
@@ -58,15 +48,12 @@ public class AscentController extends Controller {
 	}
 
 	public static Result ascents(int page, int size) {
-		List<AscentEntity> result = AscentEntity.findAscents(page, size);
-		Map<Date, Map<UserEntity, List<AscentEntity>>> ascents = result.stream()
-				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, Map<UserEntity, List<AscentEntity>>>(Comparator.reverseOrder()),
-						Collectors.groupingBy(a -> a.climber, Collectors.toList())));
+		List<UserAscentAggregate> result = UserAscentAggregate.findAll(page, size);
 		
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
-			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));
+			return ok(views.html.recentAscentsPanel.render(result, page + 1, size));
 		} else {
-			return ok(serializer.serialize(ascents)).as(MediaType.JSON_UTF_8.toString());
+			return ok(serializer.serialize(result)).as(MediaType.JSON_UTF_8.toString());
 		}
 	}
 	
