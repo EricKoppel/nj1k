@@ -85,6 +85,7 @@ public class Application extends Controller {
 		case 11: case 0: case 1:
 			status = ok(Play.application().resourceAsStream("public/images/winter.jpg"));
 			cal.set(Calendar.MONTH, 2);
+			cal.add(Calendar.YEAR, 1);
 			break;
 		case 2: case 3: case 4:
 			status = ok(Play.application().resourceAsStream("public/images/spring.png"));
@@ -108,7 +109,7 @@ public class Application extends Controller {
 		cal.set(Calendar.MINUTE, 0);
 		cal.set(Calendar.SECOND, 0);
 		
-		response().setContentType("image/jpg");
+		response().setContentType("image/jpeg");
 		response().setHeader(CACHE_CONTROL, "public");
 		response().setHeader(EXPIRES, cacheDateFormat.get().format(cal.getTime()));
 		
