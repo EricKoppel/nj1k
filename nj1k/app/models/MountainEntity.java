@@ -9,19 +9,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import play.cache.Cached;
-
 import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.EnumMapping;
 
 @Entity
-@CacheStrategy(readOnly=true, warmingQuery="order by name")
+@CacheStrategy(readOnly = true, warmingQuery = "order by name")
 public class MountainEntity extends BaseEntity {
 
-	private static final Logger logger = LoggerFactory.getLogger(MountainEntity.class);
 	private static final long serialVersionUID = 1829718688996588377L;
 
 	@EnumMapping(nameValuePairs = "OFFICIAL=official,UNOFFICIAL=unofficial")
@@ -31,7 +25,7 @@ public class MountainEntity extends BaseEntity {
 
 	@Id
 	public Long id;
-	
+
 	public String name;
 	public String county;
 	public Float latitude;
@@ -50,7 +44,7 @@ public class MountainEntity extends BaseEntity {
 	public Boolean trueoneker;
 	public Boolean club_list;
 	public String summit_view_url;
-	
+
 	@ManyToMany
 	public List<MapsEntity> maps;
 
@@ -70,7 +64,7 @@ public class MountainEntity extends BaseEntity {
 	public static MountainEntity findByName(String name) {
 		return find.where().eq("replace(lower(name), ' ', '-')", name.toLowerCase()).findUnique();
 	}
-	
+
 	public static int listSize() {
 		return find.where().eq("club_list", true).findRowCount();
 	}
@@ -79,7 +73,7 @@ public class MountainEntity extends BaseEntity {
 	public String getNameId() {
 		return name.toLowerCase().replace(" ", "-");
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

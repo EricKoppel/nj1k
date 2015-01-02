@@ -51,6 +51,7 @@
 			}
 		    
 		</div>
+		@if(!ascents.isEmpty()) {
 		<div class="row">
 			<div class="col-md-12">
 			    <div class="panel panel-default">
@@ -63,6 +64,7 @@
 				</div>
 			</div>
 		</div>
+		}
 	</div>
 	
 	<script type="text/javascript">
@@ -78,13 +80,14 @@
                 label: '@Messages("user.uniquesuccess")'
             },
             {
-                value: Math.round(@(user.unique_successful / user.percentComplete - user.unique_successful)),
+                value: @user.peaksRemaining,
                 color: "#964949",
                 label: '@Messages("user.peaksremaining")'
             }];
     		
     		var config = {animationSteps: 120, animationEasing: "easeOutQuart"};
     		
+    		console.log(data);
     		var ctx = $("#statsChart").get(0).getContext("2d");
     		var statsChart = new Chart(ctx).Pie(data, config);
     		

@@ -37,8 +37,6 @@ public class FinisherEntity extends UserAggregate {
 	public static List<FinisherEntity> findFinishers() {
 		RawSql sql = RawSqlBuilder.parse(finishers).columnMapping("u.id", "user.id").columnMapping("u.name", "user.name").columnMapping("MAX(a.id)", "final_ascent.id").create();
 		Query<FinisherEntity> finishers = Ebean.find(FinisherEntity.class).setRawSql(sql);
-		finishers.fetch("final_ascent", "*", new FetchConfig().query());
-		finishers.fetch("final_ascent.mountain", "name");
 		finishers.orderBy("ascent_date");
 		
 		return finishers.findList();

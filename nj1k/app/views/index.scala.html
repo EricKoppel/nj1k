@@ -1,4 +1,4 @@
-@(news: List[NewsEntity], recentAscents: List[UserAscentAggregate], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
+@(news: List[NewsEntity], recentAscents: Map[Date, Map[UserEntity, List[AscentEntity]]], signupForm: Form[RegisteringUser], mountains: List[MountainEntity])
 @import java.text.SimpleDateFormat
 @import views.RenderUtil._
 @import utils.SecurityUtil._
@@ -38,6 +38,7 @@
 			<div id="infiniteScroll">
 			@recentAscentsPanel(recentAscents, 1, 10)
 			</div>
+			<a title="Scroll to top" class="scrollToTop"><span style="font-size: 48px;" class="glyphicon glyphicon-arrow-up"></span></a>
 		</div>
 		<div class="col-md-4 hidden-xs">
 			<h3 style="text-align: center;">Recent Headlines</h3>
@@ -67,4 +68,21 @@
 	</div>
 	
 	<script type="text/javascript" src="@routes.Assets.versioned("javascripts/ExternalNews.js")"></script>
+	
+	<script type="text/javascript">
+		require(['jquery'], function() {
+			$(window).scroll(function() {
+				if ($(this).scrollTop() > 200) {
+					$('.scrollToTop').fadeIn();
+				} else {
+					$('.scrollToTop').fadeOut();
+				}
+			});
+			
+			$('.scrollToTop').click(function(){
+				$('html, body').animate({scrollTop : 0}, 800);
+				return false;
+			});
+		});
+	</script>
 }

@@ -27,40 +27,47 @@ body {
 	background-color: #e9eaed;
 }
 
-.jumbotron:before {
-	position: absolute;
-	z-index: -1;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	content: "";
-	opacity: 0.6;
-	background: url('/images/background.jpg');
-	background-size: cover;
-	background-repeat: no-repeat;
-}
-
-.jumbotron {
-	background-color: #000;
-	position: relative;
-	z-index: 1;
-	color: white;
-	margin-top: -20px;
-}
-
-.jumbotron .panel {
-	color: black;
-}
-
-.jumbotron .panel p {
-	font-size: 14px;
+@media ( min-width : 768px) {
+	.jumbotron:before {
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		content: "";
+		opacity: 0.6;
+		background: url('/images/background.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+	.jumbotron {
+		background-color: #000;
+		position: relative;
+		z-index: 1;
+		color: white;
+		margin-top: -20px;
+	}
+	.jumbotron .panel {
+		color: black;
+	}
+	.jumbotron .panel p {
+		font-size: 14px;
+	}
 }
 
 @media ( max-width : 768px) {
 	.media-heading {
 		font-size: 14px;
 	}
+}
+
+.scrollToTop {
+	display: none;
+	text-decoration: none;
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
 }
 
 .navbar,#footer,.panel-default>.panel-heading {
