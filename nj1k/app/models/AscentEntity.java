@@ -79,7 +79,7 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findAscentByUserId(Long userId, int page, int num) {
-		return find.fetch("climber").where().eq("climber_id", userId).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
+		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
 	}
 	
 	public static int distinctClimbs(Long userId) {
@@ -89,11 +89,11 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id) {
-		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).orderBy().desc("ascent_date").findList();
+		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id, int page, int num) {
-		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
+		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
 	}
 	
 	public static AscentEntity findTripReport(Long id) {
