@@ -1,4 +1,4 @@
-@(recentAscents: List[UserAscentAggregate], page: Integer, size: Integer)
+@(recentAscents: Map[Date, Map[UserEntity, List[AscentEntity]]], page: Integer, size: Integer)
 
 @import views.RenderUtil._
 @import utils.TextUtils._
@@ -17,20 +17,21 @@
 	}
 }
 
-@for(userAscent <- recentAscents) {
+@for((date, userAscents) <- recentAscents) {
+	@for((climber, ascents) <- userAscents) {
 	<div class="panel panel-default">
 		<div class="panel-body">
 			<div class="media">
-				<a class="pull-left" href="@routes.UsersController.user(userAscent.climber.id)">
-					@if(userAscent.climber.pic != null) {
-						<img alt="@userAscent.climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(userAscent.climber.id)">
+				<a class="pull-left" href="@routes.UsersController.user(climber.id)">
+					@if(climber.pic != null) {
+						<img alt="@climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(climber.id)">
 					} else {
 						<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
 					}
 				</a>
 				<div class="media-body">
-					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(userAscent.climber.id)">@userAscent.climber.name</a></strong> climbed @Html(getAscents(userAscent.ascents)) on @formatRenderDate(userAscent.key.ascent_date)</h4>
-					@for(a <- userAscent.ascents) {
+					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(climber.id)">@climber.name</a></strong> climbed @Html(getAscents(ascents)) on @formatRenderDate(date)</h4>
+					@for(a <- ascents) {
 						<div class="hidden-xs" style="margin-top: 20px;">
 							@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 								<p><strong>@a.mountain.name</strong></p>
@@ -56,6 +57,7 @@
 			</div>
 		</div>
 	</div>
+	}
 }
 <div class="col-md-8 col-md-offset-2">
 <a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</a>

@@ -66,7 +66,11 @@
 						<td><a itemprop="url" href="@routes.UsersController.user(user.user.id)"><span itemprop="name">@user.user.name</span></a></td>
 						<td class="hidden-xs">@user.total</td>
 						<td class="hidden-xs">@user.unique_successful</td>
+						@if(user.most_recent != null) {
 						<td class="hidden-xs"><a href="@routes.AscentController.ascent(user.most_recent.id)">@user.most_recent.mountain.name</a></td>
+						} else {
+						<td class="hidden-xs">-</td>
+						}
 					</tr>
 					}
 				</tbody>

@@ -31,7 +31,7 @@
 	<logger name="org.apache.shiro" level="INFO" />
 	<logger name="security" level="DEBUG" />
 	<logger name="utils" level="DEBUG" />
-
+	<logger name="com.jolbox" level="DEBUG" />
 	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />

@@ -20,47 +20,41 @@ public class UserEntity extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	public static Finder<Long, UserEntity> find = new Finder<Long, UserEntity>(Long.class, UserEntity.class);
-			
+
 	@Id
 	public Long id;
-	@Column(unique=true)
-	
+
+	@Column(unique = true)
 	@Required
 	@Email
 	public String email;
 	public String password;
 	public String salt;
-	
+
 	public String name;
 	@ManyToMany
-	@JoinTable(name="users_roles",
-        joinColumns=
-            @JoinColumn(name="user_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="role_id", referencedColumnName="id")
-        )
-	
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	public List<RoleEntity> roles;
-	
-	@Lob 
+
+	@Lob
 	public String aboutme;
-	@Lob 
+	@Lob
 	public byte[] pic;
-	
+
 	@Lob
 	public byte[] thumbnail;
-	
-	@OneToMany(mappedBy="climber")
+
+	@OneToMany(mappedBy = "climber")
 	public List<AscentEntity> ascents;
-	
+
 	public static List<UserEntity> findAll() {
 		return find.all();
 	}
-	
+
 	public static UserEntity find(Long id) {
 		return find.byId(id);
 	}
-	
+
 	public static UserEntity findByEmail(String email) {
 		return find.where().eq("email", email).findUnique();
 	}
