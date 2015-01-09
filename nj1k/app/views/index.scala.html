@@ -30,17 +30,17 @@
 	</div>
 } {
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-8 col-sm-8">
 			@if(isLoggedIn()) {
 				@quickascent(mountains)
 			}
 			
 			<div id="infiniteScroll">
-			@recentAscentsPanel(recentAscents, 1, 10)
+			@recentAscentsPanel(recentAscents, 0, 10)
 			</div>
-			<a title="Scroll to top" class="scrollToTop"><span style="font-size: 48px;" class="glyphicon glyphicon-arrow-up"></span></a>
+			<a title="Scroll to top" class="scrollToTop"><span style="font-size: 32px;" class="glyphicon glyphicon-arrow-up"></span></a>
 		</div>
-		<div class="col-md-4 hidden-xs">
+		<div class="col-md-4 col-sm-4 hidden-xs">
 			<h3 style="text-align: center;">Recent Headlines</h3>
 			@for(n <- news) {
 				<div class="media" style="border-bottom: 1px solid #ddd">
@@ -62,7 +62,7 @@
 			
 			<div style="margin-bottom: 30px;"></div>
 		</div>
-		<div id="externalNews" class="col-md-4 hidden-xs">
+		<div id="externalNews" class="col-md-4 col-sm-4 hidden-xs">
 			<h3 style="text-align: center;">@Messages("news.nynjtc")</h3>
 		</div>
 	</div>
@@ -70,19 +70,8 @@
 	<script type="text/javascript" src="@routes.Assets.versioned("javascripts/ExternalNews.js")"></script>
 	
 	<script type="text/javascript">
-		require(['jquery'], function() {
-			$(window).scroll(function() {
-				if ($(this).scrollTop() > 200) {
-					$('.scrollToTop').fadeIn();
-				} else {
-					$('.scrollToTop').fadeOut();
-				}
-			});
-			
-			$('.scrollToTop').click(function(){
-				$('html, body').animate({scrollTop : 0}, 800);
-				return false;
-			});
+		require(['scrollToTop'], function() {
+			$('.scrollToTop').scrollify();
 		});
 	</script>
 }

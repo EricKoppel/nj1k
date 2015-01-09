@@ -32,7 +32,8 @@ public class AscentEntity extends BaseEntity {
 	private static String distinctQuery = "SELECT COUNT(DISTINCT(`mountain_id`)) AS ascents FROM ascent_entity a WHERE climber_id=?";
 	private static String mostRecent = "SELECT MAX(`ascent_date`) FROM ascent_entity WHERE climber_id=?";
 	private static String selectGroupByDateAndClimber = "SELECT a1.id,a1.ascent_date,a1.climber_id FROM ascent_entity a1 JOIN (SELECT ascent_date,climber_id FROM ascent_entity GROUP BY ascent_date, climber_id ORDER BY ascent_date DESC LIMIT %s,%s) a2 ON a1.ascent_date=a2.ascent_date AND a1.climber_id=a2.climber_id";
-	
+	private static String selectAscentsByClimberGroupByDateAndClimber = "SELECT a1.id,a1.ascent_date,a1.climber_id FROM ascent_entity a1 JOIN (SELECT ascent_date,climber_id FROM ascent_entity WHERE climber_id=%s GROUP BY ascent_date, climber_id ORDER BY ascent_date DESC LIMIT %s,%s) a2 ON a1.ascent_date=a2.ascent_date AND a1.climber_id=a2.climber_id";
+
 	@Id
 	public Long id;
 	
@@ -69,16 +70,22 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findAscentsGroupByDateAndClimber(int page, int num) {
-		String query = String.format(selectGroupByDateAndClimber, page * num, page * num + num);
+		String query = String.format(selectGroupByDateAndClimber, page * num, num);
 		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a1.ascent_date", "ascent_date").columnMapping("a1.climber_id", "climber.id").create();
-		return Ebean.find(AscentEntity.class).setRawSql(sql).fetch("climber").findList();
+		return Ebean.find(AscentEntity.class).setRawSql(sql).fetch("climber", "id,name").findList();
 	}
 	
-	public static AscentEntity findAscentByUserId(Long ascentId, Long userId) {
+	public static List<AscentEntity> findAscentsByClimberGroupByDateAndClimber(long userId, int page, int num) {
+		String query = String.format(selectAscentsByClimberGroupByDateAndClimber, userId, page * num, num);
+		RawSql sql = RawSqlBuilder.parse(query).columnMapping("a1.ascent_date", "ascent_date").columnMapping("a1.climber_id", "climber.id").create();
+		return Ebean.find(AscentEntity.class).setRawSql(sql).fetch("climber", "id,name").findList();
+	}
+	
+	public static AscentEntity findAscentByUserId(long ascentId, long userId) {
 		return find.fetch("climber").where().eq("climber_id", userId).eq("id", ascentId).findUnique();
 	}
 	
-	public static List<AscentEntity> findAscentByUserId(Long userId, int page, int num) {
+	public static List<AscentEntity> findAscentByUserId(long userId, int page, int num) {
 		return find.fetch("climber").where().eq("climber_id", userId).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
 	}
 	

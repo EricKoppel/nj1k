@@ -19,10 +19,6 @@ import models.MountainEntity;
 import models.NewsEntity;
 import models.RegisteringUser;
 import models.UserEntity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.Play;
 import play.Routes;
 import play.data.Form;
@@ -36,8 +32,6 @@ import utils.MailUtil;
 import actions.ETagAction;
 
 public class Application extends Controller {
-
-	private static final Logger logger = LoggerFactory.getLogger(Application.class);
 	private static final Form<Contact> contactForm = form(Contact.class);
 	private static final Form<RegisteringUser> registrationForm = form(RegisteringUser.class);
 

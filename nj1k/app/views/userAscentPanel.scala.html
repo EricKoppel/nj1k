@@ -1,34 +1,69 @@
-@(userId: Long, ascents: List[AscentEntity], page: Integer, size: Integer)
+@(userId: Long, ascentMap: Map[Date, List[AscentEntity]], page: Integer, size: Integer)
 
 @import views.RenderUtil._
 
-<div class="panel-body">
-	@for(a <- ascents) {
-		<div class="media">
-			<a class="pull-left" href="@routes.MountainsController.mountain(a.mountain.getNameId())">
-				@if(a.mountain.picture != null) {
-					<img alt="@a.mountain.name" width="64" height="64" class="img-rounded media-object" src="@routes.MountainsController.getThumbnail(a.mountain.id)">
-				} else {
-					<span style="font-size: 64px;" class="glyphicon glyphicon-picture"></span>
-				}
-			</a>
-			<div class="media-body">
-				<h4 class="media-heading">
-					<strong><a href="@routes.MountainsController.mountain(a.mountain.getNameId())">@a.mountain.name</a></strong>
-				</h4>
-				<p>
-					<strong>@formatRenderDate(a.ascent_date) - </strong>
-					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
-						@Html(convertUrlToHyperlink(formatNews(a.trip_report)))
-					}
-					(<a href="@routes.AscentController.ascent(a.id)"><em>details...</em></a>)
-				</p>
-			</div>
-		</div>
+@getAscents(ascents: List[AscentEntity]) = @{
+	val a = ascents.map{a =>
+		"<a href=\"" + routes.MountainsController.mountain(a.mountain.getNameId()) + "\"><em>" + a.mountain.name + "</em></a>"
+	}.mkString(", ");
+	
+	val index = a.lastIndexOf(",");
+	
+	if (index > 0) {
+		a.substring(0, index) + " and" + a.substring(index + 1, a.length());
+	} else {
+		a
 	}
-</div>
+}
+
+@for((date, ascents) <- ascentMap) {
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h4 class="media-heading">@formatRenderDate(date)</h4>
+			<div style="border-bottom: 1px solid #eee"></div>
+			@for(a <- ascents) {
+				<div class="media">
+					<a class="pull-left" href="@routes.MountainsController.mountain(a.mountain.getNameId())">
+					@if(a.mountain.picture != null) {
+						<div class="img-rounded media-object" style="background:url(@routes.MountainsController.getThumbnail(a.mountain.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
+					} else {
+						<span style="font-size: 64px;" class="glyphicon glyphicon-picture"></span>
+					}
+					</a>
+					<div class="media-body">
+						<h5 class="media-heading">
+							<strong><a href="@routes.MountainsController.mountain(a.mountain.getNameId())">@a.mountain.name</a></strong>
+						</h5>
+						@if(a.trip_report != null && !a.trip_report.trim().isEmpty() || !a.ascentDetails.isEmpty()) {
+							<div class="hidden-xs">
+								<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>
+							
+							</div>
+							@if(!a.ascentDetails.isEmpty()) {
+								<div class="row">
+									@for(i <- 0 until a.ascentDetails.size) {
+										@if(i % 4 == 0) {
+											<div class="clearfix"></div>
+										}
+										<div class="col-md-3 col-sm-6">
+											<div class="hidden-xs thumbnail">
+												<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@a.ascentDetails(i).caption" href="@routes.AscentDetailController.getImage(a.ascentDetails(i).id)">
+													<img class="img-responsive" alt="@a.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(a.ascentDetails(i).id)">
+												</a>
+											</div>							
+										</div>
+									}
+								</div>
+							}
+						}
+					</div>
+				</div>
+			}	
+		</div>
+	</div>
+}
 <div class="panel-footer">
-	<a href="@routes.UsersController.userAscents(userId, page, size)">more <span class="glyphicon glyphicon-chevron-down"></span></a>
+	<a href="@routes.UsersController.userAscents(userId, page + 1, size)">more <span class="glyphicon glyphicon-chevron-down"></span></a>
 </div>
 
 <script type="text/javascript">

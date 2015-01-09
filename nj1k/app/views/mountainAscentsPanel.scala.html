@@ -1,0 +1,66 @@
+@(mountainId: Long, ascents: List[AscentEntity], page: Integer, size: Integer)
+
+@import views.RenderUtil._
+
+@for(a <- ascents) {
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="media">
+				<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
+					@if(a.climber.pic != null) {
+						<div class="img-rounded media-object" style="background:url(@routes.UsersController.userThumbnail(a.climber.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
+					} else {
+						<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
+					}
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">
+						<strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> on @formatRenderDate(a.ascent_date)
+					</h4>
+					<div style="border-bottom: 1px solid #eee"></div>
+					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
+						<div class="hidden-xs" style="margin-top: 5px;">
+							<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>
+						</div>
+					}
+					
+					@if(!a.ascentDetails.isEmpty()) {
+						<div class="row">
+							@for(i <- 0 until a.ascentDetails.size) {
+								@if(i % 4 == 0) {
+									<div class="clearfix"></div>
+								}
+								<div class="col-md-3 col-sm-6">
+									<div class="hidden-xs thumbnail">
+										<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@a.ascentDetails(i).caption" href="@routes.AscentDetailController.getImage(a.ascentDetails(i).id)">
+											<img class="img-responsive" alt="@a.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(a.ascentDetails(i).id)">
+										</a>
+									</div>							
+								</div>
+							}
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<div class="panel panel-default">
+	<div class="panel-footer" style="text-align: center;">
+		<a href="@routes.MountainsController.getAscents(mountainId, page + 1, size)">Show more ascents <span class="glyphicon glyphicon-chevron-down"></span></a>
+	</div>
+</div>
+
+<script type="text/javascript">
+	require(['jscroll'], function() {
+		$('#infiniteScroll a:last').click(function(e) {
+			e.preventDefault();
+			var that = this;
+			$.get($(this).attr('href'), function(data) {
+				$(that).parent().parent().remove();
+				$(data).hide().appendTo($('#infiniteScroll')).fadeIn();
+			});
+		});
+	});
+</script>

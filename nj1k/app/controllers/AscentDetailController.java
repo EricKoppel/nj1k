@@ -32,8 +32,6 @@ public class AscentDetailController extends Controller {
 		for (AscentDetailEntity pic : resizedImages) {
 			pic.save();
 			
-			Long id = pic.id;
-			
 			logger.info("Pic id: {}", pic.id);
 		}
 		

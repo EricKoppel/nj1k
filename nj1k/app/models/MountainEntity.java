@@ -9,11 +9,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import com.avaje.ebean.annotation.CacheStrategy;
 import com.avaje.ebean.annotation.EnumMapping;
 
 @Entity
-@CacheStrategy(readOnly = true, warmingQuery = "order by name")
 public class MountainEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 1829718688996588377L;

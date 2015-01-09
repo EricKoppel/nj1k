@@ -14,10 +14,6 @@ import models.AscentDetailEntity;
 import models.AscentEntity;
 import models.MountainEntity;
 import models.UserEntity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.Configuration;
 import play.data.Form;
 import play.mvc.Controller;
@@ -33,8 +29,6 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
 public class AscentController extends Controller {
-
-	private static final Logger logger = LoggerFactory.getLogger(AscentController.class);
 	private static final Form<AscentEntity> ascentForm = form(AscentEntity.class);
 	private static final JSONSerializer serializer;
 
@@ -65,7 +59,7 @@ public class AscentController extends Controller {
 						Collectors.groupingBy(a -> a.climber, Collectors.toList())));
 		
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
-			return ok(views.html.recentAscentsPanel.render(ascents, page + 1, size));
+			return ok(views.html.recentAscentsPanel.render(ascents, page, size));
 		} else {
 			return ok(serializer.serialize(ascents)).as(MediaType.JSON_UTF_8.toString());
 		}
