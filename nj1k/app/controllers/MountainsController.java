@@ -53,7 +53,7 @@ public class MountainsController extends Controller {
 		}
 		
 		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), findNearestHigherNeighbor(mountain.id),
-				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 4)));
+				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 8)));
 	}
 	
 	public static Result mountainById(Long id) {
@@ -82,7 +82,7 @@ public class MountainsController extends Controller {
 			return noContent();
 		}
 
-		return ok(views.html.ascentPanel.render(mountainId, ascents, page + 1, num));
+		return ok(views.html.mountainAscentsPanel.render(mountainId, ascents, page, num));
 	}
 
 	public static Result getImages(Long mountainId, int page, int num) {
@@ -91,7 +91,7 @@ public class MountainsController extends Controller {
 		if (details.isEmpty()) {
 			return noContent();
 		} else {
-			return ok(views.html.ascentImagePanel.render(mountainId, details, page + 1, num));
+			return ok(views.html.ascentImagePanel.render(mountainId, details, page, num));
 		}
 	}
 
@@ -118,7 +118,7 @@ public class MountainsController extends Controller {
 		
 		logger.debug("Finding peaks near: {}, {}", latitude, longitude);
 		
-		return ok(mSerializer.serialize(MountainEntity.findAll().parallelStream()
+		return ok(mSerializer.serialize(MountainEntity.findAll().stream()
 			.map(m -> new MountainDistanceBean(m, null, DistanceUtil.calculateDistance(Float.parseFloat(latitude), Float.parseFloat(longitude), m.latitude, m.longitude)))
 			.filter(m -> m.getDistanceAsMiles() < threshold)
 			.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
@@ -153,7 +153,7 @@ public class MountainsController extends Controller {
 		MountainEntity m1 = MountainEntity.find.byId(id);
 		List<MountainEntity> higherMountains = MountainEntity.find.where().ne("id", m1.id).eq("club_list", true).gt("elevation", m1.elevation).findList();
 	
-		return higherMountains.parallelStream()
+		return higherMountains.stream()
 		.map(m2 -> new MountainDistanceBean(m1, m2, DistanceUtil.calculateDistance(m1.latitude, m1.longitude, m2.latitude, m2.longitude)))
 		.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
 		.findFirst()
@@ -163,7 +163,7 @@ public class MountainsController extends Controller {
 	public static List<MountainDistanceBean> findNearestNeighbors(MountainEntity mountain, int howMany) {
 		List<MountainEntity> neighbors = MountainEntity.find.where().ne("id", mountain.id).eq("club_list", true).findList();
 	
-		return neighbors.parallelStream()
+		return neighbors.stream()
 		.map(m -> new MountainDistanceBean(mountain, m, DistanceUtil.calculateDistance(mountain.latitude, mountain.longitude, m.latitude, m.longitude)))
 		.sorted(Comparator.comparingDouble(MountainDistanceBean::getDistance))
 		.collect(Collectors.toList()).subList(0, howMany);

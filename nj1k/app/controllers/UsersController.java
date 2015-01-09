@@ -3,7 +3,12 @@ package controllers;
 import static play.data.Form.form;
 
 import java.sql.Timestamp;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import models.AscentEntity;
 import models.FinisherEntity;
@@ -60,18 +65,22 @@ public class UsersController extends Controller {
 			return notFound();
 		}
 
-		return ok(views.html.user.render(user, AscentEntity.findAscentByUserId(id, 0, 5)));
+		Map<Date, List<AscentEntity>> result = AscentEntity.findAscentsByClimberGroupByDateAndClimber(id, 0, 10).stream()
+				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, List<AscentEntity>>(Comparator.reverseOrder()), Collectors.toList()));
+		return ok(views.html.user.render(user, result));
 	}
 
 	public static Result userAscents(Long id, int page, int num) {
-		List<AscentEntity> ascents = AscentEntity.findAscentByUserId(id, page, num);
+		List<AscentEntity> ascents = AscentEntity.findAscentsByClimberGroupByDateAndClimber(id, page, num);
 
 		if (ascents.isEmpty()) {
 			return noContent();
 		}
 		
+		Map<Date, List<AscentEntity>> result = ascents.stream()
+				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, List<AscentEntity>>(Comparator.reverseOrder()), Collectors.toList()));
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
-			return ok(views.html.userAscentPanel.render(id, ascents, page + 1, num));
+			return ok(views.html.userAscentPanel.render(id, result, page, num));
 		} else {
 			return ok(serializer.serialize(ascents));
 		}

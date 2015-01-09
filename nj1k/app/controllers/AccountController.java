@@ -12,8 +12,6 @@ import models.UserEntity;
 
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import play.cache.Cache;
 import play.data.DynamicForm;
@@ -29,8 +27,6 @@ import utils.SecurityUtil;
 import com.google.common.net.MediaType;
 
 public class AccountController extends Controller {
-
-	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	private static final Form<UserEntity> userForm = form(UserEntity.class);
 	
 	private static final CompletionService<AscentDetailEntity> taskCompletionService = new ExecutorCompletionService<AscentDetailEntity>(Executors.newCachedThreadPool());

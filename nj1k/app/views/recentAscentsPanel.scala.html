@@ -23,14 +23,15 @@
 		<div class="panel-body">
 			<div class="media">
 				<a class="pull-left" href="@routes.UsersController.user(climber.id)">
-					@if(climber.pic != null) {
-						<img alt="@climber.name" width="64" height="64" class="img-rounded media-object" src="@routes.UsersController.userThumbnail(climber.id)">
-					} else {
-						<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
-					}
+				@if(climber.pic != null) {
+					<div class="img-rounded media-object" style="background:url(@routes.UsersController.userThumbnail(climber.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
+				} else {
+					<span style="font-size: 64px;" class="glyphicon glyphicon-user"></span>
+				}
 				</a>
 				<div class="media-body">
 					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(climber.id)">@climber.name</a></strong> climbed @Html(getAscents(ascents)) on @formatRenderDate(date)</h4>
+					<div class="hidden-xs" style="border-bottom: 1px solid #eee"></div>
 					@for(a <- ascents) {
 						<div class="hidden-xs" style="margin-top: 20px;">
 							@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
@@ -40,11 +41,14 @@
 							
 							@if(!a.ascentDetails.isEmpty()) {
 								<div class="row">
-									@for(img <- a.ascentDetails) {
-										<div class="col-md-3">
+									@for(i <- 0 until a.ascentDetails.size) {
+										@if(i % 3 == 0) {
+											<div class="clearfix"></div>
+										}
+										<div class="col-md-4 col-sm-4">
 											<div class="hidden-xs thumbnail">
-												<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@img.caption" href="@routes.AscentDetailController.getImage(img.id)">
-													<img class="img-responsive" alt="@img.caption" src="@routes.AscentDetailController.getThumbnail(img.id)">
+												<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@a.ascentDetails(i).caption" href="@routes.AscentDetailController.getImage(a.ascentDetails(i).id)">
+													<img class="img-responsive" alt="@a.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(a.ascentDetails(i).id)">
 												</a>
 											</div>							
 										</div>
@@ -60,7 +64,7 @@
 	}
 }
 <div class="col-md-8 col-md-offset-2">
-<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page, size)">Show more recent ascents</a>
+<a class="btn btn-default btn-block" href="@routes.AscentController.ascents(page + 1, size)">Show more recent ascents</a>
 </div>
 
 <script type="text/javascript">

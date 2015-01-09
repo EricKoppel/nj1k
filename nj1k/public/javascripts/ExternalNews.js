@@ -17,7 +17,8 @@ require(['jquery'], function() {
 				  url: r.url,
 				  cache: true,
 				  success: function(data) {
-    				  $(mediaBody).append('<p><strong>' + item.date + ' - </strong>' + data + ' <p><a target="_blank" href="' + item.link + '"><em>Read More...</em></a></p>');
+					  var appendMe = '<p><strong>' + item.date + ' - </strong>' + data + ' <p><a target="_blank" href="' + item.link + '"><em>Read More...</em></a></p>';
+    				  $(appendMe).hide().appendTo($(mediaBody)).fadeIn();
 				  }
 			  });
 		  });

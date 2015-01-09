@@ -9,9 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.Configuration;
 import play.Play;
 import play.libs.F.Promise;
@@ -31,7 +28,6 @@ import flexjson.transformer.DateTransformer;
 
 public class ExternalNewsController extends Controller {
 	private static final JSONSerializer serializer;
-	private static final Logger logger = LoggerFactory.getLogger(ExternalNewsController.class);
 	private static final URL NEWS_PAGE;
 	
 	static final ThreadLocal<SimpleDateFormat> dateFormat = new ThreadLocal<SimpleDateFormat>() {

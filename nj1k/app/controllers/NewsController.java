@@ -3,10 +3,6 @@ package controllers;
 import static play.data.Form.form;
 import models.NewsEntity;
 import models.NewsImageEntity;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -16,7 +12,6 @@ import utils.SecurityUtil;
 public class NewsController extends Controller {
 
 	private final static Form<NewsEntity> newsForm = form(NewsEntity.class);
-	private static final Logger logger = LoggerFactory.getLogger(NewsController.class);
 
 	public static Result showNews(Long id) {
 		NewsEntity news = NewsEntity.find(id);

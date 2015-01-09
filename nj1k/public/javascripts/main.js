@@ -20,7 +20,8 @@ requirejs.config({
         modernizr: '/assets/javascripts/libs/modernizr.min',
         moment: '/assets/javascripts/libs/moment.min',
         masonry: '/assets/javascripts/libs/masonry',
-        flowtype: '/assets/javascripts/libs/flowtype'
+        flowtype: '/assets/javascripts/libs/flowtype',
+        scrollToTop: '/assets/javascripts/ScrollToTop'
     },
     shim: {
     	'bootstrap': {
@@ -62,5 +63,8 @@ requirejs.config({
         'jqueryui': {
             deps: ['jquery', 'modernizr']
         },
+        'scrollToTop': {
+        	deps: ['jquery']
+        }
     }
 });
