@@ -1,10 +1,11 @@
 @(userId: Long, ascentMap: Map[Date, List[AscentEntity]], page: Integer, size: Integer)
 
 @import views.RenderUtil._
+@import utils.SecurityUtil._
 
-@getAscents(ascents: List[AscentEntity]) = @{
+@getAscentsWithoutUrls(ascents: List[AscentEntity]) = @{
 	val a = ascents.map{a =>
-		"<a href=\"" + routes.MountainsController.mountain(a.mountain.getNameId()) + "\"><em>" + a.mountain.name + "</em></a>"
+		"<em>" + a.mountain.name + "</em>"
 	}.mkString(", ");
 	
 	val index = a.lastIndexOf(",");
@@ -17,13 +18,49 @@
 }
 
 @for((date, ascents) <- ascentMap) {
-	<div class="panel panel-default">
+	<a class="visible-xs" href="@routes.UsersController.userAscentsByDate(userId, date.getTime())">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-body">
+						<div style="width: 100%; display: table;">
+	    					<div style="display: table-row">
+	        					<div style="display: table-cell;">
+									@Html(getAscentsWithoutUrls(ascents)) on @formatRenderDate(date)
+								</div>
+								<div style="display: table-cell; vertical-align: middle;">
+									<span class="pull-right glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+	<div class="hidden-xs panel panel-default">
 		<div class="panel-body">
-			<h4 class="media-heading">@formatRenderDate(date)</h4>
-			<div style="border-bottom: 1px solid #eee"></div>
+		@if(isUser(userId) || hasRole("admin")) {
+		<div class="btn-group pull-right">
+			
+			<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				@for(a <- ascents) {
+					<li><a href="@routes.AscentController.editForm(a.id)">Edit ascent @a.mountain.name</a></li>
+				}
+				<li class="divider"></li>
+				<li><a href="#" class="delete_ascents" data-userid="@userId" data-date="@date.getTime()" >Delete ascents on @formatRenderDate(date)</a>
+			</ul>
+		</div>
+		}
+		<h4 class="media-heading">@formatRenderDate(date)</h4>
+			<div class="clearfix" style="border-bottom: 1px solid #eee"></div>
 			@for(a <- ascents) {
 				<div class="media">
 					<a class="pull-left" href="@routes.MountainsController.mountain(a.mountain.getNameId())">
+					
 					@if(a.mountain.picture != null) {
 						<div class="img-rounded media-object" style="background:url(@routes.MountainsController.getThumbnail(a.mountain.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
 					} else {
@@ -35,7 +72,7 @@
 							<strong><a href="@routes.MountainsController.mountain(a.mountain.getNameId())">@a.mountain.name</a></strong>
 						</h5>
 						@if(a.trip_report != null && !a.trip_report.trim().isEmpty() || !a.ascentDetails.isEmpty()) {
-							<div class="hidden-xs">
+							<div>
 								<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>
 							
 							</div>
@@ -46,7 +83,8 @@
 											<div class="clearfix"></div>
 										}
 										<div class="col-md-3 col-sm-6">
-											<div class="hidden-xs thumbnail">
+											<div class="thumbnail">
+<!-- 												<a href="#" class="delete-ascent-detail" data-image-id="@a.ascentDetails(i).id"><span style="position: absolute; top: 6px; right: 20px; "class="glyphicon glyphicon-remove"></span></a> -->
 												<a class="fancybox" data-fancybox-group="ascentImages@a.id" data-fancybox-type="image" title="@a.ascentDetails(i).caption" href="@routes.AscentDetailController.getImage(a.ascentDetails(i).id)">
 													<img class="img-responsive" alt="@a.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(a.ascentDetails(i).id)">
 												</a>
@@ -67,6 +105,38 @@
 </div>
 
 <script type="text/javascript">
+	require(['jquery', 'routes'], function() {
+		$('.delete_ascents').click(function() {
+    		if (confirm('@Messages("ascent.delete.prompt")')) {
+    			var userId = $(this).data("userid");
+    			var date = $(this).data("date");
+    			var that = $(this);
+    			
+	    		jsRoutes.controllers.AscentController.removeByUserAndDate(userId, date).ajax({
+	    			success: function(result) {
+	    				$(that).parents('.panel').fadeOut(function() {
+	    					$(this).remove();
+	    				});
+	    		    }
+	    		});
+    		}
+    		return false;
+    	});
+		
+    	$('.delete-ascent-detail').click(function(e) {
+    		var id = $(this).data('image-id');
+    		var that = this;
+    		jsRoutes.controllers.AscentDetailController.remove(id).ajax({
+    			success: function(result) {
+    		    	$(that).closest('.thumbnail').parent().fadeOut(function() {
+    		    		$(this).remove();
+    		    	});
+    		    }
+    		});
+    		
+    		e.preventDefault();
+    	});
+	});
 	require(['jscroll'], function() {
 		
 		$('#infiniteScroll').jscroll({

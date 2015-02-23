@@ -3,7 +3,7 @@
 @import helper.twitterBootstrap._
 @import helper._
 
-@main()(null)(null) {
+@main()(null)(menu()) {
 	<div class="page-header">
 		<h3>@Messages("menu.login")</h3>
 	</div>
@@ -41,7 +41,7 @@
 		        
 		        <div class="actions">
 		            <input type="submit" class="btn btn-primary" value="@Messages("button.submit.login")">
-		            <a href="@routes.UsersController.resetPasswordForm">@Messages("password.forgot")</a>
+		            <a href="@routes.ResetPasswordController.resetPasswordForm">@Messages("password.forgot")</a>
 		        </div>
 		        
 		    }

@@ -1,7 +1,5 @@
 package controllers;
 
-import static play.data.Form.form;
-
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.Date;
@@ -14,20 +12,10 @@ import models.AscentEntity;
 import models.FinisherEntity;
 import models.UserEntity;
 import models.UserEntityAggregate;
-
-import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.util.ByteSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import play.Configuration;
-import play.data.Form;
-import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
-import utils.MailUtil;
-import utils.PasswordUtil;
 import actions.ETagAction;
 
 import com.google.common.net.MediaType;
@@ -38,8 +26,6 @@ import flexjson.transformer.Transformer;
 
 public class UsersController extends Controller {
 
-	private static final Form<UserEntity> userForm = form(UserEntity.class);
-	private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
 	private static final JSONSerializer serializer;
 
 	static {
@@ -70,30 +56,40 @@ public class UsersController extends Controller {
 		return ok(views.html.user.render(user, result));
 	}
 
-	public static Result userAscents(Long id, int page, int num) {
+	public static Result userAscents(Long id, Integer page, Integer num) {
 		List<AscentEntity> ascents = AscentEntity.findAscentsByClimberGroupByDateAndClimber(id, page, num);
 
 		if (ascents.isEmpty()) {
 			return noContent();
 		}
-		
-		Map<Date, List<AscentEntity>> result = ascents.stream()
-				.collect(Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, List<AscentEntity>>(Comparator.reverseOrder()), Collectors.toList()));
+
+		Map<Date, List<AscentEntity>> result = ascents.stream().collect(
+				Collectors.groupingBy(a -> a.ascent_date, () -> new TreeMap<Date, List<AscentEntity>>(Comparator.reverseOrder()), Collectors.toList()));
 		if (request().accepts(MediaType.HTML_UTF_8.type())) {
 			return ok(views.html.userAscentPanel.render(id, result, page, num));
 		} else {
 			return ok(serializer.serialize(ascents));
 		}
 	}
+	
+	public static Result userAscentsByDate(long id, long date) {
+		List<AscentEntity> ascents = AscentEntity.findAscentsByUserIdAndDate(id, new Date(date));
 
-	public static Result resetPasswordForm() {
-		return ok(views.html.resetpassword.render(userForm));
+		if (ascents.isEmpty()) {
+			return noContent();
+		}
+		
+		if (request().accepts(MediaType.HTML_UTF_8.type())) {
+			return ok(views.html.ascents.render(ascents));
+		} else {
+			return ok(serializer.serialize(ascents));
+		}
 	}
 
 	@With(ETagAction.class)
 	public static Result userImage(Long id) {
 		UserEntity user = UserEntity.find(id);
-		
+
 		if (user.pic == null) {
 			return notFound();
 		}
@@ -111,37 +107,5 @@ public class UsersController extends Controller {
 		}
 
 		return notFound();
-	}
-
-	public static Result resetPassword() {
-		Form<UserEntity> resetForm = userForm.bindFromRequest();
-
-		if (!resetForm.hasErrors()) {
-			UserEntity user = UserEntity.findByEmail(resetForm.get().email);
-
-			if (user != null) {
-				resetPassword(user);
-			}
-			flash("success", Messages.get("password.sent"));
-			return ok(views.html.login.render(resetForm));
-		}
-
-		return badRequest(views.html.resetpassword.render(resetForm));
-	}
-
-	private static void resetPassword(UserEntity user) {
-		char[] newPassword = PasswordUtil.generateRandomPassword();
-		ByteSource salt = PasswordUtil.generateSalt();
-		SimpleHash hashedPassword = PasswordUtil.generateHash(newPassword, salt);
-
-		user.password = hashedPassword.toBase64();
-		user.salt = salt.toBase64();
-		user.update();
-
-		sendResetPassword(user.email, newPassword);
-	}
-
-	private static void sendResetPassword(String email, char[] password) {
-		MailUtil.sendMail(email, Messages.get("mail.resetpassword.subject"), Messages.get("mail.resetpassword", String.valueOf(password)));
 	}
 }

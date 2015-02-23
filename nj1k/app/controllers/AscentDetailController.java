@@ -45,6 +45,11 @@ public class AscentDetailController extends Controller {
 	
 	public static Result getImage(Long id) {
 		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
+		
+		if (ascentDetail == null) {
+			return notFound();
+		}
+		
 		response().setHeader(CACHE_CONTROL, "max-age=31556926, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(ascentDetail.lastUpdate));
 		return ok(ascentDetail.image).as(MediaType.ANY_IMAGE_TYPE.type());
@@ -52,6 +57,10 @@ public class AscentDetailController extends Controller {
 	
 	public static Result getThumbnail(Long id) {
 		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
+		
+		if (ascentDetail == null) {
+			return notFound();
+		}
 		
 		response().setHeader(CACHE_CONTROL, "max-age=31556926, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(ascentDetail.lastUpdate));

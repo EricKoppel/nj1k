@@ -3,10 +3,31 @@
 @import views.RenderUtil._
 
 @for(a <- ascents) {
-	<div class="panel panel-default">
+	<a class="visible-xs" href="@routes.UsersController.userAscentsByDate(a.climber.id, a.ascent_date.getTime())">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-body">
+						<div style="width: 100%; display: table;">
+	    					<div style="display: table-row">
+	        					<div style="display: table-cell;">
+									<strong>@a.climber.name</strong> climbed @a.mountain.name on @formatRenderDate(a.ascent_date)
+								</div>
+								<div style="display: table-cell; vertical-align: middle;">
+									<span class="pull-right glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+	
+	<div class="hidden-xs panel panel-default">
 		<div class="panel-body">
 			<div class="media">
-				<a class="pull-left" href="@routes.UsersController.user(a.climber.id)">
+				<a class="hidden-xs pull-left" href="@routes.UsersController.user(a.climber.id)">
 					@if(a.climber.pic != null) {
 						<div class="img-rounded media-object" style="background:url(@routes.UsersController.userThumbnail(a.climber.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
 					} else {
@@ -17,7 +38,7 @@
 					<h4 class="media-heading">
 						<strong><a href="@routes.UsersController.user(a.climber.id)">@a.climber.name</a></strong> on @formatRenderDate(a.ascent_date)
 					</h4>
-					<div style="border-bottom: 1px solid #eee"></div>
+					<div class="hidden-xs" style="border-bottom: 1px solid #eee"></div>
 					@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
 						<div class="hidden-xs" style="margin-top: 5px;">
 							<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>

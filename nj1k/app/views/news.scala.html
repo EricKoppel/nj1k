@@ -3,12 +3,12 @@
 @import utils.SecurityUtil._
 @import views.RenderUtil._
 
-@main(title = news.title)(null)(null) {
+@main(title = news.title)(null)(menu()) {
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css" type="text/css" media="screen" />
 	
 	<script type="text/javascript">
-	require(['jquery', 'fancybox'], function() {
+	require(['jquery', 'fancybox', 'routes'], function() {
 		$(document).ready(function() {
 			$(".fancybox").fancybox();
 			

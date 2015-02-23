@@ -74,8 +74,8 @@ public class AscentController extends Controller {
 	}
 
 	public static Result editForm(Long id) throws Exception {
-		if (!SecurityUtil.ownsAscent(id)) {
-			return forbidden();
+		if (!(SecurityUtil.ownsAscent(id) || SecurityUtil.hasRole("admin"))) {
+			return forbidden(views.html.errorResponse.render("Four Oh Three - Forbidden!"));
 		}
 
 		return ok(views.html.logascent.render(ascentForm.fill(AscentEntity.find(id)), MountainEntity.findAll()));
@@ -97,6 +97,15 @@ public class AscentController extends Controller {
 		AscentEntity.find(id).delete();
 		return ok();
 	}
+	
+	public static Result removeByUserAndDate(Long userId, Long date) {
+		if (!(SecurityUtil.isUser(userId) || SecurityUtil.hasRole("admin"))) {
+			return forbidden();
+		}
+		
+		AscentEntity.removeByUserAndDate(userId, new Date(date));
+		return ok();
+	}
 
 	public static Result submit() throws Exception {
 		if (!SecurityUtil.isLoggedIn()) {
@@ -110,15 +119,15 @@ public class AscentController extends Controller {
 		}
 
 		AscentEntity form = filledForm.get();
-		form.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
-		
+
 		if (request().body().asMultipartFormData() != null) {
 			form.ascentDetails.addAll(ImageUtil.extractPictures(request(), AscentDetailEntity.class));
 		}
 
 		if (form.id == null) {
+			form.climber = UserEntity.findByEmail(session().get(SecurityUtil.USER_ID_KEY));
 			form.save();
-		} else if (SecurityUtil.ownsAscent(form.id)) {
+		} else if (SecurityUtil.ownsAscent(form.id) || SecurityUtil.hasRole("admin")) {
 			AscentEntity ascent = AscentEntity.find(form.id);
 			ascent.ascentDetails.addAll(form.ascentDetails);
 			ascent.ascent_date = form.ascent_date;

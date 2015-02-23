@@ -1,0 +1,54 @@
+@(ascents: List[AscentEntity])
+
+@import views.RenderUtil._
+@import utils.TextUtils._
+@import utils.SecurityUtil._
+
+@main(title = "Ascent")(null)(menu()) {
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="media" style="overflow: visible;">
+				@if(isUser(ascents.get(0).climber.id) || hasRole("admin")) {
+					<div class="btn-group pull-right">
+						
+						<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							@for(a <- ascents) {
+								<li><a href="@routes.AscentController.editForm(a.id)">Edit ascent @a.mountain.name</a></li>
+							}
+							<li class="divider"></li>
+							<li><a href="#" class="delete_ascents" data-userid="@ascents.get(0).climber.id" data-date="@ascents.get(0).ascent_date.getTime()" >Delete all ascents</a>
+						</ul>
+					</div>
+				}
+				<h4 class="media-heading">
+				<a href="@routes.UsersController.user(ascents.get(0).climber.id)"><strong>@ascents.get(0).climber.name's</strong></a> ascents on @formatRenderDate(ascents.get(0).ascent_date)
+				</h4>
+			</div>
+			<div style="border-bottom: 1px solid #eee"></div>
+			@for(a <- ascents) {
+				<div style="margin-top: 20px;">
+				<p><strong><a href="@routes.MountainsController.mountain(a.mountain.getNameId())">@a.mountain.name</a></strong></p>
+				@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
+					<p>@Html(convertUrlToHyperlink(formatText(a.trip_report)))</p>	
+				}
+				
+				@if(!a.ascentDetails.isEmpty()) {
+					<div class="row">
+						@for(i <- 0 until a.ascentDetails.size) {
+							@if(i % 4 == 0) {
+								<div class="clearfix"></div>
+							}
+							<div class="col-xs-12 col-md-3">
+								<img class="thumbnail img-responsive" alt="@a.ascentDetails(i).caption" src="@routes.AscentDetailController.getThumbnail(a.ascentDetails(i).id)">					
+							</div>
+						}
+					</div>
+				}
+				</div>
+			}
+		</div>
+	</div>
+}

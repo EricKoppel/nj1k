@@ -8,13 +8,13 @@
 	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 }
 
-@main()(head)(null) {
+@main()(head)(menu()) {
 	<script type="text/javascript">
 		require(['modernizr', 'jqueryui'], function() {
 			$(document).ready(function() {
 				
 				if (!Modernizr.inputtypes.date) {
-			   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd' });
+			   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd', maxDate: '+0D' });
 				}
 			    
 			    $('#ascentDetails').change(function() {

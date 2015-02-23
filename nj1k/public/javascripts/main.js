@@ -1,4 +1,4 @@
-requirejs.config({
+require.config({
     paths: {
         jquery: '/assets/javascripts/libs/jquery-1.11.1.min',
         backbone: 'https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min',
@@ -21,7 +21,8 @@ requirejs.config({
         moment: '/assets/javascripts/libs/moment.min',
         masonry: '/assets/javascripts/libs/masonry',
         flowtype: '/assets/javascripts/libs/flowtype',
-        scrollToTop: '/assets/javascripts/ScrollToTop'
+        scrollToTop: '/assets/javascripts/libs/ScrollToTop',
+        routes: '/routes'
     },
     shim: {
     	'bootstrap': {
