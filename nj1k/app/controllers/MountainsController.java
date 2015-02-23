@@ -52,7 +52,7 @@ public class MountainsController extends Controller {
 			return notFound();
 		}
 		
-		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id), findNearestHigherNeighbor(mountain.id),
+		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id, 0, 5), findNearestHigherNeighbor(mountain.id),
 				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 8)));
 	}
 	

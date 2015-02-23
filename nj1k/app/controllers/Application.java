@@ -2,6 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -35,8 +36,8 @@ public class Application extends Controller {
 	private static final Form<Contact> contactForm = form(Contact.class);
 	private static final Form<RegisteringUser> registrationForm = form(RegisteringUser.class);
 
-	public static final ThreadLocal<SimpleDateFormat> cacheDateFormat = new ThreadLocal<SimpleDateFormat>() {
-		public SimpleDateFormat initialValue() {
+	public static final ThreadLocal<DateFormat> cacheDateFormat = new ThreadLocal<DateFormat>() {
+		public DateFormat initialValue() {
 			return new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss zzz", Locale.US);
 		}
 	};
@@ -87,16 +88,16 @@ public class Application extends Controller {
 
 		switch (cal.get(Calendar.MONTH)) {
 		case 11:
+			cal.add(Calendar.YEAR, 1);
 		case 0:
 		case 1:
 			status = ok(Play.application().resourceAsStream("public/images/winter.jpg"));
 			cal.set(Calendar.MONTH, 2);
-			cal.add(Calendar.YEAR, 1);
 			break;
 		case 2:
 		case 3:
 		case 4:
-			status = ok(Play.application().resourceAsStream("public/images/spring.png"));
+			status = ok(Play.application().resourceAsStream("public/images/spring.jpg"));
 			cal.set(Calendar.MONTH, 5);
 			break;
 		case 5:
@@ -134,6 +135,7 @@ public class Application extends Controller {
 				Routes.javascriptRouter("jsRoutes", controllers.routes.javascript.AscentController.remove(), controllers.routes.javascript.AscentController.ascents(),
 						controllers.routes.javascript.MountainsController.findNearest(), controllers.routes.javascript.AscentController.submit(),
 						controllers.routes.javascript.AscentDetailController.updateCaption(), controllers.routes.javascript.AscentDetailController.remove(),
+						controllers.routes.javascript.AscentController.removeByUserAndDate(),
 						controllers.routes.javascript.AscentController.ascent(), controllers.routes.javascript.NewsController.delete(),
 						controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(), controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
 						controllers.routes.javascript.UsersController.user(), controllers.routes.javascript.UsersController.userImage(), controllers.routes.javascript.UsersController.userThumbnail(),

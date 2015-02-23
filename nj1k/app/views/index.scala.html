@@ -8,27 +8,30 @@
 <meta name="description" content="NJ1K.org - A website dedicated to peakbagging in New Jersey. Climb New Jersey's 52 peaks over 1,000 feet. Peakbagging in the humble hills of New Jersey.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
 <link rel="stylesheet" href="@routes.Assets.versioned("javascripts/jQuery-File-Upload-9.7.0/css/jquery.fileupload.css")">
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
 } {
-	@registermodal(signupForm)
-
-	<div class="jumbotron hidden-sm hidden-xs">
-		<div class="container">
-			<div class="row">
-				<div itemscope itemtype="https://schema.org/Organization" class="col-md-12">
-					<h1 itemprop="name">@Messages("welcome.header")</h1>
-					<p itemprop="description"><strong>@formatText(Messages("welcometext"))</strong></p>
-					<p><small>The New Jersey 1K Club seeks to bring attention to the many hiking opportunities and challenges that the Garden State has to offer. New Hampshire has the AMC 4000'ers; the Adirondacks has its 46'ers; the Catskills and its 3500 Club. And now . . . New Jersey's own peakbagging club: the 1K'ers.</small></p>
-					@if(!isLoggedIn()) {
-						<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
-							<span class="glyphicon glyphicon-check"></span>
-							<span>@Messages("menu.register")</span>
-						</button>
-					}
+	<div id="top_wrapper">
+		@menu()
+		<div class="jumbotron hidden-sm hidden-xs">
+			<div class="container">
+				<div class="row">
+					<div itemscope itemtype="https://schema.org/Organization" class="col-md-12">
+						<h1 itemprop="name">@Messages("welcome.header")</h1>
+						<p itemprop="description"><strong>@formatText(Messages("welcometext"))</strong></p>
+						<p><small>The New Jersey 1K Club seeks to bring attention to the many hiking opportunities and challenges that the Garden State has to offer. New Hampshire has the AMC 4000'ers; the Adirondacks has its 46'ers; the Catskills and its 3500 Club. And now . . . New Jersey's own peakbagging club: the 1K'ers.</small></p>
+						@if(!isLoggedIn()) {
+							<button class="btn btn-success btn-lg" data-toggle="modal" data-target="#myModal">
+								<span class="glyphicon glyphicon-check"></span>
+								<span>@Messages("menu.register")</span>
+							</button>
+						}
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 } {
+	@registermodal(signupForm)
 	<div class="row">
 		<div class="col-md-8 col-sm-8">
 			@if(isLoggedIn()) {

@@ -1,6 +1,7 @@
 package models;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -21,6 +22,7 @@ import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;
 import com.avaje.ebean.SqlQuery;
+import com.avaje.ebean.Update;
 
 @Entity
 public class AscentEntity extends BaseEntity {
@@ -96,11 +98,11 @@ public class AscentEntity extends BaseEntity {
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id) {
-		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
+		return find.fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findList();
 	}
 	
 	public static List<AscentEntity> findByMountainId(Long id, int page, int num) {
-		return find.setMaxRows(5).fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
+		return find.fetch("climber", "id,name").where().eq("mountain_id", id).join("mountain").where().eq("club_list", true).orderBy().desc("ascent_date").findPagingList(num).getPage(page).getList();
 	}
 	
 	public static AscentEntity findTripReport(Long id) {
@@ -146,5 +148,16 @@ public class AscentEntity extends BaseEntity {
 		q.setRawSql(sql);
 
 		return q.findUnique();	
+	}
+
+	public static void removeByUserAndDate(long userId, Date date) {
+		Update<AscentEntity> update = Ebean.createUpdate(AscentEntity.class, "delete from ascent_entity where climber_id=? AND ascent_date=?");
+		update.setParameter(1, userId);
+		update.setParameter(2, date);
+		update.execute();
+	}
+
+	public static List<AscentEntity> findAscentsByUserIdAndDate(long id, Date date) {
+		return find.where().eq("climber_id", id).where().eq("ascent_date", date).findList();
 	}
 }

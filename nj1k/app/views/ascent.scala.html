@@ -7,11 +7,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
 }
 
-@main(title = Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation))(head)(null) {
+@main(title = Messages("ascent.title", ascent.mountain.name, ascent.climber.name, ascent.mountain.elevation))(head)(menu()) {
 
 	<script type="text/javascript">
 
-	require(['jquery'], function() {
+	require(['jquery', 'routes'], function() {
 	    $(document).ready(function() {
 	    
 			$('#delete_ascent').click(function() {

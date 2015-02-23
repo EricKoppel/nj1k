@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css" type="text/css" media="screen" />
 }
 
-@main(title = user.user.name)(head)(null) {
+@main(title = user.user.name)(head)(menu()) {
 
     <div itemscope itemtype="https://schema.org/Person">
 	    <div class="page-header">
@@ -23,15 +23,18 @@
 				    </div>
 				    <div class="panel-body">
 				    	<div class="col-md-8">
-						    @if(user.user.pic != null) {
-						   		<a itemprop="image" href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" style="margin-right: 20px;" title="@user.user.name" data-fancybox-type="image">
+				    	 	@if(user.user.pic != null) {
+				    		<div class="col-md-4 col-xs-12">
+						   		<a itemprop="image" href="@routes.UsersController.userImage(user.user.id)" class="thumbnail pull-left fancybox" title="@user.user.name" data-fancybox-type="image">
 						   			<img alt="@user.user.name" src="@routes.UsersController.userThumbnail(user.user.id)">
 						   		</a>
+							</div>
 							}
-						
-					    	<div itemprop="description">
-					    	@Html(formatText(user.user.aboutme))
-					   		</div>
+							@if(user.user.aboutme != null && !user.user.aboutme.isEmpty()) {
+						    	<div itemprop="description" style="padding-bottom: 20px;">
+						    	@Html(formatText(user.user.aboutme))
+						   		</div>
+					   		}
 					   	</div>
 					   	<div class="col-md-4">
 							<table class="table table-bordered table-condensed">

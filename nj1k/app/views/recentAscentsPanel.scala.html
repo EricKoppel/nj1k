@@ -2,6 +2,7 @@
 
 @import views.RenderUtil._
 @import utils.TextUtils._
+@import utils.SecurityUtil._
 
 @getAscents(ascents: List[AscentEntity]) = @{
 	val a = ascents.map{a =>
@@ -17,11 +18,61 @@
 	}
 }
 
+@getAscentsWithoutUrls(ascents: List[AscentEntity]) = @{
+	val a = ascents.map{a =>
+		"<em>" + a.mountain.name + "</em>"
+	}.mkString(", ");
+	
+	val index = a.lastIndexOf(",");
+	
+	if (index > 0) {
+		a.substring(0, index) + " and" + a.substring(index + 1, a.length());
+	} else {
+		a
+	}
+}
+
 @for((date, userAscents) <- recentAscents) {
 	@for((climber, ascents) <- userAscents) {
-	<div class="panel panel-default">
+	<a class="visible-xs" href="@routes.UsersController.userAscentsByDate(climber.id, date.getTime())">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-body">
+						<div style="width: 100%; display: table;">
+	    					<div style="display: table-row">
+	        					<div style="display: table-cell;">
+									<strong>@climber.name</strong> climbed @Html(getAscentsWithoutUrls(ascents)) on @formatRenderDate(date)
+								</div>
+								<div style="display: table-cell; vertical-align: middle;">
+									<span class="pull-right glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
+	
+	<div class="hidden-xs panel panel-default">
 		<div class="panel-body">
-			<div class="media">
+			<div class="media" style="overflow: visible;">
+			@if(isUser(climber.id) || hasRole("admin")) {
+				<div class="btn-group pull-right">
+					
+					<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						@for(a <- ascents) {
+							<li><a href="@routes.AscentController.editForm(a.id)">Edit ascent @a.mountain.name</a></li>
+						}
+						<li class="divider"></li>
+						<li><a href="#" class="delete_ascents" data-userid="@climber.id" data-date="@date.getTime()" >Delete all ascents</a>
+					</ul>
+				</div>
+				}
 				<a class="pull-left" href="@routes.UsersController.user(climber.id)">
 				@if(climber.pic != null) {
 					<div class="img-rounded media-object" style="background:url(@routes.UsersController.userThumbnail(climber.id)) no-repeat center center; background-size: cover; width: 64px; height: 64px;"></div>
@@ -31,7 +82,7 @@
 				</a>
 				<div class="media-body">
 					<h4 class="media-heading"><strong><a href="@routes.UsersController.user(climber.id)">@climber.name</a></strong> climbed @Html(getAscents(ascents)) on @formatRenderDate(date)</h4>
-					<div class="hidden-xs" style="border-bottom: 1px solid #eee"></div>
+					<div style="border-bottom: 1px solid #eee"></div>
 					@for(a <- ascents) {
 						<div class="hidden-xs" style="margin-top: 20px;">
 							@if(a.trip_report != null && !a.trip_report.trim().isEmpty()) {
@@ -68,10 +119,6 @@
 </div>
 
 <script type="text/javascript">
-
-	require(['tooltip'], function() {
-		$('.trip-report-link').tooltip();
-	});
 	
 	require(['jscroll'], function() {
 		$('#infiniteScroll').jscroll({
@@ -84,5 +131,24 @@
 	
 	require(['fancybox'], function() {
 		$(".fancybox").fancybox();
+	});
+	
+	require(['jquery', 'routes'], function() {
+		$('.delete_ascents').click(function() {
+    		if (confirm('@Messages("ascent.delete.prompt")')) {
+    			var userId = $(this).data("userid");
+    			var date = $(this).data("date");
+    			var that = $(this);
+    			
+	    		jsRoutes.controllers.AscentController.removeByUserAndDate(userId, date).ajax({
+	    			success: function(result) {
+	    				$(that).parents('.panel').fadeOut(function() {
+	    					$(this).remove();
+	    				});
+	    		    }
+	    		});
+    		}
+    		return false;
+    	});
 	});
 </script>

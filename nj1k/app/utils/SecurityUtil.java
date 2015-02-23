@@ -31,6 +31,10 @@ public class SecurityUtil {
 		return Controller.session().containsKey("USER_ID_KEY");
 	}
 
+	public static boolean isUser(Long userId) {
+		return (isLoggedIn() && getCurrentUser().id == userId);
+	}
+	
 	public static boolean ownsAscent(long ascentId) {
 		if (isLoggedIn()) {
 			return AscentEntity.findAscentByUserId(ascentId, getCurrentUser().id) != null;

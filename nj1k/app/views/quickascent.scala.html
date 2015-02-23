@@ -2,51 +2,52 @@
 
 @import views.RenderUtil._
 
-<div class="hidden-xs panel panel-default">
-	<div class="panel-body">
-		<form enctype="multipart/form-data" method="POST" action="@routes.AscentController.submit()">
-			@uploadImagesModal()
-			<div class="col-md-12">
-				<div class="form-group">
-					<textarea name="trip_report" class="form-control" style="min-height: 128px;" placeholder="Write your trip report here"></textarea>
-				</div>
+<form class="hidden-xs" enctype="multipart/form-data" method="POST" action="@routes.AscentController.submit()">
+	@uploadImagesModal()
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-group">
+				<textarea name="trip_report" class="form-control" style="min-height: 128px;" placeholder="Write your trip report here"></textarea>
 			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<input type="date" max="@formatDate(new Date())" class="form-control" name="ascent_date">
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="form-group">
-					<select class="form-control" name="mountain">
-					@for(m <- mountains) {
-						<option value="@m.id">@m.name</option>
-					}
-					</select>
-				</div>
-			</div>
-			<div class="actions">
-				<div class="col-md-4">
-            		<input type="submit" class="btn btn-primary" value="@Messages("button.submit.ascent")">
-            	</div>
-            	<div class="col-md-6">
-            		<span>@Messages("help.ascent.success")</span>
-            		<label for="yes">Yes</label>
-	            	<input type="radio" name="successful" id="yes" value="true" checked>
-	            	<label for="no">No</label>
-					<input type="radio" name="successful" id="no" value="false">
-				</div>
-				<div class="col-md-2">
-					<span class="btn btn-default fileinput-button pull-right" title="Upload pictures">
-				    	<span class="glyphicon glyphicon-camera"></span>
-				    	<input id="ascentDetails" type="file" name="ascentDetails" multiple />
-				    </span>
-			    </div>
-        	</div>
-        	
-		</form>
+		</div>
 	</div>
-</div>
+	<div class="row">
+		<div class="col-md-1 col-sm-1">
+			<div class="form-group">
+				<span class="btn btn-default btn-sm fileinput-button" title="Upload pictures">
+			    	<span class="glyphicon glyphicon-camera"></span>
+			    	<input id="ascentDetails" type="file" name="ascentDetails" multiple />
+			    </span>
+			</div>
+	    </div>
+		<div class="col-md-3 col-sm-5">
+			<div class="form-group">
+				<input type="date" max="@formatDate(new Date())" class="input-sm form-control" name="ascent_date">
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-6">
+			<div class="form-group">
+				<select class="input-sm form-control" name="mountain">
+				@for(m <- mountains) {
+					<option value="@m.id">@m.name</option>
+				}
+				</select>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-12">
+			<input type="hidden" name="successful" id="no" value="false">
+			<div class="form-group">
+				<small>
+		          	<label class="checkbox-inline">
+		          		<input type="checkbox" name="successful" id="yes" value="true" checked>Successful
+		          	</label>
+	          	</small>
+	          	<input type="submit" class="btn btn-primary btn-sm pull-right" value="Submit">
+	        </div>
+        </div>
+	</div>
+      	
+</form>
 	
 <script type="text/javascript">
 	require(['jquery'], function() {
@@ -81,18 +82,18 @@
 	require(['modernizr', 'jqueryui'], function() {
 		$(document).ready(function() {
 			if (!Modernizr.inputtypes.date) {
-		   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd' });
+		   		$('input[type="date"]').datepicker({ dateFormat: 'yy-mm-dd', maxDate: "+0D" });
 			}
 		});
 	});
 </script>
 	
-<div class="visible-xs">
+<div class="visible-xs" style="padding-bottom: 10px;">
 	<p><a id="logMobileAscent" class="btn btn-primary btn-lg btn-block" href="#">@Messages("ascent.quick")</a></p>
 </div>
 	
 <script type="text/javascript">
-	require(['jquery', 'moment'], function() {
+	require(['jquery', 'moment', 'routes'], function() {
 		
 		$('#logMobileAscent').click(function() {
 			if (navigator.geolocation) {

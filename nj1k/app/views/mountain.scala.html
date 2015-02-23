@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
 }
 
-@main(title = mountain.name)(head)(null) {
+@main(title = mountain.name)(head)(menu()) {
 
 <div itemscope itemtype="https://schema.org/Mountain">
 	<div class="page-header">
@@ -84,7 +84,7 @@
 		<div class="col-md-12">
 			<h3>@Messages("ascent.climb.list")</h3>
 			<div id="infiniteScroll">
-			@mountainAscentsPanel(mountain.id, ascents, 0, 10)
+			@mountainAscentsPanel(mountain.id, ascents, 0, 5)
 			</div>
 
 			<a title="Scroll to top" class="scrollToTop">

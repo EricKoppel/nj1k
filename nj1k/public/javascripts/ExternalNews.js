@@ -1,4 +1,4 @@
-require(['jquery'], function() {
+require(['jquery', 'routes'], function() {
 	
 	if ($(window).width() < 768) {
 		return;

@@ -8,31 +8,31 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="visible-xs navbar-brand" href="@routes.Application.index()">@Messages("welcome.header")</a>
+			<a class="visible-xs visible-sm navbar-brand" href="@routes.Application.index()">@Messages("welcome.header")</a>
 		</div>
 
 		<div id="menu_navbar" class="collapse navbar-collapse">
 		    <ul class="nav navbar-nav navbar-left">
 		    	<li class="hidden-xs"><a href="@routes.Application.index()">@Messages("menu.main")</a></li>
 		    	@if(isLoggedIn()) {
-		    	<li class="visible-xs"><a href="@routes.AscentController.showForm()">@Messages("menu.ascent")</a></li>
-		    	<li class="visible-xs"><a href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a></li>
+		    	<li class="visible-xs visible-sm"><a href="@routes.AscentController.showForm()">@Messages("menu.ascent")</a></li>
+		    	<li class="visible-xs visible-sm"><a href="@routes.AccountController.editAccount()">@Messages("menu.edit.account")</a></li>
 		    	} else {
-		    	<li class="visible-xs"><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
-		    	<li class="visible-xs"><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
+		    	<li class="visible-xs visible-sm"><a href="@routes.SignInController.showForm()">@Messages("menu.login")</a></li>
+		    	<li class="visible-xs visible-sm"><a href="@routes.RegistrationController.showForm()">@Messages("menu.register")</a></li>
 		    	}
 		    	<li><a href="@routes.MountainsController.mountains()">@Messages("menu.list")</a></li>
 		    	<li><a href="@routes.UsersController.users()">@Messages("menu.members")</a></li>
 				<li><a href="@routes.Application.contact()">@Messages("menu.contact")</a></li>
 		    	<li><a href="@routes.Application.about()">@Messages("menu.about")</a></li>
-		    	<li class="hidden-xs"><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
+		    	<li class="hidden-xs hidden-sm"><a href="@routes.Application.links()">@Messages("menu.links")</a></li>
 		    </ul>
 	    
 	   	@if(isLoggedIn()) {
-	   		<ul class="hidden-xs nav navbar-nav navbar-right">
+	   		<ul class="hidden-xs hidden-sm nav navbar-nav navbar-right">
 		    	<li class="dropdown">
 		    		<a href="#" class="dropdown-toggle" data-toggle="dropdown">@Messages("welcome", getCurrentUser().name) <b class="caret"></b></a>
-		    		<ul class="dropdown-menu">
+		    		<ul class="dropdown-menu" style="width: 100%;">
 		    			@if(hasRole("admin")) {
 		    			<li><a href="@routes.NewsController.showForm()">@Messages("menu.news.submit")</a></li>
 		    			}
@@ -43,13 +43,20 @@
 		    	</li>
 	    	</ul>
 	   	} else {
-	   		<form class="hidden-xs navbar-form navbar-right" style="margin-top: 0; margin-bottom: 0;" method="POST" action="@routes.SignInController.submit()">
-		   		<div class="form-group">
-		 			<input class="form-control" type="email" name="email" placeholder="e-mail address">
-		 			<input class="form-control" type="password" name="password" placeholder="password">
-		 		</div>
-				<button type="submit" class="btn btn-primary navbar-btn">@Messages("menu.login")</button>
-			</form>
+		   	<ul class="hidden-xs hidden-sm nav navbar-nav navbar-right">
+		    	<li class="dropdown">
+		    		<a href="#" class="dropdown-toggle" data-toggle="dropdown">Login <b class="caret"></b></a>
+	    			<div class="dropdown-menu">
+				   		<form class="hidden-xs hidden-sm navbar-form" method="POST" action="@routes.SignInController.submit()">
+					   		<div class="form-group">
+					 			<input class="form-control" type="email" name="email" placeholder="e-mail address">
+					 			<input class="form-control" type="password" name="password" placeholder="password">
+					 		</div>
+							<button type="submit" class="btn btn-primary btn-block">@Messages("menu.login")</button>
+						</form>
+					</div>
+				</li>
+			</ul>
 	   	}
    	</div>
 	</div>
