@@ -59,6 +59,9 @@ public class UserEntity extends BaseEntity {
 		return find.where().eq("email", email).findUnique();
 	}
 
+	public static boolean userExists(String email) {
+		return find.where().eq("email", email).findRowCount() == 1;
+	}
 	@Override
 	public String toString() {
 		return name;
