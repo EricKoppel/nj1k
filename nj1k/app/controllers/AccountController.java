@@ -82,8 +82,7 @@ public class AccountController extends Controller {
 		
 		if (!account.email.isEmpty()) {
 			user.email = account.email;
-			String uuid = session().get("UUID");
-			Cache.set(uuid, user.email);
+			session().put(SecurityUtil.USER_ID_KEY, user.email);
 		}
 		
 		if (!account.name.isEmpty()) {
