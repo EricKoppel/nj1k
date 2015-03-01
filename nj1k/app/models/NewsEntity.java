@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 
 import play.data.validation.Constraints.Required;
 
+import com.avaje.ebean.FetchConfig;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 
 @Entity
@@ -39,7 +40,7 @@ public class NewsEntity extends BaseEntity {
 	}
 	
 	public static List<NewsEntity> findRecent(int i) {
-		return find.setMaxRows(i).orderBy().desc("news_date").findList();
+		return find.select("id,news_date,title,entry").fetch("pictures", new FetchConfig().query()).setMaxRows(i).orderBy().desc("news_date").findList();
 	}
 	
 	public static Integer findNumberOfPages(Integer pageSize) {

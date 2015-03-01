@@ -1,7 +1,6 @@
 package utils;
 
 import models.AscentEntity;
-import models.RoleEntity;
 import models.UserEntity;
 import play.mvc.Controller;
 
@@ -13,21 +12,14 @@ public class SecurityUtil {
 		if (Controller.session().containsKey(USER_ID_KEY)) {
 			return UserEntity.findByEmail(Controller.session().get(USER_ID_KEY));
 		}
-		
+
 		return null;
 	}
 
 	public static boolean hasRole(String role) {
-		if (!isLoggedIn()) {
-			return false;
+		if (Controller.session().containsKey(USER_ID_KEY)) {
+			return UserEntity.hasRole(Controller.session().get(USER_ID_KEY), role);
 		}
-
-		for (RoleEntity r : getCurrentUser().roles) {
-			if (role.equals(r.roleName)) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 

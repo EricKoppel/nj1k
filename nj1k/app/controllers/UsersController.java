@@ -88,7 +88,7 @@ public class UsersController extends Controller {
 
 	@With(ETagAction.class)
 	public static Result userImage(Long id) {
-		UserEntity user = UserEntity.find(id);
+		UserEntity user = UserEntity.findImage(id);
 
 		if (user.pic == null) {
 			return notFound();
@@ -98,7 +98,7 @@ public class UsersController extends Controller {
 
 	@With(ETagAction.class)
 	public static Result userThumbnail(Long id) {
-		UserEntity user = UserEntity.find(id);
+		UserEntity user = UserEntity.findThumbnail(id);
 
 		if (user.thumbnail != null) {
 			return ok(user.thumbnail).as(MediaType.ANY_IMAGE_TYPE.type());

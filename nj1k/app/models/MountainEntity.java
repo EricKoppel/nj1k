@@ -2,12 +2,15 @@ package models;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+
+import play.cache.Cached;
 
 import com.avaje.ebean.annotation.EnumMapping;
 
@@ -24,6 +27,7 @@ public class MountainEntity extends BaseEntity {
 	@Id
 	public Long id;
 
+	@Column(unique = true)
 	public String name;
 	public String county;
 	public Float latitude;
@@ -60,9 +64,10 @@ public class MountainEntity extends BaseEntity {
 	}
 
 	public static MountainEntity findByName(String name) {
-		return find.where().eq("replace(lower(name), ' ', '-')", name.toLowerCase()).findUnique();
+		return find.select("name,description,picture,elevation,latitude,longitude,county,ownership,owner,top,summit_view_url,").where().eq("replace(lower(name), ' ', '-')", name.toLowerCase()).findUnique();
 	}
 
+	@Cached(key = "listSize")
 	public static int listSize() {
 		return find.where().eq("club_list", true).findRowCount();
 	}
@@ -100,5 +105,13 @@ public class MountainEntity extends BaseEntity {
 	@Override
 	public String toString() {
 		return "MountainEntity [id=" + id + ", name=" + name + "]";
+	}
+
+	public static MountainEntity findThumbnail(Long id) {
+		return find.select("picture,thumbnail,lastUpdate").where().eq("id", id).findUnique();
+	}
+
+	public static MountainEntity findImage(Long id) {
+		return find.select("picture,lastUpdate").where().eq("id", id).findUnique();
 	}
 }

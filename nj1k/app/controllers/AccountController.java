@@ -13,7 +13,6 @@ import models.UserEntity;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
-import play.cache.Cache;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.i18n.Messages;

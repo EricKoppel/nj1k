@@ -23,7 +23,7 @@ public class UserEntityAggregate extends UserAggregate {
 	@OneToOne
 	public AscentEntity most_recent;
 	
-	private static String query = "SELECT u.id,total,unique_successful,l.ascent_id " +
+	private static String query = "SELECT u.id,u.name,u.aboutme,u.pic,m.id,m.name,total,unique_successful,l.ascent_id " +
 			"FROM user_entity u " +
 			"LEFT JOIN (SELECT climber_id, COUNT(mountain_id) as total FROM ascent_entity GROUP BY climber_id) a " +
 			"ON u.id=a.climber_id " +
@@ -31,14 +31,23 @@ public class UserEntityAggregate extends UserAggregate {
 			"ON a.climber_id=s.climber_id " +
 			"LEFT JOIN (SELECT climber_id,MAX(`ascent_date`) most_recent FROM ascent_entity GROUP BY climber_id) r " +
 			"ON a.climber_id=r.climber_id " +
-			"LEFT JOIN (SELECT climber_id,ascent_date,MAX(id) as ascent_id FROM ascent_entity GROUP BY climber_id,ascent_date) l ON l.climber_id=r.climber_id AND l.ascent_date=r.most_recent " +
-			"LEFT JOIN ascent_entity q ON l.ascent_id=q.id";
+			"LEFT JOIN (SELECT climber_id,mountain_id,ascent_date,MAX(id) as ascent_id FROM ascent_entity GROUP BY climber_id,ascent_date) l " +
+			"ON l.climber_id=r.climber_id AND l.ascent_date=r.most_recent " +
+			"LEFT JOIN mountain_entity m ON l.mountain_id=m.id";
 
 	private static RawSql sql;
 	
 	static {
-		sql = RawSqlBuilder.parse(query).columnMapping("u.id", "user.id").columnMapping("total", "total").
-				columnMapping("unique_successful", "unique_successful").columnMapping("l.ascent_id", "most_recent.id").create(); 
+		sql = RawSqlBuilder.parse(query)
+				.columnMapping("u.id", "user.id")
+				.columnMapping("total", "total")
+				.columnMapping("u.name", "user.name")
+				.columnMapping("u.aboutme", "user.aboutme")
+				.columnMapping("u.pic", "user.pic")
+				.columnMapping("m.id", "most_recent.mountain.id")
+				.columnMapping("m.name", "most_recent.mountain.name")
+				.columnMapping("unique_successful", "unique_successful")
+				.columnMapping("l.ascent_id", "most_recent.id").create(); 
 	}
 	public static UserEntityAggregate find(Long id) {
 		Query<UserEntityAggregate> users = Ebean.find(UserEntityAggregate.class).setRawSql(sql);
@@ -52,7 +61,7 @@ public class UserEntityAggregate extends UserAggregate {
 		users.fetch("most_recent", "*", new FetchConfig().query());
 		users.fetch("most_recent.mountain", "id,name");
 		users.fetch("most_recent.climber", "id,name");
-		users.orderBy("name");
+		users.orderBy("user.name");
 		return users.findList();
 	}
 	

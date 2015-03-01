@@ -91,4 +91,16 @@ public class UserEntity extends BaseEntity {
 			return false;
 		return true;
 	}
+
+	public static boolean hasRole(String email, String role) {
+		return find.where().eq("email", email).where().eq("roles.roleName", role).findRowCount() > 0;
+	}
+
+	public static UserEntity findImage(Long id) {
+		return find.select("pic").where().eq("id", id).findUnique();
+	}
+	
+	public static UserEntity findThumbnail(Long id) {
+		return find.select("thumbnail,pic").where().eq("id", id).findUnique();
+	}
 }
