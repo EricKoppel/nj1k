@@ -61,7 +61,7 @@ public class MountainsController extends Controller {
 	}
 
 	public static Result getThumbnail(Long id) {
-		MountainEntity mountain = MountainEntity.find(id);
+		MountainEntity mountain = MountainEntity.findThumbnail(id);
 
 		response().setHeader("Cache-Control", "max-age=31556926, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(mountain.lastUpdate));
@@ -96,7 +96,7 @@ public class MountainsController extends Controller {
 	}
 
 	public static Result getImage(Long id) {
-		MountainEntity mountain = MountainEntity.find(id);
+		MountainEntity mountain = MountainEntity.findImage(id);
 
 		response().setHeader("Cache-Control", "max-age=31556926, public");
 		response().setHeader(LAST_MODIFIED, Application.cacheDateFormat.get().format(mountain.lastUpdate));
@@ -150,8 +150,8 @@ public class MountainsController extends Controller {
 	}
 
 	public static MountainEntity findNearestHigherNeighbor(Long id) {
-		MountainEntity m1 = MountainEntity.find.byId(id);
-		List<MountainEntity> higherMountains = MountainEntity.find.where().ne("id", m1.id).eq("club_list", true).gt("elevation", m1.elevation).findList();
+		MountainEntity m1 = MountainEntity.find.select("elevation").where().eq("id", id).findUnique();
+		List<MountainEntity> higherMountains = MountainEntity.find.select("id,name").where().ne("id", m1.id).eq("club_list", true).gt("elevation", m1.elevation).findList();
 	
 		return higherMountains.stream()
 		.map(m2 -> new MountainDistanceBean(m1, m2, DistanceUtil.calculateDistance(m1.latitude, m1.longitude, m2.latitude, m2.longitude)))

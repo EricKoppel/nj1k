@@ -10,8 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import utils.ImageUtil;
 import utils.SecurityUtil;
+import actions.ETagAction;
 
 import com.google.common.net.MediaType;
 
@@ -43,8 +45,9 @@ public class AscentDetailController extends Controller {
 		return ok();
 	}
 	
+	@With(ETagAction.class)
 	public static Result getImage(Long id) {
-		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
+		AscentDetailEntity ascentDetail = AscentDetailEntity.findImage(id);
 		
 		if (ascentDetail == null) {
 			return notFound();
@@ -55,8 +58,9 @@ public class AscentDetailController extends Controller {
 		return ok(ascentDetail.image).as(MediaType.ANY_IMAGE_TYPE.type());
 	}
 	
+	@With(ETagAction.class)
 	public static Result getThumbnail(Long id) {
-		AscentDetailEntity ascentDetail = AscentDetailEntity.find(id);
+		AscentDetailEntity ascentDetail = AscentDetailEntity.findThumbnail(id);
 		
 		if (ascentDetail == null) {
 			return notFound();

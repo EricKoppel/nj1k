@@ -19,14 +19,22 @@ public class AscentDetailEntity extends ImageEntity {
 	public String descriptor;
 	
 	public static AscentDetailEntity find(Long id) {
-		return find.select("*").where().eq("id", id).findUnique();
+		return find.where().eq("id", id).findUnique();
 	}
 	
-	public static List<AscentDetailEntity> findAscentDetailsByMountain(Long mountainId) {
-		return find.select("*").fetch("ascent").fetch("ascent.mountain", "id,name").fetch("ascent.climber", "id,name").where().eq("ascent.mountain.id", mountainId).findList();
+	public static AscentDetailEntity findImage(Long id) {
+		return find.select("image,lastUpdate").where().eq("id", id).findUnique();
 	}
 
 	public static List<AscentDetailEntity> findAscentDetailsByMountain(Long mountainId, int page, int num) {
-		return find.fetch("ascent").fetch("ascent.mountain", "id,name").fetch("ascent.climber", "id,name").where().eq("ascent.mountain.id", mountainId).findPagingList(num).getPage(page).getList();
+		return find.select("caption")
+				.fetch("ascent.mountain", "id,name")
+				.fetch("ascent.climber", "id,name")
+				.where().eq("ascent.mountain.id", mountainId)
+				.findPagingList(num).getPage(page).getList();
+	}
+
+	public static AscentDetailEntity findThumbnail(Long id) {
+		return find.select("image,thumbnail,lastUpdate").where().eq("id", id).findUnique();
 	}
 }
