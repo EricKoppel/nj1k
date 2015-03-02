@@ -31,7 +31,7 @@ public class UserEntityAggregate extends UserAggregate {
 			"ON a.climber_id=s.climber_id " +
 			"LEFT JOIN (SELECT climber_id,MAX(`ascent_date`) most_recent FROM ascent_entity GROUP BY climber_id) r " +
 			"ON a.climber_id=r.climber_id " +
-			"LEFT JOIN (SELECT climber_id,mountain_id,ascent_date,MAX(id) as ascent_id FROM ascent_entity GROUP BY climber_id,ascent_date) l " +
+			"LEFT JOIN (SELECT climber_id,mountain_id,ascent_date,MAX(id) as ascent_id FROM ascent_entity GROUP BY ascent_date,climber_id) l " +
 			"ON l.climber_id=r.climber_id AND l.ascent_date=r.most_recent " +
 			"LEFT JOIN mountain_entity m ON l.mountain_id=m.id";
 
