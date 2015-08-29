@@ -24,7 +24,6 @@ import com.avaje.ebean.Query;
 import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;
 import com.avaje.ebean.SqlQuery;
-import com.avaje.ebean.Update;
 
 @Entity
 public class AscentEntity extends BaseEntity {
@@ -51,7 +50,7 @@ public class AscentEntity extends BaseEntity {
 	@Column(name = "trip_report")
 	public String trip_report;
 	
-	@OneToMany(mappedBy="ascent", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(mappedBy="ascent", cascade={CascadeType.ALL}, orphanRemoval = true)
 	public List<AscentDetailEntity> ascentDetails;
 		
 	@ManyToOne
@@ -173,10 +172,10 @@ public class AscentEntity extends BaseEntity {
 	}
 
 	public static void removeByUserAndDate(long userId, Date date) {
-		Update<AscentEntity> update = Ebean.createUpdate(AscentEntity.class, "delete from ascent_entity where climber_id=? AND ascent_date=?");
-		update.setParameter(1, userId);
-		update.setParameter(2, date);
-		update.execute();
+		List<AscentEntity> ascents = AscentEntity.find.where().eq("climber_id", userId).eq("ascent_date", date).findList();
+		for (AscentEntity a : ascents) {
+			a.delete();
+		}
 	}
 
 	public static List<AscentEntity> findAscentsByUserIdAndDate(long id, Date date) {

@@ -1,4 +1,5 @@
 package actions;
+
 import java.util.Date;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -13,18 +14,17 @@ import play.mvc.Http.Response;
 import play.mvc.Result;
 import controllers.Application;
 
-
 public class ETagAction extends play.mvc.Action.Simple {
 
 	@Override
 	public Promise<Result> call(Context context) throws Throwable {
 		final Request request = context.request();
 		final Response response = context.response();
-		
+
 		return delegate.call(context).map(result -> {
 			String ifNoneMatch = request.getHeader(HeaderNames.IF_NONE_MATCH);
 			String hashCode = new Md5Hash(JavaResultExtractor.getBody(result, 1000)).toHex();
-			
+
 			if (hashCode.equals(ifNoneMatch)) {
 				return status(Controller.NOT_MODIFIED);
 			} else {

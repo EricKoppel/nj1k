@@ -26,7 +26,12 @@
 
 	<logger name="play" level="DEBUG" />
 	<logger name="application" level="DEBUG" />
-	<logger name="controllers" level="DEBUG" />
+	<logger name="controllers" level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="akka" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
 	<logger name="validators" level="DEBUG" />
 	<logger name="org.apache.shiro" level="INFO" />
 	<logger name="security" level="DEBUG" />

@@ -23,5 +23,8 @@ libraryDependencies ++= Seq(
   "org.apache.shiro" % "shiro-core" % "1.2.1" withSources() withJavadoc(),
   "de.l3s.boilerpipe" % "boilerpipe" % "1.1.0" withSources() withJavadoc(),
   "net.sourceforge.nekohtml" % "nekohtml" % "1.9.13",
-  "edu.stanford.nlp" % "stanford-corenlp" % "3.3.1" withSources() withJavadoc()
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.5.2" withSources() withJavadoc(),
+  "org.webjars" % "bootstrap" % "3.0.0"
 )
+
+pipelineStages := Seq(rjs, digest, gzip)

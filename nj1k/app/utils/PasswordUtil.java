@@ -2,6 +2,7 @@ package utils;
 
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -15,16 +16,11 @@ public class PasswordUtil {
 	private static final String VOCABULARY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 	private static final int PASSWORD_LEN = 12;
 	
-	public static char[] generateRandomPassword() {
-		
+	public static Character[] generateRandomPassword() {
 		Random rng = new SecureRandom();
-		char[] password = new char[PASSWORD_LEN];
-		
-		for (int i = 0; i < password.length; i++) {
-			password[i] = VOCABULARY.charAt((int) (rng.nextDouble() * VOCABULARY.length()));
-		}
-		
-		return password;
+		return IntStream.range(0, PASSWORD_LEN)
+		.mapToObj(i -> VOCABULARY.charAt((int) (rng.nextDouble() * VOCABULARY.length())))
+		.toArray(Character[]::new);
 	}
 	
 	public static ByteSource generateSalt() {

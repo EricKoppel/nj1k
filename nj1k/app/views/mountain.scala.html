@@ -5,18 +5,25 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.css">
 }
 
-@main(title = mountain.name)(head)(menu()) {
+@main(title = mountain.name)(head) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>@mountain.name</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+} {
 
 <div itemscope itemtype="https://schema.org/Mountain">
-	<div class="page-header">
-		<h3 itemprop="name">@mountain.name</h3>
-    </div>
     <div class="row">
     	<div class="col-md-12">
     		<div class="panel panel-default">
-	    		<div class="panel-heading">
-	    			<h2 class="panel-title">@Messages("about") @mountain.name</h2>
-	    		</div>
 		    	<div class="panel-body">
 		    		<div class="col-md-8">
 				    	@if(mountain.picture != null) {

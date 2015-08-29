@@ -34,7 +34,7 @@
 
 @for((date, userAscents) <- recentAscents) {
 	@for((climber, ascents) <- userAscents) {
-	<a class="visible-xs" href="@routes.UsersController.userAscentsByDate(climber.id, date.getTime())">
+	<a data-ascent-date="@date.getTime()" class="visible-xs" href="@routes.UsersController.userAscentsByDate(climber.id, date.getTime())">
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="media">

@@ -5,86 +5,85 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.function.Function;
 
 import javax.imageio.ImageIO;
 
 import models.ImageEntity;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.mvc.Http.MultipartFormData.FilePart;
+public class ImageResizeUtil<T extends ImageEntity> {
 
-public class ImageResizeFunction<T extends ImageEntity> implements Function<ImageWrapper<T>, T> {
-
-	private static final Logger logger = LoggerFactory.getLogger(ImageResizeFunction.class);
+	private static final Logger logger = LoggerFactory.getLogger(ImageResizeUtil.class);
 	public static final int IMAGE = 1024;
 	public static final int THUMBNAIL = 256;
-	
-	@Override
-	public T apply(ImageWrapper<T> t) {
-		logger.debug("Starting resize");
-		T image = null;
-		
+
+	public static <T extends ImageEntity> T resize(ImageWrapper<T> t, int x, int y, int x2, int y2, int w, int h) {
 		try {
-			image = t.getClazz().newInstance();
-			image.image = resize(t.getFilePart(), IMAGE);
-			image.thumbnail = resize(t.getFilePart(),THUMBNAIL);
-			image.caption = t.getCaption();
-			
+			BufferedImage image = ImageIO.read(t.getFilePart().getFile()).getSubimage(x, y, w, h);
+			return produceImage(t, image);
+		} catch (IOException | InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T extends ImageEntity> T resize(ImageWrapper<T> t) {
+		try {
+			BufferedImage image = ImageIO.read(t.getFilePart().getFile());
+			return produceImage(t, image);
 		} catch (InstantiationException | IllegalAccessException | IOException e) {
 			throw new RuntimeException(e);
 		}
-		
-		logger.debug("Ending resize");
-		return image;
-
 	}
-	
-	protected byte[] resize(FilePart filePart, final int size) throws IOException {
-		String fileType = filePart.getFilename().substring(filePart.getFilename().lastIndexOf(".") + 1);
 
-		BufferedImage originalImage = ImageIO.read(filePart.getFile());
+	private static <T extends ImageEntity> T produceImage(ImageWrapper<T> t, BufferedImage image) throws InstantiationException, IllegalAccessException, IOException {
+		String fileType = t.getFilePart().getFilename().substring(t.getFilePart().getFilename().lastIndexOf(".") + 1);
+		T imageEntity = t.getClazz().newInstance();
+		imageEntity.image = resize(image, fileType, IMAGE);
+		imageEntity.thumbnail = resize(image, fileType, THUMBNAIL);
+		imageEntity.caption = t.getCaption();
+		return imageEntity;
+	}
+
+	private static byte[] resize(BufferedImage originalImage, String fileType, final int size) throws IOException {
 		int colorSpaceType = originalImage.getGraphics().getColor().getColorSpace().getType();
-		
 		int width = originalImage.getWidth(null);
 		int height = originalImage.getHeight(null);
-		
+
+		Image scaledInstance = null;
+
 		if (width < size || height < size) {
 			logger.debug("Image is: {}x{}. No need to resize. Returning", width, height);
-			return IOUtils.toByteArray(new FileInputStream(filePart.getFile()));
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			ImageIO.write(originalImage, fileType, bout);
+			return bout.toByteArray();
 		}
-		
-		Image scaledInstance = null;
-		
+
 		if (width > height) {
 			scaledInstance = originalImage.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
 		} else {
 			scaledInstance = originalImage.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
 		}
-		
+
 		BufferedImage resizedImage = new BufferedImage(scaledInstance.getWidth(null), scaledInstance.getHeight(null), colorSpaceType);
 		Graphics2D graphics = resizedImage.createGraphics();
-		
+
 		try {
 			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 			graphics.drawImage(scaledInstance, 0, 0, null);
-		}
-		finally {
+		} finally {
 			graphics.dispose();
 		}
-		
+
 		logger.debug("Original image: {}", originalImage.toString());
 		logger.debug("New image: {}", resizedImage.toString());
-		
+
 		return convert(resizedImage, fileType);
 	}
-	
-	protected byte[] convert(BufferedImage image, String fileType) throws IOException {
+
+	private static byte[] convert(BufferedImage image, String fileType) throws IOException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.write(image, fileType, outputStream);
 		return outputStream.toByteArray();

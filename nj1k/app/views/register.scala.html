@@ -2,12 +2,20 @@
 
 @import helper._
 
-@main()(null)(menu()) {
-    
-    <div class="page-header">
-		<h3>@Messages("registration")</h3>
+@main()(null) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>@Messages("registration")</h1>
+				</div>
+			</div>
+		</div>
 	</div>
-	
+</div>
+} {
 	<div class="row">
 		<div class="col-md-4 col-sm-6">
 

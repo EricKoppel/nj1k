@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
@@ -41,12 +42,14 @@ public class MountainEntity extends BaseEntity {
 	public byte[] thumbnail;
 	@Lob
 	public String description;
-	public String mountainrange;
 	public NameType name_type;
 	public Boolean trueoneker;
 	public Boolean club_list;
 	public String summit_view_url;
-
+	
+	@ManyToOne
+	public RangeEntity range;
+	
 	@ManyToMany
 	public List<MapsEntity> maps;
 

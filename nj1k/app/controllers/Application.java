@@ -140,6 +140,8 @@ public class Application extends Controller {
 						controllers.routes.javascript.ExternalNewsController.getNewsFromNYNJTC(), controllers.routes.javascript.ExternalNewsController.getNewsArticleFromNYNJTC(),
 						controllers.routes.javascript.UsersController.user(), controllers.routes.javascript.UsersController.userImage(), controllers.routes.javascript.UsersController.userThumbnail(),
 						controllers.routes.javascript.MountainsController.showDistances(), controllers.routes.javascript.MountainsController.getImages(),
+						controllers.routes.javascript.MountainsController.getThumbnail(),
+						controllers.routes.javascript.UsersController.userAscentsByDate(),
 						controllers.routes.javascript.UsersController.userAscents(), controllers.routes.javascript.MountainsController.mountain())).as("text/javascript");
 	}
 }

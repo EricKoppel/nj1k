@@ -53,8 +53,7 @@ public class ExternalNewsController extends Controller {
 	public static Promise<Result> getNewsFromNYNJTC(int howMany) {
 		response().setHeader(CACHE_CONTROL, "max-age=3600, public");
 		return WS.url(NEWS_PAGE.toString()).get().map(new NYNJTCParserFunction(howMany)).map(articles -> {
-			String ret = serializer.serialize(articles);
-			return ok(ret).as(MediaType.JSON_UTF_8.toString());
+			return ok(serializer.serialize(articles)).as(MediaType.JSON_UTF_8.toString());
 		});
 	};
 

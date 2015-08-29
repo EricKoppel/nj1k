@@ -16,7 +16,7 @@
 			<div class="container">
 				<div class="row">
 					<div itemscope itemtype="https://schema.org/Organization" class="col-md-12">
-						<h1 itemprop="name">@Messages("welcome.header")</h1>
+						<h1 class="main-header" itemprop="name">@Messages("welcome.header")</h1>
 						<p itemprop="description"><strong>@formatText(Messages("welcometext"))</strong></p>
 						<p><small>The New Jersey 1K Club seeks to bring attention to the many hiking opportunities and challenges that the Garden State has to offer. New Hampshire has the AMC 4000'ers; the Adirondacks has its 46'ers; the Catskills and its 3500 Club. And now . . . New Jersey's own peakbagging club: the 1K'ers.</small></p>
 						@if(!isLoggedIn()) {
@@ -33,7 +33,7 @@
 } {
 	@registermodal(signupForm)
 	<div class="row">
-		<div class="col-md-8 col-sm-8">
+		<div class="recent-ascents col-md-8 col-sm-8">
 			@if(isLoggedIn()) {
 				@quickascent(mountains)
 			}
@@ -76,5 +76,28 @@
 		require(['scrollToTop'], function() {
 			$('.scrollToTop').scrollify();
 		});
+	</script>
+	
+	<script id="ascent-template" type="text/x-handlebars-template">
+	<a data-ascent-date="{{ascent_date}}" class="visible-xs" href="{{ascent_url}}">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="media">
+					<div class="media-body">
+						<div style="width: 100%; display: table;">
+	    					<div style="display: table-row">
+	        					<div style="display: table-cell;">
+									<strong>{{climber.name}}</strong> climbed {{ascent_list}} on {{ascent_date}}
+								</div>
+								<div style="display: table-cell; vertical-align: middle;">
+									<span class="pull-right glyphicon glyphicon-chevron-right"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</a>
 	</script>
 }

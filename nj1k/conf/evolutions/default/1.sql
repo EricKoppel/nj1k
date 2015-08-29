@@ -1,115 +1,115 @@
 # --- !Ups
 
 create table ascent_detail_entity (
-  id                        bigint auto_increment not null,
-  image                     longblob,
-  caption                   longtext,
-  ascent_id                 bigint,
-  descriptor                varchar(255),
-  thumbnail                 longblob,
-  last_update               datetime not null,
-  constraint pk_ascent_detail_entity primary key (id))
+id                        bigint auto_increment not null,
+image                     longblob,
+caption                   longtext,
+ascent_id                 bigint,
+descriptor                varchar(255),
+thumbnail                 longblob,
+last_update               datetime not null,
+constraint pk_ascent_detail_entity primary key (id))
 ;
 
 create table ascent_entity (
-  id                        bigint auto_increment not null,
-  ascent_date               datetime,
-  successful                tinyint(1) default 0,
-  trip_report               longtext,
-  climber_id                bigint,
-  mountain_id               bigint,
-  last_update               datetime not null,
-  constraint pk_ascent_entity primary key (id))
+id                        bigint auto_increment not null,
+ascent_date               datetime,
+successful                tinyint(1) default 0,
+trip_report               longtext,
+climber_id                bigint,
+mountain_id               bigint,
+last_update               datetime not null,
+constraint pk_ascent_entity primary key (id))
 ;
 
 create table maps_entity (
-  id                        bigint auto_increment not null,
-  name                      varchar(255),
-  publisher                 varchar(255),
-  last_update               datetime not null,
-  constraint pk_maps_entity primary key (id))
+id                        bigint auto_increment not null,
+name                      varchar(255),
+publisher                 varchar(255),
+last_update               datetime not null,
+constraint pk_maps_entity primary key (id))
 ;
 
 create table mountain_entity (
-  id                        bigint auto_increment not null,
-  name                      varchar(255),
-  county                    varchar(255),
-  latitude                  float,
-  longitude                 float,
-  elevation                 integer,
-  owner                     varchar(255),
-  ownership                 varchar(255),
-  picture                   longblob,
-  description               longtext,
-  mountainrange             varchar(255),
-  name_type                 varchar(10),
-  trueoneker                tinyint(1) default 0,
-  club_list                 tinyint(1) default 0,
-  last_update               datetime not null,
-  constraint ck_mountain_entity_name_type check (name_type in ('unofficial','official')),
-  constraint pk_mountain_entity primary key (id))
+id                        bigint auto_increment not null,
+name                      varchar(255),
+county                    varchar(255),
+latitude                  float,
+longitude                 float,
+elevation                 integer,
+owner                     varchar(255),
+ownership                 varchar(255),
+picture                   longblob,
+description               longtext,
+mountainrange             varchar(255),
+name_type                 varchar(10),
+trueoneker                tinyint(1) default 0,
+club_list                 tinyint(1) default 0,
+last_update               datetime not null,
+constraint ck_mountain_entity_name_type check (name_type in ('unofficial','official')),
+constraint pk_mountain_entity primary key (id))
 ;
 
 create table news_entity (
-  id                        bigint auto_increment not null,
-  news_date                 datetime,
-  title                     varchar(255),
-  entry                     longtext,
-  last_update               datetime not null,
-  constraint pk_news_entity primary key (id))
+id                        bigint auto_increment not null,
+news_date                 datetime,
+title                     varchar(255),
+entry                     longtext,
+last_update               datetime not null,
+constraint pk_news_entity primary key (id))
 ;
 
 create table news_image_entity (
-  id                        bigint auto_increment not null,
-  image                     longblob,
-  caption                   longtext,
-  news_id                   bigint,
-  last_update               datetime not null,
-  constraint pk_news_image_entity primary key (id))
+id                        bigint auto_increment not null,
+image                     longblob,
+caption                   longtext,
+news_id                   bigint,
+last_update               datetime not null,
+constraint pk_news_image_entity primary key (id))
 ;
 
 create table role_entity (
-  id                        bigint auto_increment not null,
-  role_name                 varchar(255),
-  last_update               datetime not null,
-  constraint uq_role_entity_role_name unique (role_name),
-  constraint pk_role_entity primary key (id))
+id                        bigint auto_increment not null,
+role_name                 varchar(255),
+last_update               datetime not null,
+constraint uq_role_entity_role_name unique (role_name),
+constraint pk_role_entity primary key (id))
 ;
 
 create table user_aggregate (
-  user_id                   bigint)
+user_id                   bigint)
 ;
 
 create table user_entity (
-  id                        bigint auto_increment not null,
-  email                     varchar(255),
-  password                  varchar(255),
-  salt                      varchar(255),
-  name                      varchar(255),
-  aboutme                   longtext,
-  pic                       longblob,
-  last_update               datetime not null,
-  constraint uq_user_entity_email unique (email),
-  constraint pk_user_entity primary key (id))
+id                        bigint auto_increment not null,
+email                     varchar(255),
+password                  varchar(255),
+salt                      varchar(255),
+name                      varchar(255),
+aboutme                   longtext,
+pic                       longblob,
+last_update               datetime not null,
+constraint uq_user_entity_email unique (email),
+constraint pk_user_entity primary key (id))
 ;
 
 
 create table maps_entity_mountain_entity (
-  maps_entity_id                 bigint not null,
-  mountain_entity_id             bigint not null,
-  constraint pk_maps_entity_mountain_entity primary key (maps_entity_id, mountain_entity_id))
+maps_entity_id                 bigint not null,
+mountain_entity_id             bigint not null,
+constraint pk_maps_entity_mountain_entity primary key (maps_entity_id, mountain_entity_id))
 ;
 
 create table mountain_entity_maps_entity (
-  mountain_entity_id             bigint not null,
-  maps_entity_id                 bigint not null,
-  constraint pk_mountain_entity_maps_entity primary key (mountain_entity_id, maps_entity_id))
+mountain_entity_id             bigint not null,
+maps_entity_id                 bigint not null,
+constraint pk_mountain_entity_maps_entity primary key (mountain_entity_id, maps_entity_id))
 ;
 
 create table users_roles (
-  user_id                        bigint not null,
-  role_id                        bigint not null,
-  constraint pk_users_roles primary key (user_id, role_id))
+user_id                        bigint not null,
+role_id                        bigint not null,
+constraint pk_users_roles primary key (user_id, role_id))
 ;
 alter table ascent_detail_entity add constraint fk_ascent_detail_entity_ascent_1 foreign key (ascent_id) references ascent_entity (id) on delete restrict on update restrict;
 create index ix_ascent_detail_entity_ascent_1 on ascent_detail_entity (ascent_id);
@@ -165,4 +165,3 @@ drop table user_aggregate;
 drop table user_entity;
 
 SET FOREIGN_KEY_CHECKS=1;
-

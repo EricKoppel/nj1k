@@ -2,11 +2,20 @@
 
 @import helper._
 
-@main(title = Messages("contact"))(null)(menu()) {
-
-	<div class="page-header">
-		<h3>@Messages("contact")</h3>
+@main(title = Messages("contact"))(null) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>@Messages("contact")</h1>
+				</div>
+			</div>
+		</div>
 	</div>
+</div>
+} {
 
 	@helper.form(action = routes.Application.submitContact) {
 	<fieldset>

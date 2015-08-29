@@ -6,7 +6,7 @@ require.config({
         holder: 'https://cdnjs.cloudflare.com/ajax/libs/holder/2.3.1/holder.min',
         jqueryui: 'https://code.jquery.com/ui/1.10.4/jquery-ui',
         jcrop: 'https://cdnjs.cloudflare.com/ajax/libs/jquery-jcrop/0.9.12/js/jquery.Jcrop',
-        bootstrap: 'https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min',
+        bootstrap: '/assets/javascripts/libs/bootstrap.min',
         collapse: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/collapse.min',
         dropdown: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/dropdown.min',
         modal: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/modal.min',
@@ -22,6 +22,7 @@ require.config({
         masonry: '/assets/javascripts/libs/masonry',
         flowtype: '/assets/javascripts/libs/flowtype',
         scrollToTop: '/assets/javascripts/libs/ScrollToTop',
+        handlebars: '/assets/javascripts/libs/handlebars',
         routes: '/routes'
     },
     shim: {
@@ -66,6 +67,9 @@ require.config({
         },
         'scrollToTop': {
         	deps: ['jquery']
+        },
+        'handlebars': {
+        	exports: 'Handlebars'
         }
     }
 });

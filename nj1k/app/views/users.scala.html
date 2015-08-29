@@ -6,7 +6,20 @@
 <meta name="description" content="NJ1K.org - List of finishers and aspiring members of the NJ1K Club.">
 }
 
-@main(Messages("menu.members"))(head)(menu()) {
+@main(Messages("menu.members"))(head) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>NJ1K Club Members</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+} {
 
 	<script type="text/javascript">
 		require(['jquery', 'tablesorter'], function() {

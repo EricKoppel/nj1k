@@ -1,9 +1,8 @@
 package security.shiro.realm;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import models.RoleEntity;
 import models.UserEntity;
 
 import org.apache.shiro.authc.AuthenticationException;
@@ -28,21 +27,21 @@ import play.i18n.Messages;
 public class NJ1KAuthenticatingRealm extends AuthorizingRealm {
 
 	private static final Logger logger = LoggerFactory.getLogger(NJ1KAuthenticatingRealm.class);
-	
+
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-		
+
 		if (token instanceof UsernamePasswordToken) {
 			UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
 			if (usernamePasswordToken.getUsername() != null && usernamePasswordToken.getPassword() != null) {
 				UserEntity user = getUser(usernamePasswordToken.getUsername());
-				
+
 				if (user != null) {
 					return getAuthenticationInfo(user);
 				}
 			}
 		}
-		
+
 		throw new AuthenticationException(Messages.get("auth.failed"));
 	}
 
@@ -50,46 +49,43 @@ public class NJ1KAuthenticatingRealm extends AuthorizingRealm {
 	public String getName() {
 		return "NJ1K Realm";
 	}
-	
+
 	private UserEntity getUser(String email) {
 		return UserEntity.findByEmail(email);
 	}
 
 	private Set<String> getUserRoles(String email) {
 		UserEntity user = getUser(email);
-		Set<String> roles = new HashSet<String>(user.roles.size());
-		
-		for (RoleEntity r : user.roles) {
-			roles.add(r.roleName);
+
+		if (user != null) {
+			return user.roles.stream().map(r -> r.roleName).collect(Collectors.toSet());
 		}
-		
-		return roles;
+		return null;
 	}
-	
+
 	private SimpleAuthenticationInfo getAuthenticationInfo(UserEntity user) {
 		if (user.salt == null) {
 			logger.trace("Authenticating user with old hashing scheme");
 			return new SimpleAuthenticationInfo(user.email, user.password, getName());
-		} 
-		else {
+		} else {
 			logger.trace("Authenticating user with new hashing scheme");
 
 			SimpleHash decodedHash = Sha256Hash.fromBase64String(user.password);
 			ByteSource salt = new SimpleByteSource(Base64.decode(user.salt));
-			
+
 			return new SimpleAuthenticationInfo(user.email, decodedHash, salt, getName());
 		}
 	}
-	
+
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		
+
 		AuthorizationInfo authInfo = new SimpleAuthorizationInfo();
-		
+
 		if (principals.getPrimaryPrincipal() instanceof String) {
 			authInfo = new SimpleAuthorizationInfo(getUserRoles((String) principals.getPrimaryPrincipal()));
 		}
-		
+
 		return authInfo;
 	}
 }

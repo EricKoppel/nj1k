@@ -2,62 +2,122 @@
 @import java.text.SimpleDateFormat
 @import play.api.Play
 @import play.api.Play.current
+@import views.RenderUtil._
 
 @head = {
-	<script src="@routes.Assets.versioned("javascripts/libs/jquery-1.11.1.min.js")" type="text/javascript"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.3/underscore-min.js" type="text/javascript"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js" type="text/javascript"></script>
-	<script src="@routes.Assets.versioned("javascripts/models/Mountain.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.versioned("javascripts/models/MountainDistanceModel.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.versioned("javascripts/views/MountainDistanceView.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.versioned("javascripts/views/MapView.js")" type="text/javascript"></script>
-	<script src="@routes.Assets.versioned("javascripts/collections/MountainDistanceModelCollection.js")" type="text/javascript"></script>
-	<script type="text/javascript" src="https://maps.google.com/maps?file=api&amp;v=2&amp;key=@Play.current.configuration.getString("googlemaps.api.key")"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=@Play.current.configuration.getString("googlemaps.api.key")"></script>
 }
 
-@main(title = Messages("radius.title", mountain.name))(head)(menu()) {
-
-
+@main(title = Messages("radius.title", mountain.name))(head) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>@Messages("radius.title", mountain.name)</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+} {
+	<script id="info-window-template" type="text/x-handlebars-template">
+		{{#if picture}}
+			<img style="margin-top: 20px; margin-left: 20px;" class="thumbnail pull-right" alt="{{name}}" src="{{imageUrl id}}" />
+		{{/if}}
+		<h3><a href="{{mountainUrl id}}">{{name}}</a></h3>
+		<p>{{{breaklines description}}}</p>
+	</script>
+	
+	<script id="distance-list-template" type="text/x-handlebars-template">
+		<tbody>
+		{{#each this}}
+			<tr>
+				<td><a data-mountain-id="{{m2.id}}" href="{{mountainUrl m2.id}}">{{m2.name}}</td>
+				<td>{{distanceAsMiles}}</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</script>
+	
 	<script type="text/javascript">
-
-		$(function() {
-			var AppView = Backbone.View.extend({
-				el: '#radiusSearch',
-				mapView: null,
-			
-				initialize: function() {
-					
-					$.ajaxSetup({
-					    headers: {
-					        'Accept': 'application/json',
-					    }
-					});
-					
-					this.mapView = new MapView({model: new Mountain({
-						id: @mountain.id,
-						name: '@mountain.name',
-						latitude: @mountain.latitude,
-						longitude: @mountain.longitude
-					})}),
-					this.distances = new MountainDistanceModelCollection();
-					this.distances.collectionId = @mountain.id;
-					this.distances.bind('add', this.addOne, this);
-					this.distances.fetch({add: true});
-				},
-				
-				addOne: function(m) {
-					var mountainDistanceView = new MountainDistanceView({model: m});
-					this.$el.append(mountainDistanceView.render().$el);
-					this.mapView.addPoint(m.get("m2"));
-				}
+	var infoWindowTemplate = null;
+	var distanceListTemplate = null;
+	var infowindow = null;
+	var map = null;
+	
+	require(['jquery', 'routes', 'handlebars'], function($, j, Handlebars) {
+		(function () {
+			Handlebars.registerHelper('breaklines', function(text) {
+			    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+			    return new Handlebars.SafeString(text);
 			});
 			
-			var App = new AppView();
-		});
+			Handlebars.registerHelper('mountainUrl', function(id) {
+				return jsRoutes.controllers.MountainsController.mountain(id).url;
+			});
+			
+			Handlebars.registerHelper('imageUrl', function(id) {
+				return jsRoutes.controllers.MountainsController.getThumbnail(id).url;
+			});
+			
+			distanceListTemplate = Handlebars.compile($("#distance-list-template").html());
+			infoWindowTemplate = Handlebars.compile($("#info-window-template").html());
+	
+			google.maps.event.addDomListener(window, 'load', initialize);
+		}());
+		
+		function initialize() {
+			var center = new google.maps.LatLng(@mountain.latitude, @mountain.longitude);
+			map = new google.maps.Map(document.getElementById('map_canvas'), {zoom: 11, center: center, mapTypeId: google.maps.MapTypeId.TERRAIN});
+			
+			var controlDiv = $('<div><span class="glyphicon glyphicon-fullscreen"></span></div>')
+			map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(controlDiv);
+			
+			addFunctionalityToMarker(new google.maps.Marker({
+				position: center,
+				map: map,
+				title: '@mountain.name',
+				icon: new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|008000",
+					new google.maps.Size(21, 34),
+					new google.maps.Point(0,0),
+					new google.maps.Point(10, 34))
+			}), @mountain.id);
+			
+			jsRoutes.controllers.MountainsController.showDistances(@mountain.id, 10).ajax({
+				headers: {Accept: "application/json"},
+    			success: function(result) {
+					$('#radiusSearch').append(distanceListTemplate(result));
+    				$.each(result, function(i, item) {
+    					addFunctionalityToMarker(new google.maps.Marker({
+    						position: new google.maps.LatLng(item.m2.latitude, item.m2.longitude),
+    						map: map,
+    						title: item.m2.name
+    					}), item.m2.id);
+    				});
+    		    }
+    		});
+			
+			
+		}
+		
+		function addFunctionalityToMarker(marker, id) {
+			google.maps.event.addListener(marker, 'click', function() {
+				if (infowindow) {
+			        infowindow.close();
+			    }
+				jsRoutes.controllers.MountainsController.mountain(id).ajax({
+					headers: {Accept: "application/json"},
+					success: function(info) {
+						infowindow = new google.maps.InfoWindow({content: infoWindowTemplate(info)});
+						infowindow.open(map, marker);
+					}
+				});
+			});
+		}
+	});
 	</script>
-	<div class="page-header">
-		<h3>@Messages("radius.title", mountain.name)</h3>
-    </div>
     
    	<div class="row">
    		<div class="col-md-4">
@@ -75,7 +135,7 @@
 			</div>
 		</div>
    		<div class="hidden-xs col-md-8">
-			<div id="map_canvas"></div>
+			<div id="map_canvas" class="normal-map-state"></div>
 		</div>
 	</div>
 }

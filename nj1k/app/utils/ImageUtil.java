@@ -22,7 +22,7 @@ public class ImageUtil {
 		.filter(i -> MediaType.parse(files.get(i).getContentType()).is(MediaType.ANY_IMAGE_TYPE))
 		.mapToObj(i -> new ImageWrapper<T>(files.get(i), captions[i], clazz))
 		.collect(Collectors.toList()).parallelStream()
-		.map(wrapper -> new ImageResizeFunction<T>().apply(wrapper))
+		.map(wrapper -> ImageResizeUtil.resize(wrapper))
 		.collect(Collectors.toList());
 	}
 }

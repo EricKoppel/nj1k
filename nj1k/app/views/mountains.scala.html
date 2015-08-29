@@ -1,10 +1,20 @@
-@(mountains: List[MountainEntity])
-
-@head = {
-<meta name="description" content="NJ1K.org - List of New Jersey's mountains over 1,000 feet.">
-}
-
-@main(title = Messages("menu.list"))(head)(menu()) {
+@(mountains: List[MountainEntity]) @head = {
+<meta name="description"
+	content="NJ1K.org - List of New Jersey's mountains over 1,000 feet.">
+} @main(title = Messages("menu.list"))(head) {
+<div id="top_wrapper">
+	@menu()
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>@Messages("menu.list")</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+} {
     <script type="text/javascript">
 	    require(['jquery', 'tablesorter'], function() {
 			$(document).ready(function() { 
@@ -25,10 +35,6 @@
 			});
 	    });
 	</script>
-	
-	<div class="page-header">
-		<h3>@Messages("menu.list")</h3>
-	</div>
 	
 	<div class="row">
 		<div class="col-md-12">

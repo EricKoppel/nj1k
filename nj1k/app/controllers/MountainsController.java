@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import utils.DistanceUtil;
+import utils.HasPictureTransformer;
 import utils.SecurityUtil;
 
 import com.google.common.net.MediaType;
@@ -52,8 +53,15 @@ public class MountainsController extends Controller {
 			return notFound();
 		}
 		
-		return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id, 0, 5), findNearestHigherNeighbor(mountain.id),
-				AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 8)));
+		if (request().accepts("text/html")) {
+			return ok(views.html.mountain.render(mountain, AscentEntity.findByMountainId(mountain.id, 0, 5), findNearestHigherNeighbor(mountain.id),
+					AscentDetailEntity.findAscentDetailsByMountain(mountain.id, 0, 8)));
+		} else if (request().accepts("application/json")) {
+			return ok(new JSONSerializer().include("id", "name", "picture", "description").exclude("*").transform(new HasPictureTransformer(), "picture")
+					.serialize(mountain)).as("application/json");
+		} else {
+			return badRequest();
+		}
 	}
 	
 	public static Result mountainById(Long id) {
