@@ -31,7 +31,7 @@ public class SecurityUtil {
 	}
 
 	public static boolean isUser(Long userId) {
-		return (isLoggedIn() && getCurrentUser().id == userId);
+		return (isLoggedIn() && userId.equals(getCurrentUser().id));
 	}
 
 	public static boolean ownsAscent(long ascentId) {
